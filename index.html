@@ -3,98 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMT Paysandú</title>
+  <title>CMT Paysandú | Antel Field Operations 📡</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 20px; }
-    h1 { text-align: center; color: #4da6ff; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e1e1e; }
-    th, td { border: 1px solid #333; padding: 10px; text-align: left; }
-    th { background-color: #2a2a2a; color: #4da6ff; }
-    input { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-    button { background: #4da6ff; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
-    button:hover { background: #0076e4; }
-    .form-container { background: #1e1e1e; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    :root {
+      --bg: #080d1a;
+      --card: #0f172a;
+      --card-header: #1e293b;
+      --border: #1e3a8a;
+      --antel-blue: #0072ce;
+      --accent: #38bdf8;
+      --green: #22c55e;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      margin: 0; 
+      padding: 12px; 
+    }
+
+    .header-noc {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
+    .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; }
+    .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+    .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+
+    .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
+
+    .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+    .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th { background: var(--card-header); color: #cbd5e1; font-size: 0.75rem; }
+
+    .service-badge { color: var(--accent); font-weight: bold; cursor: pointer; background: rgba(56, 189, 248, 0.1); padding: 3px 6px; border-radius: 4px; }
+    .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
+    .map-btn { background: #2563eb; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.75rem; }
   </style>
 </head>
 <body>
 
-  <h1>CMT Paysandú - Gestión de Servicios</h1>
-
-  <div class="form-container">
-    <h3>Agregar Nuevo Registro</h3>
-    <input type="text" id="cliente" placeholder="Cliente">
-    <input type="text" id="servicio" placeholder="Servicio">
-    <input type="text" id="infra" placeholder="Infra">
-    <input type="text" id="radio" placeholder="Radio">
-    <input type="text" id="puerto" placeholder="Puerto de Agg">
-    <input type="text" id="vlan" placeholder="Vlan">
-    <input type="text" id="epl" placeholder="EPL">
-    <input type="date" id="fecha">
-    <input type="text" id="ubicacion" placeholder="Ubicación">
-    <input type="text" id="contacto" placeholder="Contacto">
-    <button onclick="agregarRegistro()">Guardar en Google Sheets</button>
+  <div class="header-noc">
+    <div class="title-noc">
+      <span>CMT Paysandú</span>
+      <span class="brand-tag">ANTEL</span>
+    </div>
+    <div class="header-right">
+      <button class="btn-main" onclick="cargarDatosJSONP()">🔄 Actualizar Datos</button>
+    </div>
   </div>
 
-  <h2>Registros actuales</h2>
-  <button onclick="cargarDatos()">Cargar / Actualizar Datos</button>
-  <table id="tablaDatos">
-    <thead>
-      <tr id="headers"></tr>
-    </thead>
-    <tbody id="body"></tbody>
-  </table>
+  <div class="kpi-container">
+    <div class="kpi-card"><div class="kpi-title">Total Servicios</div><div class="kpi-value" id="kpiServicios">0</div></div>
+    <div class="kpi-card"><div class="kpi-title">Nodos / Infra</div><div class="kpi-value" id="kpiInfra">0</div></div>
+    <div class="kpi-card"><div class="kpi-title">Último Sync</div><div class="kpi-value" id="kpiSync" style="font-size: 0.9rem;">-</div></div>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="buscarServicio" placeholder="⚡ Buscar SERVICIO..." onkeyup="filtrar()">
+    <input type="text" id="buscarGeneral" placeholder="🔍 Buscar Cliente, Infra, Radio..." onkeyup="filtrar()">
+  </div>
+
+  <div class="top-actions">
+    <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>CLIENTE</th>
+          <th>SERVICIO</th>
+          <th>INFRA</th>
+          <th>RADIO</th>
+          <th>PUERTO AGG</th>
+          <th>VLAN</th>
+          <th>EPL</th>
+          <th>FECHA</th>
+          <th>UBICACIÓN</th>
+          <th>CONTACTO</th>
+        </tr>
+      </thead>
+      <tbody id="contenidoTabla">
+        <tr><td colspan="10" style="text-align:center; padding: 20px;">Cargando datos... 📡</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWf1iDfPqkGVvCWzO2kVj76OZEX79PWdAlmBL2dOpRrZ0lK2hNF9aI8oOoU4fRbr9d/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWf1iDFpqkGVvCWzO2kVj76OZEX79PWdAlmBL2dOpRrZ0lK2hNF9aI8O0oU4fRbr9d/exec";
+    let datosGlobales = [];
 
-    async function cargarDatos() {
-      const res = await fetch(SCRIPT_URL);
-      const data = await res.json();
-      if (data.length > 0) {
-        const headersTr = document.getElementById("headers");
-        headersTr.innerHTML = "";
-        Object.keys(data[0]).forEach(key => {
-          headersTr.innerHTML += `<th>${key}</th>`;
-        });
-        
-        const body = document.getElementById("body");
-        body.innerHTML = "";
-        data.forEach(row => {
-          let tr = "<tr>";
-          Object.values(row).forEach(val => {
-            tr += `<td>${val}</td>`;
-          });
-          tr += "</tr>";
-          body.innerHTML += tr;
-        });
-      }
+    window.recibirDatosNoc = function(data) {
+      datosGlobales = data;
+      document.getElementById('kpiServicios').innerText = datosGlobales.length;
+      const infras = new Set(datosGlobales.map(d => d.Infra || d.INFRA).filter(Boolean));
+      document.getElementById('kpiInfra').innerText = infras.size;
+      document.getElementById('kpiSync').innerText = new Date().toLocaleTimeString('es-UY', {hour:'2-digit', minute:'2-digit'});
+      renderizar(datosGlobales);
+    };
+
+    function cargarDatosJSONP() {
+      const tbody = document.getElementById("contenidoTabla");
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">Sincronizando con Google Sheets... 📡</td></tr>';
+
+      const scriptViejo = document.getElementById('jsonp_script');
+      if (scriptViejo) scriptViejo.remove();
+
+      const script = document.createElement('script');
+      script.id = 'jsonp_script';
+      script.src = SCRIPT_URL + "?callback=recibirDatosNoc";
+      script.onerror = function() {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 20px;">❌ Error de conexión. Revisa los permisos de Google Apps Script.</td></tr>';
+      };
+      document.body.appendChild(script);
     }
 
-    async function agregarRegistro() {
-      const nuevo = {
-        Cliente: document.getElementById("cliente").value,
-        Servicio: document.getElementById("servicio").value,
-        Infra: document.getElementById("infra").value,
-        Radio: document.getElementById("radio").value,
-        "Puerto de Agg": document.getElementById("puerto").value,
-        Vlan: document.getElementById("vlan").value,
-        EPL: document.getElementById("epl").value,
-        Fecha: document.getElementById("fecha").value,
-        Ubicación: document.getElementById("ubicacion").value,
-        Contacto: document.getElementById("contacto").value
-      };
+    function renderizar(lista) {
+      const tbody = document.getElementById("contenidoTabla");
+      document.getElementById("contador").innerText = `${lista.length} registros cargados`;
+      tbody.innerHTML = "";
 
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(nuevo)
+      if (lista.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">Sin datos registrados.</td></tr>';
+        return;
+      }
+
+      lista.forEach(r => {
+        const cliente = r.Cliente || r.CLIENTE || '';
+        const servicio = r.Servicio || r.SERVICIO || '';
+        const infra = r.Infra || r.INFRA || '';
+        const radio = r.Radio || r.RADIO || '';
+        const puerto = r["Puerto de Agg"] || r.Puerto || r.PUERTO || '';
+        const vlan = r.Vlan || r.VLAN || '';
+        const epl = r.EPL || '';
+        const fecha = r.Fecha || r.FECHA || '-';
+        const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
+        const contactoRaw = r.Contacto || r.CONTACTO || '';
+
+        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn">📍 Mapa</a>` : (ubicacionRaw || '-');
+        let contactoHtml = String(contactoRaw).length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${cliente}</strong></td>
+            <td><span class="service-badge">${servicio}</span></td>
+            <td>${infra}</td>
+            <td>${radio}</td>
+            <td>${puerto}</td>
+            <td>${vlan}</td>
+            <td>${epl}</td>
+            <td>${fecha}</td>
+            <td>${ubicacionHtml}</td>
+            <td>${contactoHtml}</td>
+          </tr>`;
+      });
+    }
+
+    function filtrar() {
+      const qServ = document.getElementById("buscarServicio").value.toLowerCase().trim();
+      const qGen = document.getElementById("buscarGeneral").value.toLowerCase().trim();
+
+      const filtrados = datosGlobales.filter(d => {
+        const s = String(d.Servicio || d.SERVICIO || '').toLowerCase();
+        const t = JSON.stringify(d).toLowerCase();
+        return (qServ === '' || s.includes(qServ)) && (qGen === '' || t.includes(qGen));
       });
 
-      alert("¡Registro guardado!");
-      cargarDatos();
+      renderizar(filtrados);
     }
 
-    // Cargar datos al iniciar
-    cargarDatos();
+    window.onload = cargarDatosJSONP;
   </script>
 </body>
 </html>
