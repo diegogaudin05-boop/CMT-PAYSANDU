@@ -3,376 +3,325 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMT Paysandú</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>CMT Paysandú | Antel Technical Field Operations 📡</title>
+
+  <link rel="manifest" href="data:application/manifest+json;utf8,{\"name\":\"CMT Paysandú NOC\",\"short_name\":\"CMT Antel\",\"start_url\":\".\",\"display\":\"standalone\",\"background_color\":\"#080d1a\",\"theme_color\":\"#0072ce\",\"icons\":[{\"src\":\"https://cdn-icons-png.flaticon.com/512/888/888859.png\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}">
+  <meta name="theme-color" content="#0072ce">
+
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --bg: #080d1a;
+      --card: #0f172a;
+      --card-header: #1e293b;
+      --border: #1e3a8a;
+      --antel-blue: #0072ce;
       --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --border: #334155;
-      --whatsapp: #25d366;
-      --whatsapp-hover: #1da851;
-      --phone: #3b82f6;
-      --phone-hover: #1d4ed8;
+      --green: #22c55e;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
     }
 
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      margin: 0;
-      padding: 20px;
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      margin: 0; 
+      padding: 12px; 
+      padding-bottom: 60px;
     }
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    header {
+    .header-noc {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      display: flex;
-      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 20px rgba(0, 114, 206, 0.25);
+      flex-wrap: wrap;
       gap: 10px;
     }
 
-    .badge {
-      background: #0284c7;
-      font-size: 0.8rem;
-      padding: 4px 8px;
-      border-radius: 4px;
+    .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
+    .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; }
+
+    .animated-text {
+      background: linear-gradient(90deg, #38bdf8 0%, #ffffff 50%, #0072ce 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shine 3.5s linear infinite;
+    }
+    @keyframes shine { to { background-position: 200% center; } }
+
+    .tower-svg { width: 44px; height: 44px; }
+    .wave { stroke: #38bdf8; stroke-linecap: round; fill: none; opacity: 0; animation: signal 1.8s infinite ease-out; }
+    .wave-1 { animation-delay: 0s; }
+    .wave-2 { animation-delay: 0.6s; }
+    @keyframes signal {
+      0% { opacity: 0; stroke-width: 1px; }
+      50% { opacity: 1; stroke-width: 2.5px; }
+      100% { opacity: 0; stroke-width: 3.5px; }
     }
 
-    /* KPIs */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
+    .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-    .kpi-card {
-      background: var(--card-bg);
-      padding: 15px;
-      border-radius: 8px;
+    .clock-noc-box {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(15, 23, 42, 0.9); padding: 4px 12px; border-radius: 8px;
       border: 1px solid var(--border);
     }
+    .clock-noc { font-family: monospace; font-size: 0.95rem; font-weight: bold; color: var(--accent); }
+    .date-noc { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
-    .kpi-title {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 5px;
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn {
+      background: #0284c7; color: white; padding: 6px 12px; font-size: 0.8rem;
+      border: none; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
     }
+    .dropbtn-green { background: #15803d; }
+    .dropdown-content {
+      display: none; position: absolute; right: 0; background-color: var(--card);
+      min-width: 210px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; z-index: 100;
+    }
+    .dropdown-content a { color: var(--text); padding: 10px 14px; text-decoration: none; display: block; font-size: 0.85rem; }
+    .dropdown:hover .dropdown-content { display: block; }
 
-    .kpi-value {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--accent);
-    }
+    .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
 
-    /* Filtros */
-    .controls {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
+    .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
 
-    .search-input {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 10px 15px;
-      border-radius: 6px;
-      flex: 1;
-      min-width: 250px;
-    }
+    .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
 
-    .btn-sync {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.2s;
-    }
+    .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th { background: var(--card-header); color: #cbd5e1; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
 
-    .btn-sync:hover {
-      background: var(--accent-hover);
-      color: #fff;
-    }
+    .service-badge { color: var(--accent); font-weight: bold; cursor: pointer; background: rgba(56, 189, 248, 0.1); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.2); }
+    .map-btn { background: #2563eb; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.75rem; }
+    .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
 
-    /* Tabla */
-    .table-container {
-      background: var(--card-bg);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-
-    th, td {
-      padding: 12px 15px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      background: rgba(0, 0, 0, 0.2);
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.5px;
-    }
-
-    tr:hover {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    /* Botones de acción */
-    .action-btns {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-action {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: #fff;
-      text-decoration: none;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    .btn-action:hover {
-      transform: scale(1.1);
-    }
-
-    .btn-ws {
-      background-color: var(--whatsapp);
-    }
-    .btn-ws:hover {
-      background-color: var(--whatsapp-hover);
-    }
-
-    .btn-call {
-      background-color: var(--phone);
-    }
-    .btn-call:hover {
-      background-color: var(--phone-hover);
-    }
-
-    .loading-msg, .error-msg {
-      padding: 20px;
-      text-align: center;
-      color: var(--text-muted);
-    }
-
-    .error-msg {
-      color: #f87171;
-    }
+    #toast { visibility: hidden; min-width: 180px; background-color: var(--antel-blue); color: #fff; text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.85rem; font-weight: bold; opacity: 0; transition: 0.3s; }
+    #toast.show { visibility: visible; opacity: 1; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <h1>CMT Paysandú <span class="badge">ANTEL</span></h1>
-    <button class="btn-sync" onclick="cargarDatos()">
-      <i class="fa-solid fa-rotate"></i> Actualizar Datos
+  <div class="header-noc">
+    <div class="title-noc">
+      <svg class="tower-svg" viewBox="0 0 64 64">
+        <polygon points="32,16 22,58 27,58 32,38 37,58 42,58" fill="#e2e8f0"/>
+        <line x1="25" y1="46" x2="39" y2="46" stroke="#080d1a" stroke-width="2"/>
+        <line x1="28" y1="34" x2="36" y2="34" stroke="#080d1a" stroke-width="2"/>
+        <circle cx="32" cy="16" r="4" fill="#38bdf8"/>
+        <path class="wave wave-1" d="M 22 10 A 14 14 0 0 1 42 10"/>
+        <path class="wave wave-2" d="M 15 4 A 22 22 0 0 1 49 4"/>
+      </svg>
+      <div>
+        <span class="animated-text">CMT Paysandú</span>
+        <span class="brand-tag">ANTEL</span>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="clock-noc-box">
+        <div class="clock-noc" id="relojNoc">00:00:00</div>
+        <div class="date-noc" id="fechaNoc">--/--/----</div>
+      </div>
+      
+      <div class="dropdown">
+        <button class="dropbtn dropbtn-green">📞 Llamar NOC ▾</button>
+        <div class="dropdown-content">
+          <a href="tel:25067907">📞 Consola OMSED (25067907)</a>
+          <a href="tel:08002287">📞 CMT Antel (08002287)</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropbtn">🌐 Accesos Antel ▾</button>
+        <div class="dropdown-content">
+          <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank">📡 Monitor AGG2</a>
+          <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank">🔷 Prisma OCP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-container">
+    <div class="kpi-card"><span class="kpi-title">⚡ Total Servicios</span><span class="kpi-value" id="kpiServicios">0</span></div>
+    <div class="kpi-card"><span class="kpi-title">🏗️ Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
+    <div class="kpi-card"><span class="kpi-title">📅 Último Sync</span><span class="kpi-value" id="kpiSync" style="font-size:0.9rem;">-</span></div>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="buscarServicio" placeholder="⚡ Buscar SERVICIO (ej. PC2559, P97006A...)" onkeyup="filtrar()">
+    <input type="text" id="buscarGeneral" placeholder="🔍 Buscar por Cliente, Infra, Radio, Contacto..." onkeyup="filtrar()">
+  </div>
+
+  <div class="top-actions">
+    <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
+    <button class="btn-main" id="btnActualizar" onclick="obtenerDatos()">
+      🔄 Actualizar Datos
     </button>
-  </header>
-
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-title">Total Servicios</div>
-      <div class="kpi-value" id="kpi-total">-</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Nodos / Infra</div>
-      <div class="kpi-value" id="kpi-nodos">-</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Último Sync</div>
-      <div class="kpi-value" id="kpi-sync" style="font-size: 1rem;">-</div>
-    </div>
   </div>
 
-  <!-- Controles -->
-  <div class="controls">
-    <input type="text" id="inputCliente" class="search-input" placeholder="🔍 Buscar CLIENTE..." oninput="filtrarDatos()">
-    <input type="text" id="inputGeneral" class="search-input" placeholder="🔍 Buscar Cliente, Infra, Radio..." oninput="filtrarDatos()">
-  </div>
-
-  <!-- Tabla -->
-  <div class="table-container">
+  <div class="table-wrapper">
     <table>
       <thead>
         <tr>
-          <th>Cliente</th>
-          <th>Servicio</th>
-          <th>Infra</th>
-          <th>Radio</th>
-          <th>Puerto AGG</th>
+          <th>CLIENTE</th>
+          <th>SERVICIO</th>
+          <th>INFRA</th>
+          <th>RADIO</th>
+          <th>PUERTO AGG</th>
           <th>VLAN</th>
-          <th>BPL</th>
-          <th>Fecha</th>
-          <th>Ubicación</th>
-          <th>Contacto</th>
+          <th>EPL</th>
+          <th>FECHA</th>
+          <th>UBICACIÓN</th>
+          <th>CONTACTO</th>
         </tr>
       </thead>
-      <tbody id="tabla-body">
-        <tr>
-          <td colspan="10" class="loading-msg">Cargando registros...</td>
-        </tr>
+      <tbody id="contenidoTabla">
+        <tr><td colspan="10" style="text-align:center; padding: 25px;">Escaneando nodos de red Antel... 📡</td></tr>
       </tbody>
     </table>
   </div>
-</div>
 
-<script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9Ilubxg3_47-klHMvssHhctxBSB3B/exec";
+  <div id="toast">📋 Copiado al portapapeles</div>
 
-  let datosGlobales = [];
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9Ilubxg3_47-klHMvssHhctxBSB3B/exec";
+    let datosGlobales = [];
 
-  function cargarDatos() {
-    const tbody = document.getElementById('tabla-body');
-    tbody.innerHTML = '<tr><td colspan="10" class="loading-msg">Cargando registros...</td></tr>';
+    setInterval(() => {
+      const d = new Date();
+      document.getElementById('relojNoc').innerText = d.toLocaleTimeString('es-UY');
+      const dia = String(d.getDate()).padStart(2, '0');
+      const mes = String(d.getMonth() + 1).padStart(2, '0');
+      document.getElementById('fechaNoc').innerText = `${dia}/${mes}/${d.getFullYear()}`;
+    }, 1000);
 
-    const scriptAnterior = document.getElementById('jsonp_script');
-    if (scriptAnterior) scriptAnterior.remove();
-
-    const script = document.createElement('script');
-    script.id = 'jsonp_script';
-    script.src = `${SCRIPT_URL}?callback=recibirDatosNoc&t=${Date.now()}`;
-    script.onerror = () => {
-      tbody.innerHTML = '<tr><td colspan="10" class="error-msg">Error al cargar datos. Verifique la conexión.</td></tr>';
-    };
-    document.body.appendChild(script);
-  }
-
-  function recibirDatosNoc(data) {
-    datosGlobales = data;
-    actualizarKPIs();
-    renderizarTabla(datosGlobales);
-    
-    const horaActual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('kpi-sync').textContent = horaActual;
-  }
-
-  function renderizarTabla(lista) {
-    const tbody = document.getElementById('tabla-body');
-    if (!lista || lista.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">No se encontraron registros.</td></tr>';
-      return;
+    function copiarTexto(txt) {
+      if (!txt) return;
+      navigator.clipboard.writeText(txt);
+      const toast = document.getElementById("toast");
+      toast.innerText = `📋 Copiado: ${txt}`;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
-    tbody.innerHTML = lista.map(row => {
-      const cliente = row.CLIENTE || row.Cliente || '-';
-      const servicio = row.SERVICIO || row.Servicio || '-';
-      const infra = row.INFRA || row.Infra || '-';
-      const radio = row.RADIO || row.Radio || '-';
-      const puerto = row["PUERTO AGG"] || row.PUERTO || '-';
-      const vlan = row.VLAN || row.Vlan || '-';
-      const bpl = row.BPL || row.Bpl || '-';
-      const fecha = row.FECHA || row.Fecha || '-';
-      const ubicacion = row["UBICACIÓN"] || row.UBICACION || row.Ubicacion || '-';
-      const contactoRaw = row.CONTACTO || row.Contacto || '';
+    function obtenerDatos() {
+      const tbody = document.getElementById("contenidoTabla");
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      let contactoHtml = '-';
-      if (contactoRaw) {
-        let numLimpio = String(contactoRaw).replace(/\D/g, '');
-        if (numLimpio.startsWith('09')) {
-          numLimpio = '598' + numLimpio.substring(1);
-        } else if (numLimpio.length === 8 && numLimpio.startsWith('9')) {
-          numLimpio = '598' + numLimpio;
+      const scriptAnterior = document.getElementById('jsonp_script');
+      if (scriptAnterior) scriptAnterior.remove();
+
+      const script = document.createElement('script');
+      script.id = 'jsonp_script';
+      script.src = `${SCRIPT_URL}?callback=recibirRespuestaJSONP&t=${Date.now()}`;
+      
+      script.onerror = () => {
+        const cached = localStorage.getItem('cmt_cache_data');
+        if (cached) {
+          datosGlobales = JSON.parse(cached);
+          const time = localStorage.getItem('cmt_cache_time') || 'Offline';
+          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando copia local en memoria (Modo Sin Conexión)</td></tr>';
+          actualizarUI(datosGlobales, time);
+        } else {
+          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con Google Sheets. Compruebe la URL del script.</td></tr>';
         }
+      };
 
-        contactoHtml = `
-          <div class="action-btns">
-            <span>${contactoRaw}</span>
-            <a href="https://wa.me/${numLimpio}" target="_blank" class="btn-action btn-ws" title="WhatsApp">
-              <i class="fa-brands fa-whatsapp"></i>
-            </a>
-            <a href="tel:${numLimpio}" class="btn-action btn-call" title="Llamar">
-              <i class="fa-solid fa-phone"></i>
-            </a>
-          </div>
-        `;
+      document.body.appendChild(script);
+    }
+
+    function recibirRespuestaJSONP(data) {
+      if (Array.isArray(data) && data.length > 0) {
+        datosGlobales = data;
+        localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
+        localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
+        actualizarUI(datosGlobales);
+      } else {
+        document.getElementById("contenidoTabla").innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">No se encontraron registros en la planilla.</td></tr>';
+      }
+    }
+
+    function actualizarUI(datos, time = null) {
+      document.getElementById('kpiServicios').innerText = datos.length;
+      const infras = new Set(datos.map(d => d.Infra || d.INFRA).filter(Boolean));
+      document.getElementById('kpiInfra').innerText = infras.size;
+      document.getElementById('kpiSync').innerText = time || new Date().toLocaleTimeString('es-UY', {hour:'2-digit', minute:'2-digit'});
+      renderizar(datos);
+    }
+
+    function renderizar(lista) {
+      const tbody = document.getElementById("contenidoTabla");
+      document.getElementById("contador").innerText = `${lista.length} registros cargados`;
+      tbody.innerHTML = "";
+
+      if (lista.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">No hay resultados.</td></tr>';
+        return;
       }
 
-      return `
-        <tr>
-          <td><strong>${cliente}</strong></td>
-          <td>${servicio}</td>
-          <td>${infra}</td>
-          <td>${radio}</td>
-          <td>${puerto}</td>
-          <td>${vlan}</td>
-          <td>${bpl}</td>
-          <td>${fecha}</td>
-          <td>${ubicacion}</td>
-          <td>${contactoHtml}</td>
-        </tr>
-      `;
-    }).join('');
-  }
+      lista.forEach(r => {
+        const cliente = r.Cliente || r.CLIENTE || '';
+        const servicio = r.Servicio || r.SERVICIO || '';
+        const infra = r.Infra || r.INFRA || '';
+        const radio = r.Radio || r.RADIO || '';
+        const puerto = r["Puerto de Agg"] || r["PUERTO AGG"] || r.Puerto || r.PUERTO || '';
+        const vlan = r.Vlan || r.VLAN || '';
+        const epl = r.EPL || r.BPL || r.Bpl || '';
+        const fecha = r.Fecha || r.FECHA || '-';
+        const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
+        const contactoRaw = r.Contacto || r.CONTACTO || '';
 
-  function actualizarKPIs() {
-    document.getElementById('kpi-total').textContent = datosGlobales.length;
-    
-    const nodosUnicos = new Set(datosGlobales.map(d => d.INFRA || d.Infra).filter(Boolean));
-    document.getElementById('kpi-nodos').textContent = nodosUnicos.size;
-  }
+        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn">📍 Mapa</a>` : (ubicacionRaw || '-');
+        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
 
-  function filtrarDatos() {
-    const qCliente = document.getElementById('inputCliente').value.toLowerCase();
-    const qGeneral = document.getElementById('inputGeneral').value.toLowerCase();
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${cliente}</strong></td>
+            <td><span class="service-badge" onclick="copiarTexto('${servicio}')">${servicio}</span></td>
+            <td>${infra}</td>
+            <td><span style="color:#f59e0b;">${radio}</span></td>
+            <td><span class="service-badge" style="color:#a855f7;" onclick="copiarTexto('${puerto}')">${puerto}</span></td>
+            <td><span class="service-badge" style="color:#22c55e;" onclick="copiarTexto('${vlan}')">${vlan}</span></td>
+            <td>${epl}</td>
+            <td>${fecha}</td>
+            <td>${ubicacionHtml}</td>
+            <td>${contactoHtml}</td>
+          </tr>`;
+      });
+    }
 
-    const filtrados = datosGlobales.filter(row => {
-      const cliente = String(row.CLIENTE || row.Cliente || '').toLowerCase();
-      const todoElTexto = JSON.stringify(row).toLowerCase();
+    function filtrar() {
+      const qServicio = document.getElementById("buscarServicio").value.toLowerCase().trim();
+      const qGeneral = document.getElementById("buscarGeneral").value.toLowerCase().trim();
 
-      const cumpleCliente = !qCliente || cliente.includes(qCliente);
-      const cumpleGeneral = !qGeneral || todoElTexto.includes(qGeneral);
+      const filtrados = datosGlobales.filter(d => {
+        const servicioVal = String(d.Servicio || d.SERVICIO || '').toLowerCase();
+        const todoElTexto = JSON.stringify(d).toLowerCase();
 
-      return cumpleCliente && cumpleGeneral;
-    });
+        return (qServicio === '' || servicioVal.includes(qServicio)) &&
+               (qGeneral === '' || todoElTexto.includes(qGeneral));
+      });
 
-    renderizarTabla(filtrados);
-  }
+      renderizar(filtrados);
+    }
 
-  // Cargar datos al iniciar
-  window.onload = cargarDatos;
-</script>
-
+    window.onload = obtenerDatos;
+  </script>
 </body>
 </html>
