@@ -31,6 +31,7 @@
       padding-bottom: 60px;
     }
 
+    /* Header y Torre Animada */
     .header-noc {
       display: flex;
       justify-content: space-between;
@@ -48,6 +49,13 @@
     .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
     .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; }
 
+    .tower-icon { font-size: 1.8rem; display: inline-block; animation: pulseTower 2s infinite ease-in-out; }
+    @keyframes pulseTower {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--accent)); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
+    }
+
     .animated-text {
       background: linear-gradient(90deg, #38bdf8 0%, #ffffff 50%, #0072ce 100%);
       background-size: 200% auto;
@@ -57,16 +65,6 @@
       animation: shine 3.5s linear infinite;
     }
     @keyframes shine { to { background-position: 200% center; } }
-
-    .tower-svg { width: 44px; height: 44px; }
-    .wave { stroke: #38bdf8; stroke-linecap: round; fill: none; opacity: 0; animation: signal 1.8s infinite ease-out; }
-    .wave-1 { animation-delay: 0s; }
-    .wave-2 { animation-delay: 0.6s; }
-    @keyframes signal {
-      0% { opacity: 0; stroke-width: 1px; }
-      50% { opacity: 1; stroke-width: 2.5px; }
-      100% { opacity: 0; stroke-width: 3.5px; }
-    }
 
     .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
@@ -89,19 +87,24 @@
       min-width: 210px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; z-index: 100;
     }
     .dropdown-content a { color: var(--text); padding: 10px 14px; text-decoration: none; display: block; font-size: 0.85rem; }
+    .dropdown-content a:hover { background: var(--card-header); }
     .dropdown:hover .dropdown-content { display: block; }
 
+    /* Tarjetas KPI */
     .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
     .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
     .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
     .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
 
+    /* Buscadores */
     .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
+    input[type="text"]:focus { border-color: var(--accent); }
 
     .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
 
+    /* Tabla */
     .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
     th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
@@ -119,14 +122,7 @@
 
   <div class="header-noc">
     <div class="title-noc">
-      <svg class="tower-svg" viewBox="0 0 64 64">
-        <polygon points="32,16 22,58 27,58 32,38 37,58 42,58" fill="#e2e8f0"/>
-        <line x1="25" y1="46" x2="39" y2="46" stroke="#080d1a" stroke-width="2"/>
-        <line x1="28" y1="34" x2="36" y2="34" stroke="#080d1a" stroke-width="2"/>
-        <circle cx="32" cy="16" r="4" fill="#38bdf8"/>
-        <path class="wave wave-1" d="M 22 10 A 14 14 0 0 1 42 10"/>
-        <path class="wave wave-2" d="M 15 4 A 22 22 0 0 1 49 4"/>
-      </svg>
+      <span class="tower-icon">📡</span>
       <div>
         <span class="animated-text">CMT Paysandú</span>
         <span class="brand-tag">ANTEL</span>
@@ -140,7 +136,7 @@
       </div>
       
       <div class="dropdown">
-        <button class="dropbtn dropbtn-green">📞 Llamar NOC ▾</button>
+        <button class="dropbtn dropbtn-green" onclick="playBeep(600, 0.05)">📞 Llamar NOC ▾</button>
         <div class="dropdown-content">
           <a href="tel:25067907">📞 Consola OMSED (25067907)</a>
           <a href="tel:08002287">📞 CMT Antel (08002287)</a>
@@ -148,7 +144,7 @@
       </div>
 
       <div class="dropdown">
-        <button class="dropbtn">🌐 Accesos Antel ▾</button>
+        <button class="dropbtn" onclick="playBeep(600, 0.05)">🌐 Accesos Antel ▾</button>
         <div class="dropdown-content">
           <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank">📡 Monitor AGG2</a>
           <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank">🔷 Prisma OCP</a>
@@ -170,7 +166,7 @@
 
   <div class="top-actions">
     <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
-    <button class="btn-main" id="btnActualizar" onclick="obtenerDatos()">
+    <button class="btn-main" id="btnActualizar" onclick="playBeep(800, 0.08); obtenerDatos()">
       🔄 Actualizar Datos
     </button>
   </div>
@@ -179,16 +175,16 @@
     <table>
       <thead>
         <tr>
-          <th>CLIENTE</th>
-          <th>SERVICIO</th>
-          <th>INFRA</th>
-          <th>RADIO</th>
-          <th>PUERTO AGG</th>
-          <th>VLAN</th>
-          <th>EPL</th>
-          <th>FECHA</th>
-          <th>UBICACIÓN</th>
-          <th>CONTACTO</th>
+          <th>👤 CLIENTE</th>
+          <th>⚡ SERVICIO</th>
+          <th>🏗️ INFRA</th>
+          <th>📻 RADIO</th>
+          <th>🔌 PUERTO AGG</th>
+          <th>🏷️ VLAN</th>
+          <th>💎 EPL</th>
+          <th>📅 FECHA</th>
+          <th>📍 UBICACIÓN</th>
+          <th>📞 CONTACTO</th>
         </tr>
       </thead>
       <tbody id="contenidoTabla">
@@ -200,8 +196,25 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUF6ysvZKepW-vrE8_ig_VcQR_drcOunRsyJgKfDFtwGBdLi0cdJKIIeEIibugWoo/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9Ilubxg3_47-klHMvssHhctxBSB3B/exec";
     let datosGlobales = [];
+
+    // Sistema de Beep con Web Audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 600, duration = 0.06) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e){}
+    }
 
     setInterval(() => {
       const d = new Date();
@@ -214,6 +227,7 @@
     function copiarTexto(txt) {
       if (!txt) return;
       navigator.clipboard.writeText(txt);
+      playBeep(900, 0.1);
       const toast = document.getElementById("toast");
       toast.innerText = `📋 Copiado: ${txt}`;
       toast.classList.add("show");
@@ -287,8 +301,8 @@
         const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
         const contactoRaw = r.Contacto || r.CONTACTO || '';
 
-        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn">📍 Mapa</a>` : (ubicacionRaw || '-');
-        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
+        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playBeep(500, 0.05)">📍 Mapa</a>` : (ubicacionRaw || '-');
+        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn" onclick="playBeep(500, 0.05)">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
 
         tbody.innerHTML += `
           <tr>
