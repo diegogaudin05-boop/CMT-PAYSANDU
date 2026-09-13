@@ -136,7 +136,6 @@
     .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
 
     #toast { visibility: hidden; min-width: 180px; background-color: var(--antel-blue); color: #fff; text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.85rem; font-weight: bold; opacity: 0; transition: 0.3s; }
-    #toast.show { visibility: hidden; opacity: 1; }
     #toast.show { visibility: visible; opacity: 1; }
   </style>
 </head>
@@ -255,7 +254,6 @@
       setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
-    // Método JSONP universal para celulares y PC sin bloqueos
     function obtenerDatos() {
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
