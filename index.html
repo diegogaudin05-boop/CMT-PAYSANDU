@@ -31,7 +31,6 @@
       padding-bottom: 60px;
     }
 
-    /* Header y Animaciones Generales */
     .header-noc {
       display: flex;
       justify-content: space-between;
@@ -49,7 +48,6 @@
     .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
     .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; }
 
-    /* Animaciones de Movimiento */
     .tower-icon { font-size: 1.8rem; display: inline-block; animation: pulseTower 2s infinite ease-in-out; }
     @keyframes pulseTower {
       0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
@@ -116,13 +114,11 @@
     .dropdown-content a:hover { background: var(--card-header); }
     .dropdown:hover .dropdown-content { display: block; }
 
-    /* Tarjetas KPI */
     .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
     .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
     .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
     .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
 
-    /* Buscadores */
     .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
     input[type="text"]:focus { border-color: var(--accent); }
@@ -130,7 +126,6 @@
     .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
 
-    /* Tabla */
     .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
     th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
@@ -141,6 +136,7 @@
     .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
 
     #toast { visibility: hidden; min-width: 180px; background-color: var(--antel-blue); color: #fff; text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.85rem; font-weight: bold; opacity: 0; transition: 0.3s; }
+    #toast.show { visibility: hidden; opacity: 1; }
     #toast.show { visibility: visible; opacity: 1; }
   </style>
 </head>
@@ -259,33 +255,47 @@
       setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
+    // Método JSONP universal para celulares y PC sin bloqueos
     function obtenerDatos() {
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      fetch(SCRIPT_URL)
-        .then(response => response.json())
-        .then(data => {
-          if (Array.isArray(data) && data.length > 0) {
-            datosGlobales = data;
-            localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
-            localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
-            actualizarUI(datosGlobales);
-          } else {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">No se encontraron registros en la planilla.</td></tr>';
-          }
-        })
-        .catch(error => {
-          const cached = localStorage.getItem('cmt_cache_data');
-          if (cached) {
-            datosGlobales = JSON.parse(cached);
-            const time = localStorage.getItem('cmt_cache_time') || 'Offline';
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando copia local en memoria (Modo Sin Conexión)</td></tr>';
-            actualizarUI(datosGlobales, time);
-          } else {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con Google Sheets desde el celular.</td></tr>';
-          }
-        });
+      const oldScript = document.getElementById("jsonp-script");
+      if (oldScript) oldScript.remove();
+
+      const script = document.createElement('script');
+      script.id = "jsonp-script";
+      script.src = `${SCRIPT_URL}?callback=procesarRespuestaSheets`;
+      
+      script.onerror = function() {
+        usarCacheOffline();
+      };
+
+      document.body.appendChild(script);
+    }
+
+    function procesarRespuestaSheets(data) {
+      if (Array.isArray(data) && data.length > 0) {
+        datosGlobales = data;
+        localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
+        localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
+        actualizarUI(datosGlobales);
+      } else {
+        usarCacheOffline();
+      }
+    }
+
+    function usarCacheOffline() {
+      const tbody = document.getElementById("contenidoTabla");
+      const cached = localStorage.getItem('cmt_cache_data');
+      if (cached) {
+        datosGlobales = JSON.parse(cached);
+        const time = localStorage.getItem('cmt_cache_time') || 'Offline';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando copia en caché (Modo Sin Conexión)</td></tr>';
+        actualizarUI(datosGlobales, time);
+      } else {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión. Verifique internet o permisos de Google Sheets.</td></tr>';
+      }
     }
 
     function actualizarUI(datos, time = null) {
@@ -330,6 +340,9 @@
             <td><span class="service-badge" style="color:#a855f7;" onclick="copiarTexto('${puerto}')">${puerto}</span></td>
             <td><span class="service-badge" style="color:#22c55e;" onclick="copiarTexto('${vlan}')">${vlan}</span></td>
             <td>${epl}</td>
+            <td>${fecha}</td>
+            <td>${ubicacionHtml}</td>
+            <td>${contactoHtml}</td>
           </tr>`;
       });
     }
