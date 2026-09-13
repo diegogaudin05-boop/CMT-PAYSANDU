@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMT Paysandú</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; margin: 20px; }
+    h1 { text-align: center; color: #4da6ff; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e1e1e; }
+    th, td { border: 1px solid #333; padding: 10px; text-align: left; }
+    th { background-color: #2a2a2a; color: #4da6ff; }
+    input { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+    button { background: #4da6ff; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
+    button:hover { background: #0076e4; }
+    .form-container { background: #1e1e1e; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>CMT Paysandú - Gestión de Servicios</h1>
+
+  <div class="form-container">
+    <h3>Agregar Nuevo Registro</h3>
+    <input type="text" id="cliente" placeholder="Cliente">
+    <input type="text" id="servicio" placeholder="Servicio">
+    <input type="text" id="infra" placeholder="Infra">
+    <input type="text" id="radio" placeholder="Radio">
+    <input type="text" id="puerto" placeholder="Puerto de Agg">
+    <input type="text" id="vlan" placeholder="Vlan">
+    <input type="text" id="epl" placeholder="EPL">
+    <input type="date" id="fecha">
+    <input type="text" id="ubicacion" placeholder="Ubicación">
+    <input type="text" id="contacto" placeholder="Contacto">
+    <button onclick="agregarRegistro()">Guardar en Google Sheets</button>
+  </div>
+
+  <h2>Registros actuales</h2>
+  <button onclick="cargarDatos()">Cargar / Actualizar Datos</button>
+  <table id="tablaDatos">
+    <thead>
+      <tr id="headers"></tr>
+    </thead>
+    <tbody id="body"></tbody>
+  </table>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWf1iDfPqkGVvCWzO2kVj76OZEX79PWdAlmBL2dOpRrZ0lK2hNF9aI8oOoU4fRbr9d/exec";
+
+    async function cargarDatos() {
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      if (data.length > 0) {
+        const headersTr = document.getElementById("headers");
+        headersTr.innerHTML = "";
+        Object.keys(data[0]).forEach(key => {
+          headersTr.innerHTML += `<th>${key}</th>`;
+        });
+        
+        const body = document.getElementById("body");
+        body.innerHTML = "";
+        data.forEach(row => {
+          let tr = "<tr>";
+          Object.values(row).forEach(val => {
+            tr += `<td>${val}</td>`;
+          });
+          tr += "</tr>";
+          body.innerHTML += tr;
+        });
+      }
+    }
+
+    async function agregarRegistro() {
+      const nuevo = {
+        Cliente: document.getElementById("cliente").value,
+        Servicio: document.getElementById("servicio").value,
+        Infra: document.getElementById("infra").value,
+        Radio: document.getElementById("radio").value,
+        "Puerto de Agg": document.getElementById("puerto").value,
+        Vlan: document.getElementById("vlan").value,
+        EPL: document.getElementById("epl").value,
+        Fecha: document.getElementById("fecha").value,
+        Ubicación: document.getElementById("ubicacion").value,
+        Contacto: document.getElementById("contacto").value
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(nuevo)
+      });
+
+      alert("¡Registro guardado!");
+      cargarDatos();
+    }
+
+    // Cargar datos al iniciar
+    cargarDatos();
+  </script>
+</body>
+</html>
