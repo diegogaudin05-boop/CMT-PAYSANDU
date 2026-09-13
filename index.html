@@ -31,7 +31,7 @@
       padding-bottom: 60px;
     }
 
-    /* Header y Torre Animada */
+    /* Header y Animaciones Generales */
     .header-noc {
       display: flex;
       justify-content: space-between;
@@ -49,11 +49,37 @@
     .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
     .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; }
 
+    /* Animaciones de Movimiento */
     .tower-icon { font-size: 1.8rem; display: inline-block; animation: pulseTower 2s infinite ease-in-out; }
     @keyframes pulseTower {
       0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
       50% { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--accent)); }
       100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
+    }
+
+    .anim-antena { display: inline-block; animation: waveAntena 1.8s infinite ease-in-out; }
+    @keyframes waveAntena {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    .anim-modem { display: inline-block; animation: pulseModem 2s infinite ease-in-out; }
+    @keyframes pulseModem {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.12); opacity: 1; filter: drop-shadow(0 0 6px var(--green)); }
+    }
+
+    .anim-port { display: inline-block; animation: blinkPort 1.2s infinite alternate; }
+    @keyframes blinkPort {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
+      100% { transform: scale(1.15); filter: drop-shadow(0 0 8px var(--accent)); }
+    }
+
+    .anim-chain { display: inline-block; animation: swingChain 2.2s infinite ease-in-out; }
+    @keyframes swingChain {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(15deg) scale(1.1); }
     }
 
     .animated-text {
@@ -155,7 +181,7 @@
 
   <div class="kpi-container">
     <div class="kpi-card"><span class="kpi-title">⚡ Total Servicios</span><span class="kpi-value" id="kpiServicios">0</span></div>
-    <div class="kpi-card"><span class="kpi-title">🏗️ Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
+    <div class="kpi-card"><span class="kpi-title"><span class="anim-modem">🛜</span> Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
     <div class="kpi-card"><span class="kpi-title">📅 Último Sync</span><span class="kpi-value" id="kpiSync" style="font-size:0.9rem;">-</span></div>
   </div>
 
@@ -177,11 +203,11 @@
         <tr>
           <th>👤 CLIENTE</th>
           <th>⚡ SERVICIO</th>
-          <th>🏗️ INFRA</th>
-          <th>📻 RADIO</th>
-          <th>🔌 PUERTO AGG</th>
+          <th><span class="anim-modem">🛜</span> INFRA</th>
+          <th><span class="anim-antena">🗼</span> RADIO</th>
+          <th><span class="anim-port">🖧</span> PUERTO AGG</th>
           <th>🏷️ VLAN</th>
-          <th>💎 EPL</th>
+          <th><span class="anim-chain">🔗</span> EPL</th>
           <th>📅 FECHA</th>
           <th>📍 UBICACIÓN</th>
           <th>📞 CONTACTO</th>
@@ -199,7 +225,6 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9Ilubxg3_47-klHMvssHhctxBSB3B/exec";
     let datosGlobales = [];
 
-    // Sistema de Beep con Web Audio API
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq = 600, duration = 0.06) {
       try {
@@ -238,37 +263,29 @@
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      const scriptAnterior = document.getElementById('jsonp_script');
-      if (scriptAnterior) scriptAnterior.remove();
-
-      const script = document.createElement('script');
-      script.id = 'jsonp_script';
-      script.src = `${SCRIPT_URL}?callback=recibirRespuestaJSONP&t=${Date.now()}`;
-      
-      script.onerror = () => {
-        const cached = localStorage.getItem('cmt_cache_data');
-        if (cached) {
-          datosGlobales = JSON.parse(cached);
-          const time = localStorage.getItem('cmt_cache_time') || 'Offline';
-          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando copia local en memoria (Modo Sin Conexión)</td></tr>';
-          actualizarUI(datosGlobales, time);
-        } else {
-          tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con Google Sheets. Compruebe la URL del script.</td></tr>';
-        }
-      };
-
-      document.body.appendChild(script);
-    }
-
-    function recibirRespuestaJSONP(data) {
-      if (Array.isArray(data) && data.length > 0) {
-        datosGlobales = data;
-        localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
-        localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
-        actualizarUI(datosGlobales);
-      } else {
-        document.getElementById("contenidoTabla").innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">No se encontraron registros en la planilla.</td></tr>';
-      }
+      fetch(SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            datosGlobales = data;
+            localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
+            localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
+            actualizarUI(datosGlobales);
+          } else {
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">No se encontraron registros en la planilla.</td></tr>';
+          }
+        })
+        .catch(error => {
+          const cached = localStorage.getItem('cmt_cache_data');
+          if (cached) {
+            datosGlobales = JSON.parse(cached);
+            const time = localStorage.getItem('cmt_cache_time') || 'Offline';
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando copia local en memoria (Modo Sin Conexión)</td></tr>';
+            actualizarUI(datosGlobales, time);
+          } else {
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con Google Sheets desde el celular.</td></tr>';
+          }
+        });
     }
 
     function actualizarUI(datos, time = null) {
@@ -313,9 +330,6 @@
             <td><span class="service-badge" style="color:#a855f7;" onclick="copiarTexto('${puerto}')">${puerto}</span></td>
             <td><span class="service-badge" style="color:#22c55e;" onclick="copiarTexto('${vlan}')">${vlan}</span></td>
             <td>${epl}</td>
-            <td>${fecha}</td>
-            <td>${ubicacionHtml}</td>
-            <td>${contactoHtml}</td>
           </tr>`;
       });
     }
