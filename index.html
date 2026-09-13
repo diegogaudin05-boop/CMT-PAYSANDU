@@ -276,32 +276,38 @@
             </table>
         </div>
     </div>
-
-    <script>
+<script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzquQPsXJ9s4zHSpe8PVEke1C4-nkzzDLsg0Ld2faDJIFSe-z2SCqjvicEvNzNrUgpv/exec";
         let datosGlobales = [];
+
+        window.recibirDatosNoc = function(data) {
+            datosGlobales = data;
+            actualizarKPIs();
+            renderizar(datosGlobales);
+        };
 
         window.onload = cargarDatos;
 
         function cargarDatos() {
             document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading">Cargando datos desde Google Sheets...</td></tr>';
             
-            fetch(SCRIPT_URL)
-                .then(res => res.json())
-                .then(data => {
-                    datosGlobales = data;
-                    actualizarKPIs();
-                    renderizar(datosGlobales);
-                })
-                .catch(err => {
-                    console.error("Error al cargar:", err);
-                    document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading" style="color: #ef4444;">Error al cargar datos. Verifique la conexión.</td></tr>';
-                });
+            const scriptViejo = document.getElementById('jsonp_script');
+            if (scriptViejo) scriptViejo.remove();
+
+            const script = document.createElement('script');
+            script.id = 'jsonp_script';
+            script.src = SCRIPT_URL + "?callback=recibirDatosNoc&t=" + new Date().getTime();
+            
+            script.onerror = function() {
+                document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading" style="color: #ef4444;">Error al cargar datos. Verifique la conexión.</td></tr>';
+            };
+
+            document.body.appendChild(script);
         }
 
         function actualizarKPIs() {
             document.getElementById('kpiServicios').innerText = datosGlobales.length;
-            const infras = new Set(datosGlobales.map(d => d.INFRA).filter(Boolean));
+            const infras = new Set(datosGlobales.map(d => d.INFRA || d.Infra).filter(Boolean));
             document.getElementById('kpiInfra').innerText = infras.size;
             document.getElementById('kpiSync').innerText = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
         }
@@ -331,17 +337,26 @@
             lista.forEach(row => {
                 const tr = document.createElement('tr');
 
-                // Ubicación con botón
+                const cliente = row.CLIENTE || row.Cliente || '';
+                const servicio = row.SERVICIO || row.Servicio || '';
+                const infra = row.INFRA || row.Infra || '';
+                const radio = row.RADIO || row.Radio || '';
+                const puertoAgg = row['PUERTO AGG'] || row.PUERTO_AGG || row.PuertoAgg || '';
+                const vlan = row.VLAN || row.Vlan || '';
+                const bpl = row.BPL || row.Bpl || '';
+                const fecha = row.FECHA || row.Fecha || '';
+                const ubicacion = row.UBICACION || row.Ubicacion || '';
+                const contacto = row.CONTACTO || row.Contacto || '';
+
                 let mapaHTML = "";
-                if (row.UBICACION) {
-                    const coords = row.UBICACION.trim();
+                if (ubicacion) {
+                    const coords = String(ubicacion).trim();
                     mapaHTML = `<a href="https://www.google.com/maps?q=${encodeURIComponent(coords)}" target="_blank" class="btn-mapa">📍 Mapa</a>`;
                 }
 
-                // Contacto con botones
                 let contactoHTML = "";
-                if (row.CONTACTO) {
-                    const contactoStr = String(row.CONTACTO);
+                if (contacto) {
+                    const contactoStr = String(contacto);
                     const matchTel = contactoStr.match(/09\d{7}|\d{8,9}/);
                     
                     if (matchTel) {
@@ -361,14 +376,14 @@
                 }
 
                 tr.innerHTML = `
-                    <td style="font-weight: 600;">${row.CLIENTE || ''}</td>
-                    <td><span class="pill pill-servicio">${row.SERVICIO || ''}</span></td>
-                    <td><span class="pill pill-infra">${row.INFRA || ''}</span></td>
-                    <td>${row.RADIO || ''}</td>
-                    <td>${row.PUERTO_AGG || ''}</td>
-                    <td>${row.VLAN || ''}</td>
-                    <td>${row.BPL || ''}</td>
-                    <td>${formatearFecha(row.FECHA)}</td>
+                    <td style="font-weight: 600;">${cliente}</td>
+                    <td><span class="pill pill-servicio">${servicio}</span></td>
+                    <td><span class="pill pill-infra">${infra}</span></td>
+                    <td>${radio}</td>
+                    <td>${puertoAgg}</td>
+                    <td>${vlan}</td>
+                    <td>${bpl}</td>
+                    <td>${formatearFecha(fecha)}</td>
                     <td>${mapaHTML}</td>
                     <td>${contactoHTML}</td>
                 `;
@@ -382,7 +397,8 @@
             const otrosVal = document.getElementById('searchOtros').value.toLowerCase();
 
             const filtrados = datosGlobales.filter(row => {
-                const matchCliente = !clienteVal || (row.CLIENTE && row.CLIENTE.toLowerCase().includes(clienteVal));
+                const cliente = String(row.CLIENTE || row.Cliente || '').toLowerCase();
+                const matchCliente = !clienteVal || cliente.includes(clienteVal);
                 
                 const todoTexto = Object.values(row).join(' ').toLowerCase();
                 const matchOtros = !otrosVal || todoTexto.includes(otrosVal);
@@ -393,6 +409,6 @@
             renderizar(filtrados);
         }
     </script>
-
 </body>
 </html>
+   
