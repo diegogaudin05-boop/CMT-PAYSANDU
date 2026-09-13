@@ -1,203 +1,398 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMT Paysandú | Antel Field Operations 📡</title>
-  <style>
-    :root {
-      --bg: #080d1a;
-      --card: #0f172a;
-      --card-header: #1e293b;
-      --border: #1e3a8a;
-      --antel-blue: #0072ce;
-      --accent: #38bdf8;
-      --green: #22c55e;
-      --text: #f1f5f9;
-      --text-muted: #94a3b8;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMT Paysandú</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --border: #334155;
+            --badge-bg: #0369a1;
+            --badge-text: #e0f2fe;
+            --btn-green: #10b981;
+            --btn-green-hover: #059669;
+        }
 
-    * { box-sizing: border-box; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-      background: var(--bg); 
-      color: var(--text); 
-      margin: 0; 
-      padding: 12px; 
-    }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
 
-    .header-noc {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border);
-      padding: 10px 16px;
-      border-radius: 14px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
-    .brand-tag { font-size: 0.65rem; background: var(--antel-blue); color: #fff; padding: 2px 6px; border-radius: 4px; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
-    .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; }
-    .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
-    .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+        .tag {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
 
-    .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
-    input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
 
-    .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .kpi-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
 
-    .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
-    th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-    th { background: var(--card-header); color: #cbd5e1; font-size: 0.75rem; }
+        .kpi-title {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .service-badge { color: var(--accent); font-weight: bold; cursor: pointer; background: rgba(56, 189, 248, 0.1); padding: 3px 6px; border-radius: 4px; }
-    .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
-    .map-btn { background: #2563eb; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.75rem; }
-  </style>
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 8px;
+            color: var(--accent);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        input:focus {
+            outline: 2px solid var(--accent);
+            border-color: transparent;
+        }
+
+        .btn-refresh {
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-refresh:hover {
+            background: var(--accent-hover);
+            color: #fff;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #0f172a;
+            color: var(--text-muted);
+            padding: 14px 16px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .pill {
+            background: #334155;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .pill-infra { background: #1e3a8a; color: #93c5fd; }
+        .pill-servicio { background: #065f46; color: #6ee7b7; }
+
+        .btn-mapa {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .btn-mapa:hover { background: #0369a1; }
+
+        .contact-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-call { background: #2563eb; color: white; }
+        .btn-call:hover { background: #1d4ed8; }
+
+        .btn-ws { background: #16a34a; color: white; }
+        .btn-ws:hover { background: #15803d; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .counter-label {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
 </head>
 <body>
 
-  <div class="header-noc">
-    <div class="title-noc">
-      <span>CMT Paysandú</span>
-      <span class="brand-tag">ANTEL</span>
+    <div class="container">
+        <header>
+            <h1>CMT Paysandú <span class="tag">ANTEL</span></h1>
+            <button class="btn-refresh" onclick="cargarDatos()">↻ Actualizar Datos</button>
+        </header>
+
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-title">Total Servicios</div>
+                <div class="kpi-value" id="kpiServicios">-</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Nodos / Infra</div>
+                <div class="kpi-value" id="kpiInfra">-</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Último Sync</div>
+                <div class="kpi-value" id="kpiSync" style="font-size: 1.2rem; color: #fff; margin-top: 14px;">-</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="searchCliente" placeholder="🔍 Buscar CLIENTE..." oninput="filtrar()">
+            <input type="text" id="searchOtros" placeholder="🔍 Buscar Cliente, Infra, Radio..." oninput="filtrar()">
+        </div>
+
+        <div class="counter-label" id="counter">Cargando registros...</div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>CLIENTE</th>
+                        <th>SERVICIO</th>
+                        <th>INFRA</th>
+                        <th>RADIO</th>
+                        <th>PUERTO AGG</th>
+                        <th>VLAN</th>
+                        <th>BPL</th>
+                        <th>FECHA</th>
+                        <th>UBICACIÓN</th>
+                        <th>CONTACTO</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaBody">
+                    <tr>
+                        <td colspan="10" class="loading">Cargando datos desde Google Sheets...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="header-right">
-      <button class="btn-main" onclick="cargarDatosJSONP()">🔄 Actualizar Datos</button>
-    </div>
-  </div>
 
-  <div class="kpi-container">
-    <div class="kpi-card"><div class="kpi-title">Total Servicios</div><div class="kpi-value" id="kpiServicios">0</div></div>
-    <div class="kpi-card"><div class="kpi-title">Nodos / Infra</div><div class="kpi-value" id="kpiInfra">0</div></div>
-    <div class="kpi-card"><div class="kpi-title">Último Sync</div><div class="kpi-value" id="kpiSync" style="font-size: 0.9rem;">-</div></div>
-  </div>
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzquQPsXJ9s4zHSpe8PVEke1C4-nkzzDLsg0Ld2faDJIFSe-z2SCqjvicEvNzNrUgpv/exec";
+        let datosGlobales = [];
 
-  <div class="search-container">
-    <input type="text" id="buscarServicio" placeholder="⚡ Buscar SERVICIO..." onkeyup="filtrar()">
-    <input type="text" id="buscarGeneral" placeholder="🔍 Buscar Cliente, Infra, Radio..." onkeyup="filtrar()">
-  </div>
+        window.onload = cargarDatos;
 
-  <div class="top-actions">
-    <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
-  </div>
+        function cargarDatos() {
+            document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading">Cargando datos desde Google Sheets...</td></tr>';
+            
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    datosGlobales = data;
+                    actualizarKPIs();
+                    renderizar(datosGlobales);
+                })
+                .catch(err => {
+                    console.error("Error al cargar:", err);
+                    document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading" style="color: #ef4444;">Error al cargar datos. Verifique la conexión.</td></tr>';
+                });
+        }
 
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>CLIENTE</th>
-          <th>SERVICIO</th>
-          <th>INFRA</th>
-          <th>RADIO</th>
-          <th>PUERTO AGG</th>
-          <th>VLAN</th>
-          <th>EPL</th>
-          <th>FECHA</th>
-          <th>UBICACIÓN</th>
-          <th>CONTACTO</th>
-        </tr>
-      </thead>
-      <tbody id="contenidoTabla">
-        <tr><td colspan="10" style="text-align:center; padding: 20px;">Cargando datos... 📡</td></tr>
-      </tbody>
-    </table>
-  </div>
+        function actualizarKPIs() {
+            document.getElementById('kpiServicios').innerText = datosGlobales.length;
+            const infras = new Set(datosGlobales.map(d => d.INFRA).filter(Boolean));
+            document.getElementById('kpiInfra').innerText = infras.size;
+            document.getElementById('kpiSync').innerText = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
+        }
 
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzquQPsXJ9s4zHSpe8PVEke1C4-nKzzDLsg0Ld2IaDJiFSe-z2SCqjvIcEvNzNrUgpv/exec";
-    let datosGlobales = [];
+        function formatearFecha(fechaRaw) {
+            if (!fechaRaw) return "";
+            const fechaStr = String(fechaRaw);
+            if (fechaStr.includes("T")) {
+                const soloFecha = fechaStr.split("T")[0];
+                const partes = soloFecha.split("-");
+                if (partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+            return fechaStr;
+        }
 
-    window.recibirDatosNoc = function(data) {
-      datosGlobales = data;
-      document.getElementById('kpiServicios').innerText = datosGlobales.length;
-      const infras = new Set(datosGlobales.map(d => d.Infra || d.INFRA).filter(Boolean));
-      document.getElementById('kpiInfra').innerText = infras.size;
-      document.getElementById('kpiSync').innerText = new Date().toLocaleTimeString('es-UY', {hour:'2-digit', minute:'2-digit'});
-      renderizar(datosGlobales);
-    };
+        function renderizar(lista) {
+            const tbody = document.getElementById('tablaBody');
+            tbody.innerHTML = '';
 
-    function cargarDatosJSONP() {
-      const tbody = document.getElementById("contenidoTabla");
-      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">Sincronizando con Google Sheets... 📡</td></tr>';
+            document.getElementById('counter').innerText = `${lista.length} registros cargados`;
 
-      const scriptViejo = document.getElementById('jsonp_script');
-      if (scriptViejo) scriptViejo.remove();
+            if (lista.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" class="loading">No se encontraron resultados.</td></tr>';
+                return;
+            }
 
-      const script = document.createElement('script');
-      script.id = 'jsonp_script';
-      script.src = SCRIPT_URL + "?callback=recibirDatosNoc";
-      script.onerror = function() {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 20px;">❌ Error de conexión. Revisa los permisos de Google Apps Script.</td></tr>';
-      };
-      document.body.appendChild(script);
-    }
+            lista.forEach(row => {
+                const tr = document.createElement('tr');
 
-    function renderizar(lista) {
-      const tbody = document.getElementById("contenidoTabla");
-      document.getElementById("contador").innerText = `${lista.length} registros cargados`;
-      tbody.innerHTML = "";
+                // Ubicación con botón
+                let mapaHTML = "";
+                if (row.UBICACION) {
+                    const coords = row.UBICACION.trim();
+                    mapaHTML = `<a href="https://www.google.com/maps?q=${encodeURIComponent(coords)}" target="_blank" class="btn-mapa">📍 Mapa</a>`;
+                }
 
-      if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">Sin datos registrados.</td></tr>';
-        return;
-      }
+                // Contacto con botones
+                let contactoHTML = "";
+                if (row.CONTACTO) {
+                    const contactoStr = String(row.CONTACTO);
+                    const matchTel = contactoStr.match(/09\d{7}|\d{8,9}/);
+                    
+                    if (matchTel) {
+                        let num = matchTel[0];
+                        let numInt = num.startsWith("0") ? "598" + num.substring(1) : num;
+                        
+                        contactoHTML = `
+                            <div class="contact-group">
+                                <a href="tel:${num}" class="btn-action btn-call" title="Llamar">📞</a>
+                                <a href="https://wa.me/${numInt}" target="_blank" class="btn-action btn-ws" title="WhatsApp">💬</a>
+                                <span>${contactoStr}</span>
+                            </div>
+                        `;
+                    } else {
+                        contactoHTML = contactoStr;
+                    }
+                }
 
-      lista.forEach(r => {
-        const cliente = r.Cliente || r.CLIENTE || '';
-        const servicio = r.Servicio || r.SERVICIO || '';
-        const infra = r.Infra || r.INFRA || '';
-        const radio = r.Radio || r.RADIO || '';
-        const puerto = r["Puerto de Agg"] || r.Puerto || r.PUERTO || '';
-        const vlan = r.Vlan || r.VLAN || '';
-        const epl = r.EPL || '';
-        const fecha = r.Fecha || r.FECHA || '-';
-        const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
-        const contactoRaw = r.Contacto || r.CONTACTO || '';
+                tr.innerHTML = `
+                    <td style="font-weight: 600;">${row.CLIENTE || ''}</td>
+                    <td><span class="pill pill-servicio">${row.SERVICIO || ''}</span></td>
+                    <td><span class="pill pill-infra">${row.INFRA || ''}</span></td>
+                    <td>${row.RADIO || ''}</td>
+                    <td>${row.PUERTO_AGG || ''}</td>
+                    <td>${row.VLAN || ''}</td>
+                    <td>${row.BPL || ''}</td>
+                    <td>${formatearFecha(row.FECHA)}</td>
+                    <td>${mapaHTML}</td>
+                    <td>${contactoHTML}</td>
+                `;
 
-        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn">📍 Mapa</a>` : (ubicacionRaw || '-');
-        let contactoHtml = String(contactoRaw).length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
+                tbody.appendChild(tr);
+            });
+        }
 
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${cliente}</strong></td>
-            <td><span class="service-badge">${servicio}</span></td>
-            <td>${infra}</td>
-            <td>${radio}</td>
-            <td>${puerto}</td>
-            <td>${vlan}</td>
-            <td>${epl}</td>
-            <td>${fecha}</td>
-            <td>${ubicacionHtml}</td>
-            <td>${contactoHtml}</td>
-          </tr>`;
-      });
-    }
+        function filtrar() {
+            const clienteVal = document.getElementById('searchCliente').value.toLowerCase();
+            const otrosVal = document.getElementById('searchOtros').value.toLowerCase();
 
-    function filtrar() {
-      const qServ = document.getElementById("buscarServicio").value.toLowerCase().trim();
-      const qGen = document.getElementById("buscarGeneral").value.toLowerCase().trim();
+            const filtrados = datosGlobales.filter(row => {
+                const matchCliente = !clienteVal || (row.CLIENTE && row.CLIENTE.toLowerCase().includes(clienteVal));
+                
+                const todoTexto = Object.values(row).join(' ').toLowerCase();
+                const matchOtros = !otrosVal || todoTexto.includes(otrosVal);
 
-      const filtrados = datosGlobales.filter(d => {
-        const s = String(d.Servicio || d.SERVICIO || '').toLowerCase();
-        const t = JSON.stringify(d).toLowerCase();
-        return (qServ === '' || s.includes(qServ)) && (qGen === '' || t.includes(qGen));
-      });
+                return matchCliente && matchOtros;
+            });
 
-      renderizar(filtrados);
-    }
+            renderizar(filtrados);
+        }
+    </script>
 
-    window.onload = cargarDatosJSONP;
-  </script>
 </body>
 </html>
