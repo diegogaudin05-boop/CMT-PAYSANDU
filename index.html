@@ -1,414 +1,378 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMT Paysandú</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0284c7;
-            --border: #334155;
-            --badge-bg: #0369a1;
-            --badge-text: #e0f2fe;
-            --btn-green: #10b981;
-            --btn-green-hover: #059669;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMT Paysandú</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --border: #334155;
+      --whatsapp: #25d366;
+      --whatsapp-hover: #1da851;
+      --phone: #3b82f6;
+      --phone-hover: #1d4ed8;
+    }
 
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-        }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .tag {
-            background: var(--badge-bg);
-            color: var(--badge-text);
-            font-size: 0.8rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
+    .badge {
+      background: #0284c7;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
 
-        .kpi-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
+    /* KPIs */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
 
-        .kpi-card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
+    .kpi-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
 
-        .kpi-title {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .kpi-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
 
-        .kpi-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-top: 8px;
-            color: var(--accent);
-        }
+    .kpi-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
 
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
+    /* Filtros */
+    .controls {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-main);
-            box-sizing: border-box;
-            font-size: 0.95rem;
-        }
+    .search-input {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 10px 15px;
+      border-radius: 6px;
+      flex: 1;
+      min-width: 250px;
+    }
 
-        input:focus {
-            outline: 2px solid var(--accent);
-            border-color: transparent;
-        }
+    .btn-sync {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
 
-        .btn-refresh {
-            background: var(--accent);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .btn-sync:hover {
+      background: var(--accent-hover);
+      color: #fff;
+    }
 
-        .btn-refresh:hover {
-            background: var(--accent-hover);
-            color: #fff;
-        }
+    /* Tabla */
+    .table-container {
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
 
-        .table-container {
-            background: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.9rem;
-        }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        th {
-            background: #0f172a;
-            color: var(--text-muted);
-            padding: 14px 16px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
+    th {
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
 
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
+    tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
 
-        tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
+    /* Botones de acción */
+    .action-btns {
+      display: flex;
+      gap: 8px;
+    }
 
-        .pill {
-            background: #334155;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85rem;
-        }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.2s, background-color 0.2s;
+    }
 
-        .pill-infra { background: #1e3a8a; color: #93c5fd; }
-        .pill-servicio { background: #065f46; color: #6ee7b7; }
+    .btn-action:hover {
+      transform: scale(1.1);
+    }
 
-        .btn-mapa {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #0284c7;
-            color: white;
-            text-decoration: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
+    .btn-ws {
+      background-color: var(--whatsapp);
+    }
+    .btn-ws:hover {
+      background-color: var(--whatsapp-hover);
+    }
 
-        .btn-mapa:hover { background: #0369a1; }
+    .btn-call {
+      background-color: var(--phone);
+    }
+    .btn-call:hover {
+      background-color: var(--phone-hover);
+    }
 
-        .contact-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+    .loading-msg, .error-msg {
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
 
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-
-        .btn-call { background: #2563eb; color: white; }
-        .btn-call:hover { background: #1d4ed8; }
-
-        .btn-ws { background: #16a34a; color: white; }
-        .btn-ws:hover { background: #15803d; }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-        }
-
-        .counter-label {
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-    </style>
+    .error-msg {
+      color: #f87171;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>CMT Paysandú <span class="tag">ANTEL</span></h1>
-            <button class="btn-refresh" onclick="cargarDatos()">↻ Actualizar Datos</button>
-        </header>
+<div class="container">
+  <header>
+    <h1>CMT Paysandú <span class="badge">ANTEL</span></h1>
+    <button class="btn-sync" onclick="cargarDatos()">
+      <i class="fa-solid fa-rotate"></i> Actualizar Datos
+    </button>
+  </header>
 
-        <div class="kpi-container">
-            <div class="kpi-card">
-                <div class="kpi-title">Total Servicios</div>
-                <div class="kpi-value" id="kpiServicios">-</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">Nodos / Infra</div>
-                <div class="kpi-value" id="kpiInfra">-</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">Último Sync</div>
-                <div class="kpi-value" id="kpiSync" style="font-size: 1.2rem; color: #fff; margin-top: 14px;">-</div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <input type="text" id="searchCliente" placeholder="🔍 Buscar CLIENTE..." oninput="filtrar()">
-            <input type="text" id="searchOtros" placeholder="🔍 Buscar Cliente, Infra, Radio..." oninput="filtrar()">
-        </div>
-
-        <div class="counter-label" id="counter">Cargando registros...</div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>CLIENTE</th>
-                        <th>SERVICIO</th>
-                        <th>INFRA</th>
-                        <th>RADIO</th>
-                        <th>PUERTO AGG</th>
-                        <th>VLAN</th>
-                        <th>BPL</th>
-                        <th>FECHA</th>
-                        <th>UBICACIÓN</th>
-                        <th>CONTACTO</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaBody">
-                    <tr>
-                        <td colspan="10" class="loading">Cargando datos desde Google Sheets...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-title">Total Servicios</div>
+      <div class="kpi-value" id="kpi-total">-</div>
     </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Nodos / Infra</div>
+      <div class="kpi-value" id="kpi-nodos">-</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Último Sync</div>
+      <div class="kpi-value" id="kpi-sync" style="font-size: 1rem;">-</div>
+    </div>
+  </div>
+
+  <!-- Controles -->
+  <div class="controls">
+    <input type="text" id="inputCliente" class="search-input" placeholder="🔍 Buscar CLIENTE..." oninput="filtrarDatos()">
+    <input type="text" id="inputGeneral" class="search-input" placeholder="🔍 Buscar Cliente, Infra, Radio..." oninput="filtrarDatos()">
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Servicio</th>
+          <th>Infra</th>
+          <th>Radio</th>
+          <th>Puerto AGG</th>
+          <th>VLAN</th>
+          <th>BPL</th>
+          <th>Fecha</th>
+          <th>Ubicación</th>
+          <th>Contacto</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-body">
+        <tr>
+          <td colspan="10" class="loading-msg">Cargando registros...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9IIubxg3_47-klHMvssHhctxBSB3B/exec";
-        let datosGlobales = [];
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzx-s_t_P17feyyQ0p5dc7C5ijX_Y8uZA10aQK9Ilubxg3_47-klHMvssHhctxBSB3B/exec";
 
-        window.recibirDatosNoc = function(data) {
-            datosGlobales = data;
-            actualizarKPIs();
-            renderizar(datosGlobales);
-        };
+  let datosGlobales = [];
 
-        window.onload = cargarDatos;
+  function cargarDatos() {
+    const tbody = document.getElementById('tabla-body');
+    tbody.innerHTML = '<tr><td colspan="10" class="loading-msg">Cargando registros...</td></tr>';
 
-        function cargarDatos() {
-            document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading">Cargando datos desde Google Sheets...</td></tr>';
-            
-            const scriptViejo = document.getElementById('jsonp_script');
-            if (scriptViejo) scriptViejo.remove();
+    const scriptAnterior = document.getElementById('jsonp_script');
+    if (scriptAnterior) scriptAnterior.remove();
 
-            const script = document.createElement('script');
-            script.id = 'jsonp_script';
-            script.src = SCRIPT_URL + "?callback=recibirDatosNoc&t=" + new Date().getTime();
-            
-            script.onerror = function() {
-                document.getElementById('tablaBody').innerHTML = '<tr><td colspan="10" class="loading" style="color: #ef4444;">Error al cargar datos. Verifique la conexión.</td></tr>';
-            };
+    const script = document.createElement('script');
+    script.id = 'jsonp_script';
+    script.src = `${SCRIPT_URL}?callback=recibirDatosNoc&t=${Date.now()}`;
+    script.onerror = () => {
+      tbody.innerHTML = '<tr><td colspan="10" class="error-msg">Error al cargar datos. Verifique la conexión.</td></tr>';
+    };
+    document.body.appendChild(script);
+  }
 
-            document.body.appendChild(script);
+  function recibirDatosNoc(data) {
+    datosGlobales = data;
+    actualizarKPIs();
+    renderizarTabla(datosGlobales);
+    
+    const horaActual = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('kpi-sync').textContent = horaActual;
+  }
+
+  function renderizarTabla(lista) {
+    const tbody = document.getElementById('tabla-body');
+    if (!lista || lista.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 20px;">No se encontraron registros.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = lista.map(row => {
+      const cliente = row.CLIENTE || row.Cliente || '-';
+      const servicio = row.SERVICIO || row.Servicio || '-';
+      const infra = row.INFRA || row.Infra || '-';
+      const radio = row.RADIO || row.Radio || '-';
+      const puerto = row["PUERTO AGG"] || row.PUERTO || '-';
+      const vlan = row.VLAN || row.Vlan || '-';
+      const bpl = row.BPL || row.Bpl || '-';
+      const fecha = row.FECHA || row.Fecha || '-';
+      const ubicacion = row["UBICACIÓN"] || row.UBICACION || row.Ubicacion || '-';
+      const contactoRaw = row.CONTACTO || row.Contacto || '';
+
+      let contactoHtml = '-';
+      if (contactoRaw) {
+        let numLimpio = String(contactoRaw).replace(/\D/g, '');
+        if (numLimpio.startsWith('09')) {
+          numLimpio = '598' + numLimpio.substring(1);
+        } else if (numLimpio.length === 8 && numLimpio.startsWith('9')) {
+          numLimpio = '598' + numLimpio;
         }
 
-        function actualizarKPIs() {
-            document.getElementById('kpiServicios').innerText = datosGlobales.length;
-            const infras = new Set(datosGlobales.map(d => d.INFRA || d.Infra).filter(Boolean));
-            document.getElementById('kpiInfra').innerText = infras.size;
-            document.getElementById('kpiSync').innerText = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
-        }
+        contactoHtml = `
+          <div class="action-btns">
+            <span>${contactoRaw}</span>
+            <a href="https://wa.me/${numLimpio}" target="_blank" class="btn-action btn-ws" title="WhatsApp">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="tel:${numLimpio}" class="btn-action btn-call" title="Llamar">
+              <i class="fa-solid fa-phone"></i>
+            </a>
+          </div>
+        `;
+      }
 
-        function formatearFecha(fechaRaw) {
-            if (!fechaRaw) return "";
-            const fechaStr = String(fechaRaw);
-            if (fechaStr.includes("T")) {
-                const soloFecha = fechaStr.split("T")[0];
-                const partes = soloFecha.split("-");
-                if (partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
-            return fechaStr;
-        }
+      return `
+        <tr>
+          <td><strong>${cliente}</strong></td>
+          <td>${servicio}</td>
+          <td>${infra}</td>
+          <td>${radio}</td>
+          <td>${puerto}</td>
+          <td>${vlan}</td>
+          <td>${bpl}</td>
+          <td>${fecha}</td>
+          <td>${ubicacion}</td>
+          <td>${contactoHtml}</td>
+        </tr>
+      `;
+    }).join('');
+  }
 
-        function renderizar(lista) {
-            const tbody = document.getElementById('tablaBody');
-            tbody.innerHTML = '';
+  function actualizarKPIs() {
+    document.getElementById('kpi-total').textContent = datosGlobales.length;
+    
+    const nodosUnicos = new Set(datosGlobales.map(d => d.INFRA || d.Infra).filter(Boolean));
+    document.getElementById('kpi-nodos').textContent = nodosUnicos.size;
+  }
 
-            document.getElementById('counter').innerText = `${lista.length} registros cargados`;
+  function filtrarDatos() {
+    const qCliente = document.getElementById('inputCliente').value.toLowerCase();
+    const qGeneral = document.getElementById('inputGeneral').value.toLowerCase();
 
-            if (lista.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" class="loading">No se encontraron resultados.</td></tr>';
-                return;
-            }
+    const filtrados = datosGlobales.filter(row => {
+      const cliente = String(row.CLIENTE || row.Cliente || '').toLowerCase();
+      const todoElTexto = JSON.stringify(row).toLowerCase();
 
-            lista.forEach(row => {
-                const tr = document.createElement('tr');
+      const cumpleCliente = !qCliente || cliente.includes(qCliente);
+      const cumpleGeneral = !qGeneral || todoElTexto.includes(qGeneral);
 
-                const cliente = row.CLIENTE || row.Cliente || '';
-                const servicio = row.SERVICIO || row.Servicio || '';
-                const infra = row.INFRA || row.Infra || '';
-                const radio = row.RADIO || row.Radio || '';
-                const puertoAgg = row['PUERTO AGG'] || row.PUERTO_AGG || row.PuertoAgg || '';
-                const vlan = row.VLAN || row.Vlan || '';
-                const bpl = row.BPL || row.Bpl || '';
-                const fecha = row.FECHA || row.Fecha || '';
-                const ubicacion = row.UBICACION || row.Ubicacion || '';
-                const contacto = row.CONTACTO || row.Contacto || '';
+      return cumpleCliente && cumpleGeneral;
+    });
 
-                let mapaHTML = "";
-                if (ubicacion) {
-                    const coords = String(ubicacion).trim();
-                    mapaHTML = `<a href="https://www.google.com/maps?q=${encodeURIComponent(coords)}" target="_blank" class="btn-mapa">📍 Mapa</a>`;
-                }
+    renderizarTabla(filtrados);
+  }
 
-                let contactoHTML = "";
-                if (contacto) {
-                    const contactoStr = String(contacto);
-                    const matchTel = contactoStr.match(/09\d{7}|\d{8,9}/);
-                    
-                    if (matchTel) {
-                        let num = matchTel[0];
-                        let numInt = num.startsWith("0") ? "598" + num.substring(1) : num;
-                        
-                        contactoHTML = `
-                            <div class="contact-group">
-                                <a href="tel:${num}" class="btn-action btn-call" title="Llamar">📞</a>
-                                <a href="https://wa.me/${numInt}" target="_blank" class="btn-action btn-ws" title="WhatsApp">💬</a>
-                                <span>${contactoStr}</span>
-                            </div>
-                        `;
-                    } else {
-                        contactoHTML = contactoStr;
-                    }
-                }
+  // Cargar datos al iniciar
+  window.onload = cargarDatos;
+</script>
 
-                tr.innerHTML = `
-                    <td style="font-weight: 600;">${cliente}</td>
-                    <td><span class="pill pill-servicio">${servicio}</span></td>
-                    <td><span class="pill pill-infra">${infra}</span></td>
-                    <td>${radio}</td>
-                    <td>${puertoAgg}</td>
-                    <td>${vlan}</td>
-                    <td>${bpl}</td>
-                    <td>${formatearFecha(fecha)}</td>
-                    <td>${mapaHTML}</td>
-                    <td>${contactoHTML}</td>
-                `;
-
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filtrar() {
-            const clienteVal = document.getElementById('searchCliente').value.toLowerCase();
-            const otrosVal = document.getElementById('searchOtros').value.toLowerCase();
-
-            const filtrados = datosGlobales.filter(row => {
-                const cliente = String(row.CLIENTE || row.Cliente || '').toLowerCase();
-                const matchCliente = !clienteVal || cliente.includes(clienteVal);
-                
-                const todoTexto = Object.values(row).join(' ').toLowerCase();
-                const matchOtros = !otrosVal || todoTexto.includes(otrosVal);
-
-                return matchCliente && matchOtros;
-            });
-
-            renderizar(filtrados);
-        }
-    </script>
 </body>
 </html>
-   
