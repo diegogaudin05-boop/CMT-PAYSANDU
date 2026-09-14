@@ -165,7 +165,6 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Animación de bolita flotante */
     .floating-ball {
         animation: floatBall 3s infinite ease-in-out;
     }
@@ -319,7 +318,6 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
-    // Objetos de audio nativos apuntando a los archivos provistos
     const audioIntro = new Audio('47313572-intro-sound-1-269293.mp3');
     const audioBtn = new Audio('arnav_geddada-ui-sound-374228.mp3');
 
@@ -331,7 +329,6 @@
       calcularIP();
     });
 
-    // Reproduce el sonido de apertura al iniciar sesión con éxito
     function reproducirSonidoApertura() {
       try {
         audioIntro.currentTime = 0;
@@ -339,7 +336,6 @@
       } catch(e) {}
     }
 
-    // Reproduce el sonido en cada botón / interacción
     function playButtonSound() {
       try {
         audioBtn.currentTime = 0;
@@ -497,8 +493,14 @@
         const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
         const contactoRaw = r.Contacto || r.CONTACTO || '';
 
+        // Extraer únicamente los dígitos numéricos para que el marcador de llamadas no arrastre el nombre o texto
+        const telefonoLimpio = String(contactoRaw).replace(/\D/g, '');
+
         let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playButtonSound()">📍 Mapa</a>` : (ubicacionRaw || '-');
-        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn" onclick="playButtonSound()">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
+        
+        let contactoHtml = telefonoLimpio.length >= 7 
+          ? `<a href="tel:${telefonoLimpio}" class="call-btn" onclick="playButtonSound()">📞 ${contactoRaw}</a>` 
+          : (contactoRaw || '-');
 
         tbody.innerHTML += `
           <tr>
