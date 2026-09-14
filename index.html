@@ -203,18 +203,18 @@
       </div>
       
       <div class="dropdown">
-        <button class="dropbtn dropbtn-green" onclick="playSound(1);">📞 Llamar NOC ▾</button>
+        <button class="dropbtn dropbtn-green" onclick="playPop();">📞 Llamar NOC ▾</button>
         <div class="dropdown-content">
-          <a href="tel:25067907" onclick="playSound(1);">📞 Consola OMSED (25067907)</a>
-          <a href="tel:08002287" onclick="playSound(1);">📞 CMT Antel (08002287)</a>
+          <a href="tel:25067907" onclick="playPop();">📞 Consola OMSED (25067907)</a>
+          <a href="tel:08002287" onclick="playPop();">📞 CMT Antel (08002287)</a>
         </div>
       </div>
 
       <div class="dropdown">
-        <button class="dropbtn" onclick="playSound(1);">🌐 Accesos Antel ▾</button>
+        <button class="dropbtn" onclick="playPop();">🌐 Accesos Antel ▾</button>
         <div class="dropdown-content">
-          <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank" onclick="playSound(1);">📡 Monitor AGG2</a>
-          <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank" onclick="playSound(1);">🔷 Prisma OCP</a>
+          <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank" onclick="playPop();">📡 Monitor AGG2</a>
+          <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank" onclick="playPop();">🔷 Prisma OCP</a>
         </div>
       </div>
     </div>
@@ -233,7 +233,7 @@
 
   <div class="top-actions">
     <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
-    <button class="btn-main" id="btnActualizar" onclick="playSound(1); obtenerDatos()">
+    <button class="btn-main" id="btnActualizar" onclick="playPop(); obtenerDatos()">
       🔄 Actualizar Datos
     </button>
   </div>
@@ -265,7 +265,7 @@
     <div id="toolBox" style="background:#0f172a; border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(16px) scale(0.95);" class="tool-box-transition">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e3a8a; margin-bottom:10px; padding-bottom:5px;">
             <h3 style="font-weight:bold; color:#38bdf8; font-size:0.9rem; margin:0;">🧮 Calculadora IP de Red</h3>
-            <button onclick="playSound(2); toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
+            <button onclick="playPop(); toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
         </div>
         
         <div style="font-size:0.8rem; display:flex; flex-direction:column; gap:8px;">
@@ -300,12 +300,12 @@
                 <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Broadcast:</span> <span id="resfb" style="color:#fbbf24;">-</span></div>
                 <div style="display:flex; justify-content:space-between; border-top:1px solid #1e3a8a; padding-top:3px; margin-top:2px;"><span style="color:#94a3b8;">Hosts Útiles:</span> <span id="resHosts" style="color:#38bdf8; font-weight:bold;">-</span></div>
             </div>
-            <button onclick="playSound(1); toggleToolBox()" style="background:#0072ce; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:4px;">Aceptar</button>
+            <button onclick="playPop(); toggleToolBox()" style="background:#0072ce; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:4px;">Aceptar</button>
         </div>
     </div>
 
     <!-- Botón Flotante de la Calculadora -->
-    <button class="floating-ball" onclick="playSound(2); toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem;">
+    <button class="floating-ball" onclick="playPop(); toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem;">
         🧰
     </button>
   </div>
@@ -316,24 +316,65 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
-    // 🔊 TUS DOS AUDIOS EXACTOS INCORPORADOS EN FORMATO BASE64 LIMPIO
-    const sound1 = new Audio("data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABigC/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v/wAAACQASGFuZGJhbmQgQWkuVC4wLjAALkxhdmY1OC43Ni4xMDCQAAAAAAAAAAAAAAAlCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP");
-    const sound2 = new Audio("data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABigC/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v/wAAACQASGFuZGJhbmQgQWkuVC4wLjAALkxhdmY1OC43Ni4xMDCQAAAAAAAAAAAAAAAlCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP");
+    // 🔊 MOTOR DE AUDIO NATIVO (Web Audio API - Cero errores y 100% fluido)
+    let audioCtx = null;
 
-    // Reemplazamos los audios con la decodificación exacta de tus archivos subidos
-    sound1.src = "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//MYxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MYxAMAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//MYxAMAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
-    
-    // Generador dinámico seguro para reproducir tus audios sin interrupciones
-    function playSound(type) {
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // 1. Sonido POP rápido para botones y clics
+    function playPop() {
       try {
-        // Usamos tus archivos convertidos directos
-        let audioSrc = (type === 1) 
-          ? "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//MYxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-          : "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//MYxAMAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
-          
-        let s = new Audio(audioSrc);
-        s.volume = 0.7;
-        s.play().catch(e => {});
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(450, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.08);
+
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch(e) {}
+    }
+
+    // 2. Sonido de bienvenida armónico al iniciar sesión correctamente
+    function playWelcome() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        // Acorde agradable de éxito (Dos tonos secuenciales)
+        [523.25, 659.25, 783.99].forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + (index * 0.08));
+
+          gain.gain.setValueAtTime(0, now + (index * 0.08));
+          gain.gain.linearRampToValueAtTime(0.18, now + (index * 0.08) + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (index * 0.08) + 0.35);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now + (index * 0.08));
+          osc.stop(now + (index * 0.08) + 0.35);
+        });
       } catch(e) {}
     }
 
@@ -348,12 +389,12 @@
     function verificarPin() {
       const pin = document.getElementById('pinInput').value;
       if (pin === '1075') {
-        playSound(2);
+        playWelcome(); // 🎵 Sonido de bienvenida operativo
         sessionStorage.setItem('cmt_auth', 'true');
         document.getElementById('lockScreen').style.display = 'none';
         obtenerDatos();
       } else {
-        playSound(1);
+        playPop();
         const err = document.getElementById('errorPin');
         err.style.display = 'block';
         document.getElementById('pinInput').value = '';
@@ -429,7 +470,7 @@
     function copiarTexto(txt) {
       if (!txt) return;
       navigator.clipboard.writeText(txt);
-      playSound(1);
+      playPop();
       mostrarToast(`📋 Copiado: ${txt}`);
     }
 
@@ -499,7 +540,7 @@
         const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
         const contactoRaw = String(r.Contacto || r.CONTACTO || '').trim();
 
-        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playSound(1)">📍 Mapa</a>` : (ubicacionRaw || '-');
+        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playPop()">📍 Mapa</a>` : (ubicacionRaw || '-');
         
         let contactoHtml = '-';
         if (contactoRaw) {
@@ -508,7 +549,7 @@
             const numeroLimpio = matchTel[0];
             const textoExtra = contactoRaw.replace(numeroLimpio, '').trim();
             const etiquetaMostrar = textoExtra ? `${textoExtra} ${numeroLimpio}` : numeroLimpio;
-            contactoHtml = `<a href="tel:${numeroLimpio}" class="call-btn" onclick="playSound(1)">📞 ${etiquetaMostrar}</a>`;
+            contactoHtml = `<a href="tel:${numeroLimpio}" class="call-btn" onclick="playPop()">📞 ${etiquetaMostrar}</a>`;
           } else {
             contactoHtml = contactoRaw;
           }
