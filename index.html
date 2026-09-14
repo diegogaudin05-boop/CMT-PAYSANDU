@@ -31,6 +31,30 @@
       padding-bottom: 60px;
     }
 
+    /* Pantalla de Bloqueo PIN */
+    #lockScreen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(8, 13, 26, 0.95); z-index: 9999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 15px;
+    }
+    .lock-box {
+      background: var(--card); border: 1px solid var(--border); padding: 30px;
+      border-radius: 16px; text-align: center; box-shadow: 0 0 30px rgba(0, 114, 206, 0.4);
+      max-width: 320px; width: 90%;
+    }
+    .lock-box h2 { margin-top: 0; font-size: 1.2rem; color: var(--accent); }
+    .pin-input {
+      font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 180px;
+      padding: 8px; background: #080d1a; border: 1px solid var(--border);
+      color: #fff; border-radius: 8px; outline: none; margin-bottom: 15px;
+    }
+    .btn-pin {
+      background: var(--antel-blue); color: white; border: none; padding: 10px 20px;
+      font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;
+    }
+    .error-pin { color: #ef4444; font-size: 0.8rem; margin-top: 10px; display: none; }
+
     .header-noc {
       display: flex;
       justify-content: space-between;
@@ -136,10 +160,23 @@
     .call-btn { color: var(--accent); text-decoration: none; font-weight: bold; }
 
     #toast { visibility: hidden; min-width: 180px; background-color: var(--antel-blue); color: #fff; text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.85rem; font-weight: bold; opacity: 0; transition: 0.3s; }
-    #toast.show { visibility: visible; opacity: 1; }
+    #toast.show { visibility: hidden; opacity: 1; } /* oculto por defecto hasta lógica */
   </style>
 </head>
 <body>
+
+  <!-- PANTALLA DE ACCESO CON PIN -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <div style="font-size: 2.2rem; margin-bottom: 5px;">🔐</div>
+      <h2>CMT PAYSANDÚ</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ingrese PIN de acceso operativo</p>
+      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••">
+      <br>
+      <button class="btn-pin" onclick="verificarPin()">Acceder</button>
+      <div id="errorPin" class="error-pin">❌ PIN Incorrecto</div>
+    </div>
+  </div>
 
   <div class="header-noc">
     <div class="title-noc">
@@ -217,9 +254,37 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
-    // URL de tu API propia de Google Apps Script
-    const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
+    const API_URL = "https://script.google.com/macros/library/d/1nzVvq8a4J9_muAnEXjm76d6cS4XPMDA62LeCNwcwXozgCs0f_wgf8zub/11"; 
     let datosGlobales = [];
+
+    // Verificar si ya ingresó el PIN en esta sesión del navegador
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('cmt_auth') === 'true') {
+        document.getElementById('lockScreen').style.display = 'none';
+        obtenerDatos();
+      }
+    });
+
+    function verificarPin() {
+      const pin = document.getElementById('pinInput').value;
+      if (pin === '1075') {
+        playBeep(900, 0.1);
+        sessionStorage.setItem('cmt_auth', 'true');
+        document.getElementById('lockScreen').style.display = 'none';
+        obtenerDatos();
+      } else {
+        playBeep(300, 0.2);
+        const err = document.getElementById('errorPin');
+        err.style.display = 'block';
+        document.getElementById('pinInput').value = '';
+        setTimeout(() => err.style.display = 'none', 2500);
+      }
+    }
+
+    // Permitir presionar Enter en el PIN
+    document.getElementById('pinInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') verificarPin();
+    });
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq = 600, duration = 0.06) {
@@ -251,20 +316,27 @@
       playBeep(900, 0.1);
       const toast = document.getElementById("toast");
       toast.innerText = `📋 Copiado: ${txt}`;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2000);
+      toast.className = "show";
+      setTimeout(() => toast.className = "", 2000);
     }
 
     function obtenerDatos() {
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      fetch(API_URL + "?t=" + new Date().getTime())
+      // Pasamos el dominio actual como parámetro para que Google verifique la seguridad
+      const dominioActual = window.location.hostname;
+      const urlPeticion = `${API_URL}?origin=${encodeURIComponent(dominioActual)}&t=${new Date().getTime()}`;
+
+      fetch(urlPeticion)
         .then(response => {
           if (!response.ok) throw new Error("Error de red");
           return response.json();
         })
         .then(data => {
+          if (data.error) {
+            throw new Error(data.error);
+          }
           datosGlobales = data;
           const horaActual = new Date().toLocaleTimeString('es-UY', {hour:'2-digit', minute:'2-digit'});
           localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
@@ -285,7 +357,7 @@
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando última sincronización en caché</td></tr>';
         actualizarUI(datosGlobales, time);
       } else {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con la API. Verifique internet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Acceso denegado o error de conexión con la API.</td></tr>';
       }
     }
 
@@ -339,7 +411,7 @@
     }
 
     function filtrar() {
-      const qServicio = document.getElementById("buscarServicio").value.toLowerCase().trim();
+      const qServicio = document.getElementById("buscarServicio").value.toLowerCase().trim5 || document.getElementById("buscarServicio").value.toLowerCase().trim();
       const qGeneral = document.getElementById("buscarGeneral").value.toLowerCase().trim();
 
       const filtrados = datosGlobales.filter(d => {
@@ -352,8 +424,6 @@
 
       renderizar(filtrados);
     }
-
-    window.onload = obtenerDatos;
   </script>
 </body>
 </html>
