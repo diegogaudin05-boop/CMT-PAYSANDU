@@ -28,12 +28,12 @@
       color: var(--text); 
       margin: 0; 
       padding: 12px; 
-      padding-bottom: 60px;
+      padding-bottom: 70px;
     }
 
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(8, 13, 26, 0.95); z-index: 9999;
+      background: rgba(8, 13, 26, 0.96); z-index: 9999;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       gap: 15px;
     }
@@ -260,10 +260,10 @@
     </table>
   </div>
 
-  <!-- 🔊 BOTÓN FLOTANTE PARA ACTIVAR SONIDO MANUALMENTE (Paso anti-bloqueo de navegadores) -->
-  <div style="position: fixed; bottom: 20px; left: 20px; z-index: 40;">
-    <button id="btnAudioUnlock" onclick="activarSonidoAudioCtx()" title="Activar Sonidos" style="background:#1e293b; color:#38bdf8; border:1px solid #1e3a8a; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.2rem; box-shadow:0 4px 15px rgba(0,0,0,0.6);">
-        🔔
+  <!-- 🔊 BOTÓN FLOTANTE PERMANENTE PARA ACTIVAR EL AUDIO MANUALMENTE (Pulsar aquí si no hay sonido) -->
+  <div style="position: fixed; bottom: 20px; left: 20px; z-index: 50; display: flex; align-items: center; gap: 8px;">
+    <button id="btnAudioUnlock" onclick="activarAudioManual()" title="Activar Audio" style="background:#0284c7; color:#fff; border:2px solid #38bdf8; padding:10px 14px; border-radius:30px; display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:bold; font-size:0.85rem; box-shadow:0 4px 15px rgba(0,114,206,0.7);">
+        <span>🔊 Activar Audio</span>
     </button>
   </div>
 
@@ -323,10 +323,10 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
-    // 🔊 Motor Web Audio API con desbloqueo manual
+    // Sistema robusto de Web Audio API basado estrictamente en interacción directa
     let audioCtx = null;
 
-    function activarSonidoAudioCtx() {
+    function activarAudioManual() {
       try {
         if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -334,24 +334,36 @@
         if (audioCtx.state === 'suspended') {
           audioCtx.resume();
         }
-        playBeep(880, 200); // Tono de confirmación agudo
+        
+        // Emitir un tono doble inmediato de prueba para confirmar éxito
+        playBeep(880, 150);
+        setTimeout(() => playBeep(1200, 150), 180);
+
         const btn = document.getElementById('btnAudioUnlock');
-        btn.style.background = '#15803d'; // Cambia a verde indicando activo
-        btn.innerHTML = '🔊';
-        setTimeout(() => btn.style.display = 'none', 1500); // Se oculta tras activarse con éxito
-      } catch(e) {}
+        btn.style.background = '#15803d';
+        btn.style.borderColor = '#22c55e';
+        btn.innerHTML = '✅ Audio Activo';
+        
+        mostrarToast("🔊 Sistema de audio activado");
+      } catch(e) {
+        alert("Tu navegador bloqueó el contexto de audio.");
+      }
     }
 
     function playBeep(freq = 600, duration = 120) {
       try {
-        if (!audioCtx || audioCtx.state !== 'running') return;
+        if (!audioCtx) return;
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         
         osc.type = 'sine';
-        osc.frequency.value = freq;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
         
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + (duration / 1000));
         
         osc.connect(gain);
@@ -363,9 +375,9 @@
     }
 
     function playUnlockSound() {
-      playBeep(523.25, 120);
-      setTimeout(() => playBeep(659.25, 150), 100);
-      setTimeout(() => playBeep(783.99, 200), 200);
+      playBeep(523.25, 100);
+      setTimeout(() => playBeep(659.25, 100), 120);
+      setTimeout(() => playBeep(783.99, 150), 240);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -379,13 +391,18 @@
     function verificarPin() {
       const pin = document.getElementById('pinInput').value;
       if (pin === '1075') {
-        activarSonidoAudioCtx(); // Intenta inicializar audio al ingresar
+        // Inicializar contexto en el toque del botón del PIN
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+        } catch(e) {}
+
         playUnlockSound();
         sessionStorage.setItem('cmt_auth', 'true');
         document.getElementById('lockScreen').style.display = 'none';
         obtenerDatos();
       } else {
-        playBeep(250, 200);
+        playBeep(250, 250);
         const err = document.getElementById('errorPin');
         err.style.display = 'block';
         document.getElementById('pinInput').value = '';
@@ -451,14 +468,18 @@
       document.getElementById('fechaNoc').innerText = `${dia}/${mes}/${d.getFullYear()}`;
     }, 1000);
 
+    function mostrarToast(mensaje) {
+      const toast = document.getElementById("toast");
+      toast.innerText = mensaje;
+      toast.className = "show";
+      setTimeout(() => toast.className = "", 2000);
+    }
+
     function copiarTexto(txt) {
       if (!txt) return;
       navigator.clipboard.writeText(txt);
       playBeep(800, 100);
-      const toast = document.getElementById("toast");
-      toast.innerText = `📋 Copiado: ${txt}`;
-      toast.className = "show";
-      setTimeout(() => toast.className = "", 2000);
+      mostrarToast(`📋 Copiado: ${txt}`);
     }
 
     function obtenerDatos() {
