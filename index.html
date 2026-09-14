@@ -316,7 +316,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
-    // 🔊 MOTOR DE AUDIO NATIVO (Web Audio API - Cero errores y 100% fluido)
+    // 🔊 MOTOR DE AUDIO NATIVO (Web Audio API)
     let audioCtx = null;
 
     function getAudioContext() {
@@ -351,13 +351,12 @@
       } catch(e) {}
     }
 
-    // 2. Sonido de bienvenida armónico al iniciar sesión correctamente
+    // 2. Sonido de bienvenida armónico al iniciar sesión
     function playWelcome() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
 
-        // Acorde agradable de éxito (Dos tonos secuenciales)
         [523.25, 659.25, 783.99].forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
@@ -378,6 +377,39 @@
       } catch(e) {}
     }
 
+    // 3. 🎶 Sonido de éxito estilo Windows (Acorde triunfal de sincronización)
+    function playWindowsSuccess() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        // Notas inspiradas en el acorde clásico de inicio/éxito de Windows
+        const notas = [349.23, 440.00, 523.25, 698.46]; // F4, A4, C5, F5
+        
+        notas.forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'sine';
+          // Pequeño escalonamiento de tiempo para darle cuerpo al acorde
+          const startTime = now + (index * 0.06);
+
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0, startTime);
+          gain.gain.linearRampToValueAtTime(0.2, startTime + 0.03);
+          // Última nota más sostenida y brillante
+          const duracion = (index === notas.length - 1) ? 0.9 : 0.25;
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duracion);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + duracion);
+        });
+      } catch(e) {}
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('cmt_auth') === 'true') {
         document.getElementById('lockScreen').style.display = 'none';
@@ -389,7 +421,7 @@
     function verificarPin() {
       const pin = document.getElementById('pinInput').value;
       if (pin === '1075') {
-        playWelcome(); // 🎵 Sonido de bienvenida operativo
+        playWelcome(); 
         sessionStorage.setItem('cmt_auth', 'true');
         document.getElementById('lockScreen').style.display = 'none';
         obtenerDatos();
@@ -491,6 +523,7 @@
           localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
           localStorage.setItem('cmt_cache_time', horaActual);
           actualizarUI(datosGlobales, horaActual);
+          playWindowsSuccess(); // 🎶 Sonido de éxito al terminar de cargar los datos con éxito
         })
         .catch(err => {
           usarCacheOffline();
@@ -505,6 +538,7 @@
         const time = localStorage.getItem('cmt_cache_time') || 'Offline';
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando última sincronización en caché</td></tr>';
         actualizarUI(datosGlobales, time);
+        playWindowsSuccess(); // También suena al cargar desde caché exitosamente
       } else {
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con la API.</td></tr>';
       }
