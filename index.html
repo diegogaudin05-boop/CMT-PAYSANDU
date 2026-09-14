@@ -161,9 +161,17 @@
     #toast { visibility: hidden; min-width: 180px; background-color: var(--antel-blue); color: #fff; text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.85rem; font-weight: bold; opacity: 0; transition: 0.3s; }
     #toast.show { visibility: visible; opacity: 1; }
 
-    /* Estilos Caja de Herramientas Flotante */
     .tool-box-transition {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Animación de bolita flotante */
+    .floating-ball {
+        animation: floatBall 3s infinite ease-in-out;
+    }
+    @keyframes floatBall {
+        0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0,114,206,0.6); }
+        50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(0,114,206,0.8); }
     }
   </style>
 </head>
@@ -198,18 +206,18 @@
       </div>
       
       <div class="dropdown">
-        <button class="dropbtn dropbtn-green" onclick="playBeep(600, 0.05)">📞 Llamar NOC ▾</button>
+        <button class="dropbtn dropbtn-green" onclick="playButtonSound()">📞 Llamar NOC ▾</button>
         <div class="dropdown-content">
-          <a href="tel:25067907">📞 Consola OMSED (25067907)</a>
-          <a href="tel:08002287">📞 CMT Antel (08002287)</a>
+          <a href="tel:25067907" onclick="playButtonSound()">📞 Consola OMSED (25067907)</a>
+          <a href="tel:08002287" onclick="playButtonSound()">📞 CMT Antel (08002287)</a>
         </div>
       </div>
 
       <div class="dropdown">
-        <button class="dropbtn" onclick="playBeep(600, 0.05)">🌐 Accesos Antel ▾</button>
+        <button class="dropbtn" onclick="playButtonSound()">🌐 Accesos Antel ▾</button>
         <div class="dropdown-content">
-          <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank">📡 Monitor AGG2</a>
-          <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank">🔷 Prisma OCP</a>
+          <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank" onclick="playButtonSound()">📡 Monitor AGG2</a>
+          <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank" onclick="playButtonSound()">🔷 Prisma OCP</a>
         </div>
       </div>
     </div>
@@ -228,7 +236,7 @@
 
   <div class="top-actions">
     <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
-    <button class="btn-main" id="btnActualizar" onclick="playBeep(800, 0.08); obtenerDatos()">
+    <button class="btn-main" id="btnActualizar" onclick="playButtonSound(); obtenerDatos()">
       🔄 Actualizar Datos
     </button>
   </div>
@@ -256,11 +264,11 @@
   </div>
 
   <!-- 🧮 CAJA DE HERRAMIENTAS FLOTANTE (CALCULADORA IP) -->
-  <div class="fixed bottom-6 right-6 z-40" style="position: fixed; bottom: 20px; right: 20px;">
-    <div id="toolBox" class="absolute bottom-16 right-0 bg-slate-900 border border-blue-900 w-80 sm:w-96 rounded-2xl shadow-2xl p-5 tool-box-transition opacity-0 pointer-events-none translate-y-4 scale-95" style="background:#0f172a; border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8);">
-        <div class="flex justify-between items-center mb-3 border-b border-blue-900 pb-2" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e3a8a; margin-bottom:10px; padding-bottom:5px;">
+  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 40;">
+    <div id="toolBox" style="background:#0f172a; border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(16px) scale(0.95);" class="tool-box-transition">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e3a8a; margin-bottom:10px; padding-bottom:5px;">
             <h3 style="font-weight:bold; color:#38bdf8; font-size:0.9rem; margin:0;">🧮 Calculadora IP de Red</h3>
-            <button onclick="toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
+            <button onclick="playButtonSound(); toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
         </div>
         
         <div style="font-size:0.8rem; display:flex; flex-direction:column; gap:8px;">
@@ -295,11 +303,12 @@
                 <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Broadcast:</span> <span id="resBroadcast" style="color:#fbbf24;">-</span></div>
                 <div style="display:flex; justify-content:space-between; border-top:1px solid #1e3a8a; padding-top:3px; margin-top:2px;"><span style="color:#94a3b8;">Hosts Útiles:</span> <span id="resHosts" style="color:#38bdf8; font-weight:bold;">-</span></div>
             </div>
+            <button onclick="playButtonSound(); toggleToolBox()" style="background:#0072ce; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:4px;">Aceptar</button>
         </div>
     </div>
 
-    <!-- Botón Flotante -->
-    <button onclick="toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; box-shadow:0 4px 15px rgba(0,114,206,0.6); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:transform 0.2s;">
+    <!-- Botón Flotante con animación de bolita -->
+    <button class="floating-ball" onclick="playButtonSound(); toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem;">
         🧰
     </button>
   </div>
@@ -307,7 +316,6 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
-    // PEGA AQUÍ TU URL DE APPS SCRIPT QUE TERMINA EN /exec
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
@@ -319,15 +327,15 @@
       calcularIP();
     });
 
-    // Sonido de bienvenida futurista al verificar el PIN correcto
-    function reproducirSonidoBienvenida() {
+    // 🔊 AUDIO 1: Reproducido al abrir la app / éxito de inicio de sesión
+    function reproducirSonidoApertura() {
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota D5
-            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // Nota A5
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); 
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
             osc.connect(gain);
@@ -337,15 +345,31 @@
         } catch(e) {}
     }
 
+    // 🔊 AUDIO 2: Reproducido cada vez que se presiona un botón
+    function playButtonSound() {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.06);
+      } catch(e){}
+    }
+
     function verificarPin() {
       const pin = document.getElementById('pinInput').value;
       if (pin === '1075') {
-        reproducirSonidoBienvenida(); // Sonido genial de acceso
+        reproducirSonidoApertura(); // Sonido 1 al entrar
         sessionStorage.setItem('cmt_auth', 'true');
         document.getElementById('lockScreen').style.display = 'none';
         obtenerDatos();
       } else {
-        playBeep(300, 0.2);
+        playButtonSound();
         const err = document.getElementById('errorPin');
         err.style.display = 'block';
         document.getElementById('pinInput').value = '';
@@ -358,22 +382,7 @@
     });
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq = 600, duration = 0.06) {
-      try {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch(e){}
-    }
 
-    // Abrir/Cerrar Caja de Herramientas Flotante
     let isOpen = false;
     function toggleToolBox() {
         isOpen = !isOpen;
@@ -389,7 +398,6 @@
         }
     }
 
-    // Calculadora IP de Red
     function ipToInt(ip) {
         return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0;
     }
@@ -432,7 +440,7 @@
     function copiarTexto(txt) {
       if (!txt) return;
       navigator.clipboard.writeText(txt);
-      playBeep(900, 0.1);
+      playButtonSound();
       const toast = document.getElementById("toast");
       toast.innerText = `📋 Copiado: ${txt}`;
       toast.className = "show";
@@ -505,8 +513,8 @@
         const ubicacionRaw = r.Ubicación || r.Ubicacion || r.UBICACION || '';
         const contactoRaw = r.Contacto || r.CONTACTO || '';
 
-        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playBeep(500, 0.05)">📍 Mapa</a>` : (ubicacionRaw || '-');
-        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn" onclick="playBeep(500, 0.05)">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
+        let ubicacionHtml = String(ubicacionRaw).startsWith('http') ? `<a href="${ubicacionRaw}" target="_blank" class="map-btn" onclick="playButtonSound()">📍 Mapa</a>` : (ubicacionRaw || '-');
+        let contactoHtml = String(contactoRaw).replace(/\D/g, '').length >= 7 ? `<a href="tel:${contactoRaw}" class="call-btn" onclick="playButtonSound()">📞 ${contactoRaw}</a>` : (contactoRaw || '-');
 
         tbody.innerHTML += `
           <tr>
