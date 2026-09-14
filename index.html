@@ -218,7 +218,6 @@
 
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/19KYekX9i_ECB3b-9OlW3umbmISOzCA4xu7-NSglkwO/export?format=csv";
-    const PROXY_URL = "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(CSV_URL);
     let datosGlobales = [];
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -278,18 +277,23 @@
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      fetch(PROXY_URL + "&t=" + new Date().getTime())
+      // Usamos corsproxy.io que es sumamente rápido y estable para móviles y PC
+      const targetUrl = "https://corsproxy.io/?" + encodeURIComponent(CSV_URL + "&t=" + new Date().getTime());
+
+      fetch(targetUrl)
         .then(response => {
           if (!response.ok) throw new Error("Error de red");
           return response.text();
         })
         .then(data => {
           datosGlobales = parseCSV(data);
+          const horaActual = new Date().toLocaleTimeString('es-UY');
           localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
-          localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
-          actualizarUI(datosGlobales);
+          localStorage.setItem('cmt_cache_time', horaActual);
+          actualizarUI(datosGlobales, horaActual);
         })
         .catch(err => {
+          // Si falla el proxy principal, intentamos directo o caemos en caché
           usarCacheOffline();
         });
     }
