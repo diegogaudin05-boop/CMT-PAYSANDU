@@ -31,28 +31,90 @@
       padding-bottom: 70px;
     }
 
+    /* PANTALLA DE ACCESO MEJORADA */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(8, 13, 26, 0.96); z-index: 9999;
+      background: rgba(8, 13, 26, 0.97); z-index: 9999;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      gap: 15px;
+      padding: 20px;
     }
     .lock-box {
-      background: var(--card); border: 1px solid var(--border); padding: 30px;
-      border-radius: 16px; text-align: center; box-shadow: 0 0 30px rgba(0, 114, 206, 0.4);
-      max-width: 320px; width: 90%;
+      background: var(--card); border: 1px solid var(--border); padding: 25px 20px;
+      border-radius: 20px; text-align: center; box-shadow: 0 0 40px rgba(0, 114, 206, 0.35);
+      max-width: 330px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;
     }
-    .lock-box h2 { margin-top: 0; font-size: 1.2rem; color: var(--accent); }
+    .lock-box h2 { margin: 0; font-size: 1.25rem; color: var(--accent); letter-spacing: 0.5px; }
+    
+    /* ANIMACIÓN TORRE Y PERSONA */
+    .access-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 5px;
+      height: 70px;
+    }
+    .tower-anim {
+      font-size: 2.2rem;
+      position: relative;
+      animation: pulseTower 2s infinite ease-in-out;
+    }
+    .tower-anim::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: 50%; transform: translateX(-50%);
+      width: 10px; height: 10px; background: var(--accent);
+      border-radius: 50%; box-shadow: 0 0 10px var(--accent);
+      animation: blinkWave 1.5s infinite;
+    }
+    @keyframes blinkWave {
+      0% { transform: translateX(-50%) scale(0.8); opacity: 0.4; }
+      50% { transform: translateX(-50%) scale(1.6); opacity: 1; }
+      100% { transform: translateX(-50%) scale(0.8); opacity: 0.4; }
+    }
+
+    /* PERSONA INTERACTIVA (Se tapa los ojos al escribir) */
+    .avatar-container {
+      position: relative;
+      width: 55px; height: 55px;
+      background: rgba(0, 114, 206, 0.15);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .avatar-hands {
+      position: absolute;
+      top: 22px;
+      font-size: 1.2rem;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+      transform: translateY(20px) scale(0.5);
+      opacity: 0;
+    }
+    /* Estado activo: se tapa los ojos */
+    .avatar-container.hiding .avatar-hands {
+      transform: translateY(0px) scale(1);
+      opacity: 1;
+    }
+    .avatar-container.hiding .avatar-face {
+      transform: scale(0.9);
+      filter: brightness(0.8);
+    }
+    .avatar-face {
+      transition: transform 0.3s;
+    }
+
     .pin-input {
-      font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 180px;
+      font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 190px;
       padding: 8px; background: #080d1a; border: 1px solid var(--border);
-      color: #fff; border-radius: 8px; outline: none; margin-bottom: 15px;
+      color: #fff; border-radius: 10px; outline: none;
     }
     .btn-pin {
-      background: var(--antel-blue); color: white; border: none; padding: 10px 20px;
-      font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;
+      background: var(--antel-blue); color: white; border: none; padding: 11px 20px;
+      font-size: 0.9rem; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 114, 206, 0.4);
     }
-    .error-pin { color: #ef4444; font-size: 0.8rem; margin-top: 10px; display: none; }
+    .error-pin { color: #ef4444; font-size: 0.8rem; display: none; }
 
     .header-noc {
       display: flex;
@@ -174,14 +236,26 @@
 </head>
 <body>
 
-  <!-- PANTALLA DE ACCESO CON PIN -->
+  <!-- PANTALLA DE ACCESO CON PIN Y ANIMACIONES INTERACTIVAS -->
   <div id="lockScreen">
     <div class="lock-box">
-      <div style="font-size: 2.2rem; margin-bottom: 5px;">🔐</div>
+      <!-- Torre y Persona Interactiva -->
+      <div class="access-visual">
+        <div class="tower-anim" title="Torre Antel">📡</div>
+        <div id="avatarBox" class="avatar-container">
+          <span class="avatar-face">🧑🏻‍💻</span>
+          <span class="avatar-hands">🤲</span>
+        </div>
+      </div>
+
       <h2>CMT PAYSANDÚ</h2>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ingrese PIN de acceso operativo</p>
-      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••">
-      <br>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Ingrese PIN de acceso operativo</p>
+      
+      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••"
+             onfocus="toggleCoverEyes(true)" 
+             onblur="toggleCoverEyes(false)" 
+             oninput="checkPinInput()">
+      
       <button class="btn-pin" onclick="verificarPin()">Acceder</button>
       <div id="errorPin" class="error-pin">❌ PIN Incorrecto</div>
     </div>
@@ -377,27 +451,24 @@
       } catch(e) {}
     }
 
-    // 3. 🎶 Sonido de éxito estilo Windows (Acorde triunfal de sincronización)
+    // 3. 🎶 Sonido de éxito estilo Windows
     function playWindowsSuccess() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        // Notas inspiradas en el acorde clásico de inicio/éxito de Windows
-        const notas = [349.23, 440.00, 523.25, 698.46]; // F4, A4, C5, F5
+        const notas = [349.23, 440.00, 523.25, 698.46];
         
         notas.forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
 
           osc.type = 'sine';
-          // Pequeño escalonamiento de tiempo para darle cuerpo al acorde
           const startTime = now + (index * 0.06);
 
           osc.frequency.setValueAtTime(freq, startTime);
 
           gain.gain.setValueAtTime(0, startTime);
           gain.gain.linearRampToValueAtTime(0.2, startTime + 0.03);
-          // Última nota más sostenida y brillante
           const duracion = (index === notas.length - 1) ? 0.9 : 0.25;
           gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duracion);
 
@@ -408,6 +479,25 @@
           osc.stop(startTime + duracion);
         });
       } catch(e) {}
+    }
+
+    // Control visual para que el personaje se tape los ojos al escribir la clave
+    function toggleCoverEyes(cover) {
+      const avatar = document.getElementById('avatarBox');
+      if (cover) {
+        avatar.classList.add('hiding');
+      } else {
+        avatar.classList.remove('hiding');
+      }
+    }
+
+    function checkPinInput() {
+      const val = document.getElementById('pinInput').value;
+      if (val.length > 0) {
+        toggleCoverEyes(true);
+      } else {
+        toggleCoverEyes(true); // Se mantiene cubierto mientras esté enfocado
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -430,6 +520,7 @@
         const err = document.getElementById('errorPin');
         err.style.display = 'block';
         document.getElementById('pinInput').value = '';
+        toggleCoverEyes(false);
         setTimeout(() => err.style.display = 'none', 2500);
       }
     }
@@ -523,7 +614,7 @@
           localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
           localStorage.setItem('cmt_cache_time', horaActual);
           actualizarUI(datosGlobales, horaActual);
-          playWindowsSuccess(); // 🎶 Sonido de éxito al terminar de cargar los datos con éxito
+          playWindowsSuccess();
         })
         .catch(err => {
           usarCacheOffline();
@@ -538,7 +629,7 @@
         const time = localStorage.getItem('cmt_cache_time') || 'Offline';
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#f59e0b; padding: 10px;">⚠️ Mostrando última sincronización en caché</td></tr>';
         actualizarUI(datosGlobales, time);
-        playWindowsSuccess(); // También suena al cargar desde caché exitosamente
+        playWindowsSuccess();
       } else {
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con la API.</td></tr>';
       }
