@@ -45,7 +45,7 @@
     }
     .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; }
 
-    /* SECCIÓN VISUAL (TORRE ESTILO ANTEL + AVATAR GRANDE) */
+    /* SECCIÓN VISUAL (TORRE RADIOENLACE + AVATAR GRANDE) */
     .access-visual {
       display: flex;
       align-items: center;
@@ -56,41 +56,80 @@
       padding: 5px 0;
     }
 
-    /* SILUETA TORRE ANTEL CSS */
-    .antel-tower {
+    /* TORRE DE RADIOENLACE ESTILO CELOSÍA / PARABÓLICA */
+    .radio-tower {
       position: relative;
-      width: 45px;
+      width: 50px;
       height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .tower-spire {
-      width: 3px;
-      height: 22px;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
-      animation: blinkWave 1.5s infinite;
-    }
-    .tower-head {
+    /* Antena Parabólica superior */
+    .dish-antenna {
+      position: absolute;
+      top: 0px;
       width: 22px;
+      height: 14px;
+      background: linear-gradient(135deg, #38bdf8, #0072ce);
+      border-radius: 50% 50% 10% 10%;
+      border: 1px solid #fff;
+      box-shadow: 0 0 8px var(--accent);
+      transform: rotate(-15deg);
+    }
+    .dish-antenna::after {
+      content: '';
+      position: absolute;
+      right: 2px;
+      top: 4px;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    /* Ondas de radio propagándose */
+    .radio-waves {
+      position: absolute;
+      top: -4px;
+      left: 32px;
+      width: 15px;
       height: 20px;
-      background: linear-gradient(135deg, #0072ce, #38bdf8);
-      border-radius: 10px 10px 4px 4px;
-      border: 1px solid var(--accent);
-      position: relative;
+      border: 2px solid var(--accent);
+      border-left: none;
+      border-bottom: none;
+      border-radius: 0 50% 50% 0;
+      animation: wavePulse 1.2s infinite linear;
+      opacity: 0;
     }
-    .tower-body {
-      width: 14px;
-      height: 48px;
-      background: linear-gradient(90deg, #1e3a8a, #0072ce, #1e3a8a);
+    @keyframes wavePulse {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    /* Cuerpo de celosía de la torre */
+    .tower-truss {
+      position: absolute;
+      bottom: 0;
+      width: 20px;
+      height: 72px;
+      background: repeating-linear-gradient(
+        45deg,
+        #1e3a8a,
+        #1e3a8a 3px,
+        transparent 3px,
+        transparent 8px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        #1e3a8a,
+        #1e3a8a 3px,
+        transparent 3px,
+        transparent 8px
+      );
+      border-left: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
       clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
-      box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-    }
-    @keyframes blinkWave {
-      0% { transform: scale(0.8); opacity: 0.5; }
-      50% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 8px var(--accent)); }
-      100% { transform: scale(0.8); opacity: 0.5; }
     }
 
     /* PERSONA INTERACTIVA GRANDE Y DESTACADA */
@@ -258,15 +297,15 @@
 </head>
 <body>
 
-  <!-- PANTALLA DE ACCESO MEJORADA CON TORRE ANTEL Y AVATAR INTERACTIVO -->
+  <!-- PANTALLA DE ACCESO CON TORRE DE RADIOENLACE Y AVATAR INTERACTIVO -->
   <div id="lockScreen">
     <div class="lock-box">
-      <!-- Torre Antel y Avatar Grande -->
+      <!-- Torre de Radioenlace y Avatar Grande -->
       <div class="access-visual">
-        <div class="antel-tower" title="Torre de Telecomunicaciones Antel">
-          <div class="tower-spire"></div>
-          <div class="tower-head"></div>
-          <div class="tower-body"></div>
+        <div class="radio-tower" title="Torre de Radioenlace / Antena Parabólica">
+          <div class="dish-antenna"></div>
+          <div class="radio-waves"></div>
+          <div class="tower-truss"></div>
         </div>
         <div id="avatarBox" class="avatar-container">
           <span class="avatar-face">👨🏻‍💻</span>
