@@ -217,7 +217,8 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
-    const SCRIPT_URL = "https://docs.google.com/spreadsheets/d/19KYekX9i_ECB3b-9OlW3umbmISOzCA4xu7-NSglkwO/export?format=csv";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/19KYekX9i_ECB3b-9OlW3umbmISOzCA4xu7-NSglkwO/export?format=csv";
+    const PROXY_URL = "https://api.allorigins.win/raw?url=" + encodeURIComponent(CSV_URL);
     let datosGlobales = [];
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -254,33 +255,43 @@
       setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
+    function parseCSV(text) {
+      const lines = text.split("\n");
+      const result = [];
+      if (lines.length === 0) return result;
+      const headers = lines[0].split(",").map(h => h.trim().replace(/^"|"$/g, ''));
+
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) {
+          let val = currentline[j] ? currentline[j].trim().replace(/^"|"$/g, '') : '';
+          obj[headers[j]] = val;
+        }
+        result.push(obj);
+      }
+      return result;
+    }
+
     function obtenerDatos() {
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
 
-      const oldScript = document.getElementById("jsonp-script");
-      if (oldScript) oldScript.remove();
-
-      const script = document.createElement('script');
-      script.id = "jsonp-script";
-      script.src = `${SCRIPT_URL}?callback=procesarRespuestaSheets`;
-      
-      script.onerror = function() {
-        usarCacheOffline();
-      };
-
-      document.body.appendChild(script);
-    }
-
-    function procesarRespuestaSheets(data) {
-      if (Array.isArray(data) && data.length > 0) {
-        datosGlobales = data;
-        localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
-        localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
-        actualizarUI(datosGlobales);
-      } else {
-        usarCacheOffline();
-      }
+      fetch(PROXY_URL + "&t=" + new Date().getTime())
+        .then(response => {
+          if (!response.ok) throw new Error("Error de red");
+          return response.text();
+        })
+        .then(data => {
+          datosGlobales = parseCSV(data);
+          localStorage.setItem('cmt_cache_data', JSON.stringify(datosGlobales));
+          localStorage.setItem('cmt_cache_time', new Date().toLocaleTimeString('es-UY'));
+          actualizarUI(datosGlobales);
+        })
+        .catch(err => {
+          usarCacheOffline();
+        });
     }
 
     function usarCacheOffline() {
