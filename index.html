@@ -319,6 +319,10 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
 
+    // Objetos de audio nativos apuntando a los archivos provistos
+    const audioIntro = new Audio('47313572-intro-sound-1-269293.mp3');
+    const audioBtn = new Audio('arnav_geddada-ui-sound-374228.mp3');
+
     window.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('cmt_auth') === 'true') {
         document.getElementById('lockScreen').style.display = 'none';
@@ -327,44 +331,26 @@
       calcularIP();
     });
 
-    // 🔊 AUDIO 1: Reproducido al abrir la app / éxito de inicio de sesión
+    // Reproduce el sonido de apertura al iniciar sesión con éxito
     function reproducirSonidoApertura() {
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); 
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.4);
-        } catch(e) {}
+      try {
+        audioIntro.currentTime = 0;
+        audioIntro.play().catch(e => {});
+      } catch(e) {}
     }
 
-    // 🔊 AUDIO 2: Reproducido cada vez que se presiona un botón
+    // Reproduce el sonido en cada botón / interacción
     function playButtonSound() {
       try {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.06);
-      } catch(e){}
+        audioBtn.currentTime = 0;
+        audioBtn.play().catch(e => {});
+      } catch(e) {}
     }
 
     function verificarPin() {
       const pin = document.getElementById('pinInput').value;
       if (pin === '1075') {
-        reproducirSonidoApertura(); // Sonido 1 al entrar
+        reproducirSonidoApertura();
         sessionStorage.setItem('cmt_auth', 'true');
         document.getElementById('lockScreen').style.display = 'none';
         obtenerDatos();
@@ -380,8 +366,6 @@
     document.getElementById('pinInput').addEventListener('keypress', function (e) {
       if (e.key === 'Enter') verificarPin();
     });
-
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     let isOpen = false;
     function toggleToolBox() {
