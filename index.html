@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CMT Paysandú | Antel Technical Field Operations 📡</title>
 
-  <link rel="manifest" href="data:application/manifest+json;utf8,{\"name\":\"CMT Paysandú NOC\",\"short_name\":\"CMT Antel\",\"start_url\":\".\",\"display\":\"standalone\",\"background_color\":\"#080d1a\",\"theme_color\":\"#0072ce\",\"icons\":[{\"src\":\"https://cdn-icons-png.flaticon.com/512/888/888859.png\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}">
+  <link rel="manifest" href="data:application/manifest+json;utf8,{\"name\":\"CMT Paysandú NOC\",\"short_name\":\"CMT Antel\",\"start_url\":\".\",\"display\":\"standalone\",\"background_color\":\"#040814\",\"theme_color\":\"#0072ce\",\"icons\":[{\"src\":\"https://cdn-icons-png.flaticon.com/512/888/888859.png\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}">
   <meta name="theme-color" content="#0072ce">
 
   <style>
     :root {
-      --bg: #080d1a;
-      --card: #0f172a;
-      --card-header: #1e293b;
-      --border: #1e3a8a;
+      --bg: #040814;
+      --card: rgba(10, 17, 35, 0.85);
+      --card-header: rgba(26, 38, 65, 0.9);
+      --border: rgba(30, 58, 138, 0.6);
       --antel-blue: #0072ce;
       --accent: #38bdf8;
       --green: #22c55e;
@@ -24,150 +24,93 @@
     * { box-sizing: border-box; }
     body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-      background: var(--bg); 
+      background-color: var(--bg); 
       color: var(--text); 
       margin: 0; 
       padding: 12px; 
       padding-bottom: 70px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* PANTALLA DE ACCESO MEJORADA */
+    /* 📡 FONDO ANIMADO ESTILO TORRE HOLOGRÁFICA Y ONDAS DE RADIO */
+    .radio-bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 30%, #0c1c3c 0%, #040814 75%);
+    }
+
+    /* PANTALLA DE ACCESO */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(8, 13, 26, 0.97); z-index: 9999;
+      background: rgba(4, 8, 20, 0.92); backdrop-filter: blur(8px); z-index: 9999;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 20px;
     }
     .lock-box {
-      background: var(--card); border: 1px solid var(--border); padding: 25px 20px;
+      background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); padding: 25px 20px;
       border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(0, 114, 206, 0.4);
       max-width: 340px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
     .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; }
 
-    /* SECCIÓN VISUAL (TORRE RADIOENLACE + AVATAR GRANDE) */
     .access-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 5px;
-      width: 100%;
-      padding: 5px 0;
+      display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
 
-    /* TORRE DE RADIOENLACE ESTILO CELOSÍA / PARABÓLICA */
+    /* MINI TORRE DE RADIOENLACE EN LOGIN */
     .radio-tower {
-      position: relative;
-      width: 50px;
-      height: 90px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative; width: 50px; height: 90px; display: flex; flex-direction: column; align-items: center;
     }
-    /* Antena Parabólica superior */
     .dish-antenna {
-      position: absolute;
-      top: 0px;
-      width: 22px;
-      height: 14px;
+      position: absolute; top: 0px; width: 22px; height: 14px;
       background: linear-gradient(135deg, #38bdf8, #0072ce);
-      border-radius: 50% 50% 10% 10%;
-      border: 1px solid #fff;
-      box-shadow: 0 0 8px var(--accent);
-      transform: rotate(-15deg);
+      border-radius: 50% 50% 10% 10%; border: 1px solid #fff; box-shadow: 0 0 8px var(--accent); transform: rotate(-15deg);
     }
-    .dish-antenna::after {
-      content: '';
-      position: absolute;
-      right: 2px;
-      top: 4px;
-      width: 4px;
-      height: 4px;
-      background: #fff;
-      border-radius: 50%;
-    }
-    /* Ondas de radio propagándose */
     .radio-waves {
-      position: absolute;
-      top: -4px;
-      left: 32px;
-      width: 15px;
-      height: 20px;
-      border: 2px solid var(--accent);
-      border-left: none;
-      border-bottom: none;
-      border-radius: 0 50% 50% 0;
-      animation: wavePulse 1.2s infinite linear;
-      opacity: 0;
+      position: absolute; top: -4px; left: 32px; width: 15px; height: 20px;
+      border: 2px solid var(--accent); border-left: none; border-bottom: none; border-radius: 0 50% 50% 0;
+      animation: wavePulse 1.2s infinite linear; opacity: 0;
     }
     @keyframes wavePulse {
       0% { transform: scale(0.5); opacity: 0; }
       50% { opacity: 1; }
       100% { transform: scale(1.4); opacity: 0; }
     }
-    /* Cuerpo de celosía de la torre */
     .tower-truss {
-      position: absolute;
-      bottom: 0;
-      width: 20px;
-      height: 72px;
-      background: repeating-linear-gradient(
-        45deg,
-        #1e3a8a,
-        #1e3a8a 3px,
-        transparent 3px,
-        transparent 8px
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        #1e3a8a,
-        #1e3a8a 3px,
-        transparent 3px,
-        transparent 8px
-      );
-      border-left: 2px solid var(--accent);
-      border-right: 2px solid var(--accent);
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
-      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+      position: absolute; bottom: 0; width: 20px; height: 72px;
+      background: repeating-linear-gradient(45deg, #1e3a8a, #1e3a8a 3px, transparent 3px, transparent 8px),
+                  repeating-linear-gradient(-45deg, #1e3a8a, #1e3a8a 3px, transparent 3px, transparent 8px);
+      border-left: 2px solid var(--accent); border-right: 2px solid var(--accent);
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.6); clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
     }
 
-    /* PERSONA INTERACTIVA GRANDE Y DESTACADA */
+    /* AVATAR INTERACTIVO */
     .avatar-container {
-      position: relative;
-      width: 75px; height: 75px;
+      position: relative; width: 75px; height: 75px;
       background: radial-gradient(circle, rgba(0,114,206,0.3) 0%, rgba(15,23,42,0.8) 70%);
-      border: 2px solid var(--border);
-      border-radius: 50%;
+      border: 2px solid var(--border); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 20px rgba(0,114,206,0.3);
     }
-    .avatar-face {
-      font-size: 2.5rem;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    .avatar-face { font-size: 2.5rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .avatar-hands {
-      position: absolute;
-      top: 28px;
-      font-size: 1.8rem;
+      position: absolute; top: 28px; font-size: 1.8rem;
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-      transform: translateY(28px) scale(0.4);
-      opacity: 0;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+      transform: translateY(28px) scale(0.4); opacity: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
-    /* Estado activo: se tapa los ojos */
-    .avatar-container.hiding .avatar-hands {
-      transform: translateY(-2px) scale(1.1);
-      opacity: 1;
-    }
-    .avatar-container.hiding .avatar-face {
-      transform: scale(0.85);
-      filter: brightness(0.7);
-    }
+    .avatar-container.hiding .avatar-hands { transform: translateY(-2px) scale(1.1); opacity: 1; }
+    .avatar-container.hiding .avatar-face { transform: scale(0.85); filter: brightness(0.7); }
 
     .pin-input {
       font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 190px;
-      padding: 8px; background: #080d1a; border: 1px solid var(--border);
+      padding: 8px; background: rgba(8, 13, 26, 0.8); border: 1px solid var(--border);
       color: #fff; border-radius: 10px; outline: none;
     }
     .btn-pin {
@@ -177,18 +120,14 @@
     }
     .error-pin { color: #ef4444; font-size: 0.8rem; display: none; font-weight: bold; }
 
+    /* PANEL PRINCIPAL NOC */
     .header-noc {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border);
-      padding: 10px 16px;
-      border-radius: 14px;
-      margin-bottom: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--card); backdrop-filter: blur(10px);
+      border: 1px solid var(--border); padding: 10px 16px;
+      border-radius: 14px; margin-bottom: 14px;
       box-shadow: 0 0 20px rgba(0, 114, 206, 0.25);
-      flex-wrap: wrap;
-      gap: 10px;
+      flex-wrap: wrap; gap: 10px;
     }
 
     .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
@@ -202,36 +141,20 @@
     }
 
     .anim-antena { display: inline-block; animation: waveAntena 1.8s infinite ease-in-out; }
-    @keyframes waveAntena {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-10deg); }
-      75% { transform: rotate(10deg); }
-    }
+    @keyframes waveAntena { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 
     .anim-modem { display: inline-block; animation: pulseModem 2s infinite ease-in-out; }
-    @keyframes pulseModem {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.12); opacity: 1; filter: drop-shadow(0 0 6px var(--green)); }
-    }
+    @keyframes pulseModem { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 1; filter: drop-shadow(0 0 6px var(--green)); } }
 
     .anim-port { display: inline-block; animation: blinkPort 1.2s infinite alternate; }
-    @keyframes blinkPort {
-      0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
-      100% { transform: scale(1.15); filter: drop-shadow(0 0 8px var(--accent)); }
-    }
+    @keyframes blinkPort { 0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 8px var(--accent)); } }
 
     .anim-chain { display: inline-block; animation: swingChain 2.2s infinite ease-in-out; }
-    @keyframes swingChain {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(15deg) scale(1.1); }
-    }
+    @keyframes swingChain { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(15deg) scale(1.1); } }
 
     .animated-text {
       background: linear-gradient(90deg, #38bdf8 0%, #ffffff 50%, #0072ce 100%);
-      background-size: 200% auto;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
+      background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text;
       animation: shine 3.5s linear infinite;
     }
     @keyframes shine { to { background-position: 200% center; } }
@@ -240,8 +163,7 @@
 
     .clock-noc-box {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: rgba(15, 23, 42, 0.9); padding: 4px 12px; border-radius: 8px;
-      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border);
     }
     .clock-noc { font-family: monospace; font-size: 0.95rem; font-weight: bold; color: var(--accent); }
     .date-noc { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
@@ -253,7 +175,7 @@
     }
     .dropbtn-green { background: #15803d; }
     .dropdown-content {
-      display: none; position: absolute; right: 0; background-color: var(--card);
+      display: none; position: absolute; right: 0; background-color: var(--card); backdrop-filter: blur(10px);
       min-width: 210px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; z-index: 100;
     }
     .dropdown-content a { color: var(--text); padding: 10px 14px; text-decoration: none; display: block; font-size: 0.85rem; }
@@ -261,18 +183,18 @@
     .dropdown:hover .dropdown-content { display: block; }
 
     .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
-    .kpi-card { background: var(--card); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .kpi-card { background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
     .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
     .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
 
     .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
-    input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
+    input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
     input[type="text"]:focus { border-color: var(--accent); }
 
     .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
 
-    .table-wrapper { overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+    .table-wrapper { overflow-x: auto; background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
     th, td { padding: 12px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
     th { background: var(--card-header); color: #cbd5e1; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
@@ -285,22 +207,21 @@
     #toast.show { visibility: visible; opacity: 1; }
 
     .tool-box-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-
-    .floating-ball {
-        animation: floatBall 3s infinite ease-in-out;
-    }
+    .floating-ball { animation: floatBall 3s infinite ease-in-out; }
     @keyframes floatBall {
-        0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0,114,206,0.6); }
-        50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(0,114,206,0.8); }
+      0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0,114,206,0.6); }
+      50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(0,114,206,0.8); }
     }
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA DE ACCESO CON TORRE DE RADIOENLACE Y AVATAR INTERACTIVO -->
+  <!-- 📡 FONDO ANIMADO INTERACTIVO (Torre holográfica y ondas de radio) -->
+  <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
+
+  <!-- PANTALLA DE ACCESO -->
   <div id="lockScreen">
     <div class="lock-box">
-      <!-- Torre de Radioenlace y Avatar Grande -->
       <div class="access-visual">
         <div class="radio-tower" title="Torre de Radioenlace / Antena Parabólica">
           <div class="dish-antenna"></div>
@@ -399,9 +320,9 @@
     </table>
   </div>
 
-  <!-- 🧮 CAJA DE HERRAMIENTAS FLOTANTE (CALCULADORA IP) -->
+  <!-- 🧮 CALCULADORA IP FLOTANTE -->
   <div style="position: fixed; bottom: 20px; right: 20px; z-index: 40;">
-    <div id="toolBox" style="background:#0f172a; border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(16px) scale(0.95);" class="tool-box-transition">
+    <div id="toolBox" style="background:var(--card); backdrop-filter:blur(12px); border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(16px) scale(0.95);" class="tool-box-transition">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e3a8a; margin-bottom:10px; padding-bottom:5px;">
             <h3 style="font-weight:bold; color:#38bdf8; font-size:0.9rem; margin:0;">🧮 Calculadora IP de Red</h3>
             <button onclick="playPop(); toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
@@ -443,7 +364,6 @@
         </div>
     </div>
 
-    <!-- Botón Flotante de la Calculadora -->
     <button class="floating-ball" onclick="playPop(); toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem;">
         🧰
     </button>
@@ -452,168 +372,222 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
+    // 📡 ANIMACIÓN DE FONDO CON CANVAS (TORRE HOLOGRÁFICA Y ONDAS DE RADIO)
+    const canvas = document.getElementById('radioCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Estrellas y partículas de fondo
+    const stars = Array.from({ length: 60 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5,
+      alpha: Math.random() * 0.7 + 0.3,
+      speed: Math.random() * 0.2 + 0.05
+    }));
+
+    // Ondas de radio propagándose desde la torre
+    let waveRadius = 0;
+    const maxWaveRadius = Math.max(window.innerWidth, window.innerHeight);
+
+    function drawRadioTowerScene() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Dibujar estrellas / partículas de espacio tecnológico
+      ctx.fillStyle = '#38bdf8';
+      stars.forEach(s => {
+        ctx.globalAlpha = s.alpha;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+        s.y -= s.speed;
+        if (s.y < 0) s.y = canvas.height;
+      });
+
+      const centerX = canvas.width / 2;
+      const towerTopY = canvas.height * 0.32;
+
+      // 2. Dibujar ondas concéntricas de radio en bucle (inspirado en la imagen)
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 1.8;
+      for (let i = 0; i < 5; i++) {
+        let r = (waveRadius + i * 110) % 550;
+        let alpha = Math.max(0, 1 - (r / 550));
+        ctx.globalAlpha = alpha * 0.6;
+        ctx.beginPath();
+        ctx.arc(centerX, towerTopY, r, Math.PI, 2 * Math.PI); // Arcos superiores hacia el cielo
+        ctx.stroke();
+      }
+      waveRadius += 1.2;
+
+      // 3. Dibujar la estructura de la torre de celosía holográfica en el centro inferior
+      const baseWidth = 140;
+      const towerHeight = canvas.height * 0.65;
+      const baseY = canvas.height + 20;
+
+      ctx.strokeStyle = 'rgba(0, 114, 206, 0.55)';
+      ctx.lineWidth = 1.2;
+
+      // Líneas verticales de la torre
+      ctx.beginPath();
+      ctx.moveTo(centerX, towerTopY);
+      ctx.lineTo(centerX - baseWidth/2, baseY);
+      ctx.moveTo(centerX, towerTopY);
+      ctx.lineTo(centerX + baseWidth/2, baseY);
+      ctx.stroke();
+
+      // Entrelazado de celosía (triángulos de la torre)
+      let steps = 12;
+      for (let j = 0; j < steps; j++) {
+        let y1 = towerTopY + (towerHeight / steps) * j;
+        let y2 = towerTopY + (towerHeight / steps) * (j + 1);
+        let w1 = (baseWidth / steps) * j;
+        let w2 = (baseWidth / steps) * (j + 1);
+
+        ctx.beginPath();
+        ctx.moveTo(centerX - w1/2, y1);
+        ctx.lineTo(centerX + w2/2, y2);
+        ctx.moveTo(centerX + w1/2, y1);
+        ctx.lineTo(centerX - w2/2, y2);
+        // Travesaños horizontales
+        ctx.moveTo(centerX - w1/2, y1);
+        ctx.lineTo(centerX + w1/2, y1);
+        ctx.stroke();
+      }
+
+      // Antenas laterales (Parabólicas)
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+      ctx.beginPath();
+      ctx.ellipse(centerX - 42, towerTopY + 90, 12, 6, Math.PI / 4, 0, Math.PI * 2);
+      ctx.ellipse(centerX + 42, towerTopY + 90, 12, 6, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Vértice superior brillante
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#38bdf8';
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(centerX, towerTopY, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0; // Reset sombra
+
+      requestAnimationFrame(drawRadioTowerScene);
+    }
+    drawRadioTowerScene();
+
+
+    // 🔊 MOTOR DE AUDIO NATIVO Y LÓGICA ANTERIOR
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
-
-    // 🔊 MOTOR DE AUDIO NATIVO (Web Audio API)
     let audioCtx = null;
 
     function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
 
-    // 1. Sonido POP rápido para botones
     function playPop() {
       try {
         const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
         osc.type = 'sine';
         osc.frequency.setValueAtTime(450, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.08);
-
         gain.gain.setValueAtTime(0.25, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start();
-        osc.stop(ctx.currentTime + 0.08);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.08);
       } catch(e) {}
     }
 
-    // 2. ⌨️ Sonido tipo tecla al escribir en el PIN
     function playKeyClick() {
       try {
         const ctx = getAudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(800, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
-
         gain.gain.setValueAtTime(0.12, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start();
-        osc.stop(ctx.currentTime + 0.04);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + 0.04);
       } catch(e) {}
     }
 
-    // 3. ❌ Tono de error grave al fallar el PIN
     function playErrorSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        
         [180, 130].forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-
           osc.type = 'sawtooth';
           const startTime = now + (index * 0.12);
-
           osc.frequency.setValueAtTime(freq, startTime);
-
           gain.gain.setValueAtTime(0, startTime);
           gain.gain.linearRampToValueAtTime(0.22, startTime + 0.02);
           gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.2);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(startTime);
-          osc.stop(startTime + 0.2);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(startTime); osc.stop(startTime + 0.2);
         });
       } catch(e) {}
     }
 
-    // 4. Sonido de bienvenida armónico al iniciar sesión
     function playWelcome() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-
         [523.25, 659.25, 783.99].forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(freq, now + (index * 0.08));
-
           gain.gain.setValueAtTime(0, now + (index * 0.08));
           gain.gain.linearRampToValueAtTime(0.18, now + (index * 0.08) + 0.02);
           gain.gain.exponentialRampToValueAtTime(0.001, now + (index * 0.08) + 0.35);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(now + (index * 0.08));
-          osc.stop(now + (index * 0.08) + 0.35);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(now + (index * 0.08)); osc.stop(now + (index * 0.08) + 0.35);
         });
       } catch(e) {}
     }
 
-    // 5. 🎶 Sonido de éxito estilo Windows
     function playWindowsSuccess() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
         const notas = [349.23, 440.00, 523.25, 698.46];
-        
         notas.forEach((freq, index) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-
           osc.type = 'sine';
           const startTime = now + (index * 0.06);
-
           osc.frequency.setValueAtTime(freq, startTime);
-
           gain.gain.setValueAtTime(0, startTime);
           gain.gain.linearRampToValueAtTime(0.2, startTime + 0.03);
           const duracion = (index === notas.length - 1) ? 0.9 : 0.25;
           gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duracion);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(startTime);
-          osc.stop(startTime + duracion);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(startTime); osc.stop(startTime + duracion);
         });
       } catch(e) {}
     }
 
-    // Control visual para que el personaje se tape los ojos al escribir la clave
     function toggleCoverEyes(cover) {
       const avatar = document.getElementById('avatarBox');
-      if (cover) {
-        avatar.classList.add('hiding');
-      } else {
-        avatar.classList.remove('hiding');
-      }
+      if (cover) avatar.classList.add('hiding');
+      else avatar.classList.remove('hiding');
     }
 
-    function checkPinInput() {
-      const val = document.getElementById('pinInput').value;
-      if (val.length > 0) {
-        toggleCoverEyes(true);
-      } else {
-        toggleCoverEyes(true);
-      }
-    }
+    function checkPinInput() {}
 
     window.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('cmt_auth') === 'true') {
@@ -659,25 +633,17 @@
         }
     }
 
-    function ipToInt(ip) {
-        return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0;
-    }
-
-    function intToIp(int) {
-        return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
-    }
+    function ipToInt(ip) { return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0; }
+    function intToIp(int) { return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.'); }
 
     function calcularIP() {
         let ipStr = document.getElementById('calcIp').value.trim();
         let cidr = parseInt(document.getElementById('calcCidr').value, 10);
-        
         let ipInt = ipToInt(ipStr);
         if (isNaN(ipInt)) return;
-
         let maskInt = cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
         let netInt = (ipInt & maskInt) >>> 0;
         let broadcastInt = (netInt | ~maskInt) >>> 0;
-        
         let firstHostInt = cidr >= 31 ? netInt : netInt + 1;
         let lastHostInt = cidr >= 31 ? broadcastInt : broadcastInt - 1;
         let totalHosts = cidr >= 31 ? (cidr === 32 ? 1 : 2) : Math.max(0, broadcastInt - netInt - 1);
@@ -715,14 +681,8 @@
     function obtenerDatos() {
       const tbody = document.getElementById("contenidoTabla");
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: 25px;">Conectando con Google Sheets... 📡</td></tr>';
-
-      const urlPeticion = `${API_URL}?t=${new Date().getTime()}`;
-
-      fetch(urlPeticion)
-        .then(response => {
-          if (!response.ok) throw new Error("Error de red");
-          return response.json();
-        })
+      fetch(`${API_URL}?t=${new Date().getTime()}`)
+        .then(response => { if (!response.ok) throw new Error("Error de red"); return response.json(); })
         .then(data => {
           datosGlobales = data;
           const horaActual = new Date().toLocaleTimeString('es-UY', {hour:'2-digit', minute:'2-digit'});
@@ -731,9 +691,7 @@
           actualizarUI(datosGlobales, horaActual);
           playWindowsSuccess();
         })
-        .catch(err => {
-          usarCacheOffline();
-        });
+        .catch(err => usarCacheOffline());
     }
 
     function usarCacheOffline() {
@@ -814,15 +772,12 @@
     function filtrar() {
       const qServicio = document.getElementById("buscarServicio").value.toLowerCase().trim();
       const qGeneral = document.getElementById("buscarGeneral").value.toLowerCase().trim();
-
       const filtrados = datosGlobales.filter(d => {
         const servicioVal = String(d.Servicio || d.SERVICIO || '').toLowerCase();
         const todoElTexto = JSON.stringify(d).toLowerCase();
-
         return (qServicio === '' || servicioVal.includes(qServicio)) &&
                (qGeneral === '' || todoElTexto.includes(qGeneral));
       });
-
       renderizar(filtrados);
     }
   </script>
