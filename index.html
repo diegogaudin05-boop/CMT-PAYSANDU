@@ -313,6 +313,64 @@
       0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(56,189,248,0.6); }
       50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(56,189,248,0.8); }
     }
+ /* 🎨 DISEÑO DE LA CAJA DE TIPS TÉCNICOS */
+    .tips-vault-box {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      color: var(--text);
+    }
+    .tips-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .tips-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tips-counter {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .tips-content {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      min-height: 45px;
+    }
+    .tips-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .tip-btn {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      flex: 1;
+    }
+    .tip-btn:hover {
+      background: var(--antel-blue);
+      border-color: var(--antel-blue);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -387,33 +445,22 @@
       <button class="dropbtn dropbtn-red" onclick="cerrarSesion()" title="Cerrar Sesión">🚪 Salir</button>
     </div>
   </div>
-
-  <!-- 🧠 MÓDULO AMPLIADO DE TIPS TÉCNICOS Y TRIVIA (DWDM NOKIA/INFINERA, ZTE C300/C600, HUAWEI MA5200) -->
-  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.2); position: relative; z-index: 1;">
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 1.2rem;">🧠</span>
-        <div>
-          <span style="font-weight: bold; font-size: 0.9rem; color: var(--accent);">NOC Carrier Engineering Vault (DWDM Nokia/Infinera, ZTE, Huawei)</span>
-          <span style="display: block; font-size: 0.65rem; color: var(--text-muted);">Cápsulas técnicas de DWDM, GPON C300/C600 y MA5200</span>
-        </div>
-      </div>
-      <div style="display: flex; gap: 6px;">
-        <button onclick="playPop(); cambiarModoQuiz('info')" id="btnModoInfo" style="background: var(--antel-blue); color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">💡 Tips Carrier</button>
-        <button onclick="playPop(); cambiarModoQuiz('quiz')" id="btnModoQuiz" style="background: rgba(30,58,138,0.6); color: var(--text-muted); border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">🎯 Trivia Carrier</button>
-      </div>
+<!-- 🧠 MÓDULO DE 30 TIPS TÉCNICOS CARRIER -->
+  <div class="tips-vault-box">
+    <div class="tips-header">
+      <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
+      <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
     </div>
-
-    <div id="quizModoInfo" style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
-      <div id="infoTipText" style="background: rgba(8, 13, 26, 0.7); border-left: 3px solid var(--accent); padding: 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; line-height: 1.4;">
-        Cargando cápsula de ingeniería...
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span id="infoTipCategory" style="font-size: 0.7rem; color: var(--green); font-weight: bold;">⚡ Nokia / Infinera / ZTE / Huawei</span>
-        <button onclick="playPop(); siguienteTip()" style="background: #1e3a8a; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;">Siguiente Tip ➡️</button>
-      </div>
+    <div id="infoTipText" class="tips-content">
+      Cargando cápsula de ingeniería...
     </div>
-
+    <div class="tips-footer">
+      <button class="tip-btn" onclick="anteriorTip()">⬅️ Anterior</button>
+      <button class="tip-btn" onclick="siguienteTip()">Siguiente ➡️</button>
+    </div>
+  </div>
+  
+ 
     <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
         <span id="quizPreguntaNum">Pregunta 1 de 15</span>
@@ -1196,6 +1243,64 @@
       });
       renderizar(filtrados);
     }
+ 
+  // BASE DE DATOS DE LOS 30 TIPS TÉCNICOS CARRIER
+    const listaTipsCarrier = [
+      "Tip 1 (DWDM): En plataformas Nokia/Infinera, monitoree siempre el nivel de OSNR (Optical Signal-to-Noise Ratio) antes de escalar una atenuación por degradación de fibra.",
+      "Tip 2 (ZTE GPON): Utilice el comando 'show pon onu state' en la OLT ZTE C300/C600 para verificar rápidamente ONUs en estado dying-gasp o fuera de sincronismo.",
+      "Tip 3 (Huawei MA5200): Para depurar sesiones PPPoE colgadas en ruteadores de bordes, ejecute 'display pppoe-server session all' filtrando por slot y puerto.",
+      "Tip 4 (Fibra Óptica): Al realizar mediciones con OTDR en enlaces metropolitanos, ajuste el ancho de pulso a menor valor para eventos cercanos y alta resolución en empalmes.",
+      "Tip 5 (DWDM): Una fluctuación repentina de BER (Bit Error Rate) en canales 100G/400G suele estar asociada a efectos no lineales como SPM o XPM en la fibra G.652.",
+      "Tip 6 (ZTE C300): El comando 'show gpon onu startup-parameter' permite auditar los parámetros de registro automático y perfiles T-CONT asignados por DBA.",
+      "Tip 7 (Sincronización): Los relojes de red basados en IEEE 1588v2 (PTP) requieren verificar el parámetro PDV (Packet Delay Variation) para evitar jitter de fase en radiobases.",
+      "Tip 8 (Ethernet / EPL): En circuitos Metro Ethernet Carrier Ethernet (MEF), valide siempre el cumplimiento de las tramas con MTU superior a 9000 bytes (Jumbo Frames).",
+      "Tip 9 (Huawei): El comando 'display alarm active' en equipos de transporte y ruteo Huawei agrupa fallas críticas por severidad; priorice alarmas RDI y LOS.",
+      "Tip 10 (Seguridad NOC): Nunca comparta credenciales de acceso administrativo multi-nivel a plataformas críticas; utilice sesiones auditadas por TACACS+ / RADIUS.",
+      "Tip 11 (DWDM Nokia): La sintonización de transponedores coherentemente requiere validar la potencia óptica de recepción (ROP) dentro de la ventana de -7dBm a -14dBm.",
+      "Tip 12 (ZTE C600): Para reiniciar de forma lógica una controladora o tarjeta de servicio GPON sin intervención física en gabinete, emplee 'reboot board slot <rack/shelf/slot>'.",
+      "Tip 13 (Conectonería): Inspeccione con microscopio óptico los conectores SC/APC o LC/UPC antes de interconectar; una micropartícula de grasa atenúa hasta 3dB.",
+      "Tip 14 (MPLS-TE): En redes de transporte IP/MPLS, los túneles RSVP-TE con rutas explicitas evitan ruteos sub óptimos ante cortes de fibra troncal principal.",
+      "Tip 15 (BGP Carrier): Monitoree los contadores de prefijos recibidos y aceptados en sesiones eBGP con operadores internacionales para prevenir blackholes o loops.",
+      "Tip 16 (Redes PON): El presupuesto óptico estándar clase B+ permite hasta 28dB de atenuación, mientras que la clase C+ extiende el límite hasta 32dB.",
+      "Tip 17 (Mediciones de Potencia): Al medir potencia láser en 1310nm y 1550nm, asegúrese de calibrar el medidor óptico (Power Meter) en la longitud de onda exacta bajo prueba.",
+      "Tip 18 (Protección OSP): Los sistemas de conmutación de protección óptica tipo 1+1 APS (Automatic Protection Switching) deben conmutar en menos de 50 milisegundos.",
+      "Tip 19 (Equipos de Campo): En gabinetes exteriores (outdoor), verifique periódicamente los filtros de aire y los umbrales térmicos de los sistemas de aire acondicionado peltier o forzado.",
+      "Tip 20 (QoS Carrier): Las colas de prioridad estricta (PQ) para tráfico de voz VoIP (EF - Expedited Forwarding) no deben superar el 15% del ancho de banda total del enlace.",
+      "Tip 21 (ZTE GPON): El comando 'show mac-address onu' es fundamental para trazar la MAC del CPE del cliente final detrás de la ONT bridge o router en modo router.",
+      "Tip 22 (DWDM ROADM): Los nodos ROADM con tecnología WSS (Wavelength Selective Switch) permiten agregar y quitar longitudes de onda de manera remota sin cortes de tráfico adyacente.",
+      "Tip 23 (Ciberseguridad OT): En redes de infraestructura crítica de telecomunicaciones, mantenga deshabilitados protocolos inseguros como Telnet y HTTP plano, prefiriendo SSHv2 y HTTPS.",
+      "Tip 24 (Ethernet OAM): Protocolos como 802.3ah (EFM OAM) y 802.1ag (CFM) son vitales para el monitoreo de enlaces Ethernet punto a punto y detección de fallas de vínculo en capa 2.",
+      "Tip 25 (Baterías / Energía DC): En plantas de fuerza -48VDC, la prueba de autonomía de baterías se realiza monitoreando la caída de tensión bajo carga real de los racks de transmisión.",
+      "Tip 26 (Troubleshooting IP): El comando 'traceroute mpls' o 'tracert' con soporte de etiquetas ayuda a aislar saltos con pérdidas en redes MPLS de transporte metropolitano.",
+      "Tip 27 (ZTE C300): Para verificar la tabla de asignación de VLANs en un puerto PON específico, utilice 'show vlan port <interface>' de manera rápida y eficiente.",
+      "Tip 28 (Fibra Oscura): Al certificar hilos de fibra oscura para clientes corporativos (EPL), documente las pérdidas bidireccionales tanto a 1310nm como a 1550nm.",
+      "Tip 29 (Gestión de Alarmas): Ante una falla masiva de nodo, priorice la atención en los equipos de agregación troncal (Aggregation Routers) sobre los accesos individuales de abonados.",
+      "Tip 30 (Buenas Prácticas NOC): Documente siempre cada maniobra en la bitácora de guardia con hora exacta, ticket asociado y nombre de técnico responsable para trazabilidad operativa."
+    ];
+
+    let indiceTipActual = 0;
+
+    function actualizarVistaTip() {
+      const txtElem = document.getElementById('infoTipText');
+      const catElem = document.getElementById('infoTipCategory');
+      if (txtElem && catElem) {
+        txtElem.innerText = listaTipsCarrier[indiceTipActual];
+        catElem.innerText = `⚡ Tip ${indiceTipActual + 1} de 30 (Carrier Engineering)`;
+      }
+    }
+
+    function siguienteTip() {
+      indiceTipActual = (indiceTipActual + 1) % listaTipsCarrier.length;
+      actualizarVistaTip();
+    }
+
+    function anteriorTip() {
+      indiceTipActual = (indiceTipActual - 1 + listaTipsCarrier.length) % listaTipsCarrier.length;
+      actualizarVistaTip();
+    }
+
+    // Inicializar el primer tip al cargar la página
+    actualizarVistaTip();
   </script>
 </body>
 </html>
