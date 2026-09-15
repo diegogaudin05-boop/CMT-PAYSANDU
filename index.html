@@ -1317,83 +1317,102 @@
 
     // Inicializar el primer tip al cargar la página
     actualizarVistaTip();
- // 🎯 BANCO DE PREGUNTAS DEL QUIZ TÉCNICO
-  const quizData = [
-    {
-      pregunta: "¿Cuál es el comando estándar en OLTs Huawei para verificar la potencia óptica y el estado de una ONU remota?",
-      opciones: [
-        "A) display ont optical-info slot/port/ontid",
-        "B) show running-config interface",
-        "C) ping sweep gateway"
-      ],
-      correcta: 0
-    },
-    {
-      pregunta: "En redes de transporte óptico DWDM, ¿qué tecnología permite ROADMs sin dirección y sin contención?",
-      opciones: [
-        "A) Conversión O-E-O fija tradicional",
-        "B) Plataformas fotónicas avanzadas (ej. Nokia 1830 PSS)",
-        "C) Enlaces de radioenlace analógico en banda C"
-      ],
-      correcta: 1
-    },
-    {
-      pregunta: "En una OLT ZTE C300/C600, ¿qué comando se emplea para monitorear la potencia óptica de recepción (Rx) en los puertos PON?",
-      opciones: [
-        "A) show pon power olt gpon-olt_x/x/x",
-        "B) check optical transceiver status",
-        "C) display interface gpon brief"
-      ],
-      correcta: 0
-    }
-  ];
+ // 🎯 BANCO DE PREGUNTAS DEL QUIZ TÉCNICO (Versión Segura)
+  if (typeof quizData === 'undefined') {
+    var quizData = [
+      {
+        pregunta: "¿Cuál es el comando estándar en OLTs Huawei para verificar la potencia óptica y el estado de una ONU remota?",
+        opciones: [
+          "A) display ont optical-info slot/port/ontid",
+          "B) show running-config interface",
+          "C) ping sweep gateway"
+        ],
+        correcta: 0
+      },
+      {
+        pregunta: "En redes de transporte óptico DWDM, ¿qué tecnología permite ROADMs sin dirección y sin contención?",
+        opciones: [
+          "A) Conversión O-E-O fija tradicional",
+          "B) Plataformas fotónicas avanzadas (ej. Nokia 1830 PSS)",
+          "C) Enlaces de radioenlace analógico en banda C"
+        ],
+        correcta: 1
+      },
+      {
+        pregunta: "En una OLT ZTE C300/C600, ¿qué comando se emplea para monitorear la potencia óptica de recepción (Rx) en los puertos PON?",
+        opciones: [
+          "A) show pon power olt gpon-olt_x/x/x",
+          "B) check optical transceiver status",
+          "C) display interface gpon brief"
+        ],
+        correcta: 0
+      }
+    ];
+  }
 
-  let currentQuizIndex = 0;
-  let puntajeQuiz = 0;
+  if (typeof currentQuizIndex === 'undefined') {
+    var currentQuizIndex = 0;
+  }
+  
+  if (typeof puntajeQuiz === 'undefined') {
+    var puntajeQuiz = 0;
+  }
 
   function cargarPreguntaQuiz() {
     const q = quizData[currentQuizIndex];
-    document.getElementById('quizCounter').innerText = `Pregunta ${currentQuizIndex + 1} de ${quizData.length}`;
-    document.getElementById('quizQuestionBox').innerText = q.pregunta;
+    const counterEl = document.getElementById('quizCounter');
+    const questionEl = document.getElementById('quizQuestionBox');
+    
+    if (counterEl) counterEl.innerText = `Pregunta ${currentQuizIndex + 1} de ${quizData.length}`;
+    if (questionEl) questionEl.innerText = q.pregunta;
     
     const optionsBox = document.getElementById('quizOptionsBox');
-    optionsBox.innerHTML = '';
+    if (optionsBox) {
+      optionsBox.innerHTML = '';
+      q.opciones.forEach((op, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'tip-btn';
+        btn.style.textAlign = 'left';
+        btn.innerText = op;
+        btn.onclick = () => verificarRespuestaQuiz(index);
+        optionsBox.appendChild(btn);
+      });
+    }
     
-    q.opciones.forEach((op, index) => {
-      const btn = document.createElement('button');
-      btn.className = 'tip-btn';
-      btn.style.textAlign = 'left';
-      btn.innerText = op;
-      btn.onclick = () => verificarRespuestaQuiz(index);
-      optionsBox.appendChild(btn);
-    });
-    
-    document.getElementById('quizFeedback').innerText = '';
+    const feedbackEl = document.getElementById('quizFeedback');
+    if (feedbackEl) feedbackEl.innerText = '';
   }
 
   function verificarRespuestaQuiz(seleccionada) {
     const q = quizData[currentQuizIndex];
     const feedback = document.getElementById('quizFeedback');
     
-    if (seleccionada === q.correcta) {
-      feedback.style.color = "var(--green)";
-      feedback.innerText = "✔️ ¡Correcto! Excelente dominio técnico.";
-      puntajeQuiz++;
-    } else {
-      feedback.style.color = "var(--red)";
-      feedback.innerText = "❌ Incorrecto. La opción correcta era la " + ["A", "B", "C"][q.correcta];
+    if (feedback) {
+      if (seleccionada === q.correcta) {
+        feedback.style.color = "var(--green)";
+        feedback.innerText = "✔️ ¡Correcto! Excelente dominio técnico.";
+        puntajeQuiz++;
+      } else {
+        feedback.style.color = "var(--red)";
+        feedback.innerText = "❌ Incorrecto. La opción correcta era la " + ["A", "B", "C"][q.correcta];
+      }
     }
   }
 
   function siguientePreguntaQuiz() {
-    // Si ya tienes la función playPop() en tu script, la reproducirá; si no, puedes quitar esta línea o dejarla si ya existe.
-    if (typeof playPop === 'function') playPop(); 
+    if (typeof playPop === 'function') {
+      playPop();
+    }
     currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
     cargarPreguntaQuiz();
   }
 
-  // Inicializar la primera pregunta al cargar
-  cargarPreguntaQuiz();
+  // Inicializar al cargar
+  try {
+    cargarPreguntaQuiz();
+  } catch (e) {
+    console.error("Error al iniciar el quiz:", e);
+  }
   
   </script>
 </body>
