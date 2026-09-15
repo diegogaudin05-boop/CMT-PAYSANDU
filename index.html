@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -452,7 +451,7 @@
     <!-- VISTA TIPS -->
     <div id="quizModoInfo" style="display: flex; flex-direction: column;">
       <div class="tips-header" style="border-bottom: none; margin-bottom: 6px; padding-bottom: 0;">
-        <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
+        <span class="tips-title">🧠 Antel & Carrier Engineering Vault</span>
         <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
       </div>
       <div id="infoTipText" class="tips-content">
@@ -702,36 +701,36 @@
     }
 
     const listaTipsCarrier = [
-      "Tip 1 (DWDM): En plataformas Nokia/Infinera, monitoree siempre el nivel de OSNR (Optical Signal-to-Noise Ratio) antes de escalar una atenuación por degradación de fibra.",
-      "Tip 2 (ZTE GPON): Utilice el comando 'show pon onu state' en la OLT ZTE C300/C600 para verificar rápidamente ONUs en estado dying-gasp o fuera de sincronismo.",
-      "Tip 3 (Huawei MA5200): Para depurar sesiones PPPoE colgadas en ruteadores de bordes, ejecute 'display pppoe-server session all' filtrando por slot y puerto.",
-      "Tip 4 (Fibra Óptica): Al realizar mediciones con OTDR en enlaces metropolitanos, ajuste el ancho de pulso a menor valor para eventos cercanos y alta resolución en empalmes.",
-      "Tip 5 (DWDM): Una fluctuación repentina de BER (Bit Error Rate) en canales 100G/400G suele estar asociada a efectos no lineales como SPM o XPM en la fibra G.652.",
-      "Tip 6 (ZTE C300): El comando 'show gpon onu startup-parameter' permite auditar los parámetros de registro automático y perfiles T-CONT asignados por DBA.",
-      "Tip 7 (Sincronización): Los relojes de red basados en IEEE 1588v2 (PTP) requieren verificar el parámetro PDV (Packet Delay Variation) para evitar jitter de fase en radiobases.",
-      "Tip 8 (Ethernet / EPL): En circuitos Metro Ethernet Carrier Ethernet (MEF), valide siempre el cumplimiento de las tramas con MTU superior a 9000 bytes (Jumbo Frames).",
-      "Tip 9 (Huawei): El comando 'display alarm active' en equipos de transporte y ruteo Huawei agrupa fallas críticas por severidad; priorice alarmas RDI y LOS.",
-      "Tip 10 (Seguridad NOC): Nunca comparta credenciales de acceso administrativo multi-nivel a plataformas críticas; utilice sesiones auditadas por TACACS+ / RADIUS.",
-      "Tip 11 (DWDM Nokia): La sintonización de transponedores coherentemente requiere validar la potencia óptica de recepción (ROP) dentro de la ventana de -7dBm a -14dBm.",
-      "Tip 12 (ZTE C600): Para reiniciar de forma lógica una controladora o tarjeta de servicio GPON sin intervención física en gabinete, emplee 'reboot board slot <rack/shelf/slot>'.",
-      "Tip 13 (Conectonería): Inspeccione con microscopio óptico los conectores SC/APC o LC/UPC antes de interconectar; una micropartícula de grasa atenúa hasta 3dB.",
-      "Tip 14 (MPLS-TE): En redes de transporte IP/MPLS, los túneles RSVP-TE con rutas explicitas evitan ruteos sub óptimos ante cortes de fibra troncal principal.",
-      "Tip 15 (BGP Carrier): Monitoree los contadores de prefijos recibidos y aceptados en sesiones eBGP con operadores internacionales para prevenir blackholes o loops.",
-      "Tip 16 (Redes PON): El presupuesto óptico estándar clase B+ permite hasta 28dB de atenuación, mientras que la clase C+ extiende el límite hasta 32dB.",
-      "Tip 17 (Mediciones de Potencia): Al medir potencia láser en 1310nm y 1550nm, asegúrese de calibrar el medidor óptico (Power Meter) en la longitud de onda exacta bajo prueba.",
-      "Tip 18 (Protección OSP): Los sistemas de conmutación de protección óptica tipo 1+1 APS (Automatic Protection Switching) deben conmutar en menos de 50 milisegundos.",
-      "Tip 19 (Equipos de Campo): En gabinetes exteriores (outdoor), verifique periódicamente los filtros de aire y los umbrales térmicos de los sistemas de aire acondicionado peltier o forzado.",
-      "Tip 20 (QoS Carrier): Las colas de prioridad estricta (PQ) para tráfico de voz VoIP (EF - Expedited Forwarding) no deben superar el 15% del ancho de banda total del enlace.",
-      "Tip 21 (ZTE GPON): El comando 'show mac-address onu' es fundamental para trazar la MAC del CPE del cliente final detrás de la ONT bridge o router en modo router.",
-      "Tip 22 (DWDM ROADM): Los nodos ROADM con tecnología WSS (Wavelength Selective Switch) permiten agregar y quitar longitudes de onda de manera remota sin cortes de tráfico adyacente.",
-      "Tip 23 (Ciberseguridad OT): En redes de infraestructura crítica de telecomunicaciones, mantenga deshabilitados protocolos inseguros como Telnet y HTTP plano, prefiriendo SSHv2 y HTTPS.",
-      "Tip 24 (Ethernet OAM): Protocolos como 802.3ah (EFM OAM) y 802.1ag (CFM) son vitales para el monitoreo de enlaces Ethernet punto a punto y detección de fallas de vínculo en capa 2.",
-      "Tip 25 (Baterías / Energía DC): En plantas de fuerza -48VDC, la prueba de autonomía de baterías se realiza monitoreando la caída de tensión bajo carga real de los racks de transmisión.",
-      "Tip 26 (Troubleshooting IP): El comando 'traceroute mpls' o 'tracert' con soporte de etiquetas ayuda a aislar saltos con pérdidas en redes MPLS de transporte metropolitano.",
-      "Tip 27 (ZTE C300): Para verificar la tabla de asignación de VLANs en un puerto PON específico, utilice 'show vlan port <interface>' de manera rápida y eficiente.",
-      "Tip 28 (Fibra Oscura): Al certificar hilos de fibra oscura para clientes corporativos (EPL), documente las pérdidas bidireccionales tanto a 1310nm como a 1550nm.",
-      "Tip 29 (Gestión de Alarmas): Ante una falla masiva de nodo, priorice la atención en los equipos de agregación troncal (Aggregation Routers) sobre los accesos individuales de abonados.",
-      "Tip 30 (Buenas Prácticas NOC): Documente siempre cada maniobra en la bitácora de guardia con hora exacta, ticket asociado y nombre de técnico responsable para trazabilidad operativa."
+      "¿Sabías que... Antel opera su red troncal óptica internacional y metropolitana utilizando plataformas de transporte óptico de paquetes de la familia Ciena 6500, permitiendo multiplexación OTN y conmutación de alta capacidad para longitudes de onda de 100G y superiores?",
+      "¿Sabías que... el cable submarino Tannat, cofinanciado por Antel y Google, conecta directamente a Uruguay con Brasil y Argentina, otorgando una ruta internacional soberana de altísima capacidad?",
+      "¿Sabías que... el cable submarino Firmina (impulsado por Google con participación clave en conectividad regional) aterriza en las costas uruguayas, reforzando la resiliencia de la red internacional con alimentación de energía independiente?",
+      "¿Sabías que... el primer cable submarino internacional propio de Antel (inaugurado en Punta del Este) rompió con la dependencia histórica de proveedores monopólicos externos, otorgando al país independencia en el tráfico de internet?",
+      "¿Sabías que... en redes de fibra óptica, al realizar mediciones con OTDR en enlaces metropolitanos, ajustar el ancho de pulso a un valor menor mejora drásticamente la resolución espacial para detectar eventos cercanos y micro-curvaturas?",
+      "¿Sabías que... las plataformas Ciena empleadas en las redes de operador facilitan la tecnología WaveLogic, permitiendo optimizar el rendimiento espectral y adaptar dinámicamente la modulación coherente según la distancia del enlace?",
+      "¿Sabías que... el Data Center de Antel en Pando funciona como el hub de interconexión neurálgico del Cono Sur, albergando nodos de interconexión neutral, servicios de nube soberana y bajadas directas de los cables submarinos?",
+      "¿Sabías que... en la red de acceso FTTH de Antel se utiliza la tecnología GPON (Gigabit Passive Optical Network), capaz de repartir un único hilo de fibra troncal entre múltiples usuarios mediante splitters ópticos pasivos?",
+      "¿Sabías que... los sistemas ROADM (Reconfigurable Add-Drop Multiplexer) integrados en las redes ópticas modernas permiten redirigir canales de longitud de onda específicos de manera remota sin intervenir físicamente los latiguillos?",
+      "¿Sabías que... la atenuación estándar de una fibra óptica monomodo (G.652) en la ventana de 1550 nm ronda típicamente los 0.2 dB/km, siendo la longitud de onda óptima para transmisión de larga distancia y sistemas WDM?",
+      "¿Sabías que... la ventana de 1310 nm en fibra monomodo presenta una dispersión cromática prácticamente nula, lo que la hace ideal para transmisiones de menor distancia y sistemas heredados antes del despliegue masivo de DWDM?",
+      "¿Sabías que... el protocolo MPLS (Multi-Protocol Label Switching) utilizado en la red de nueva generación de Antel acelera el reenvío de paquetes mediante la conmutación de etiquetas cortas en lugar de consultas de tablas IP?",
+      "¿Sabías que... una fusión de fibra óptica mal ejecutada genera una reflexión Fresnel o pérdidas por desalineación lateral que se visualizan en el OTDR como un evento reflectivo o un 'escalón de ganancia' falso?",
+      "¿Sabías que... el índice de refracción del núcleo de una fibra óptica de sílice es estrictamente mayor que el de su cladding, permitiendo el fenómeno de reflexión interna total para confinar la luz en el interior?",
+      "¿Sabías que... el diseño de la red internacional de Antel contempla esquemas de protección óptica automatizados (como anillas OMSP/OMSProtection) que conmutan el tráfico a una ruta de respaldo en menos de 50 milisegundos?",
+      "¿Sabías que... la tecnología DWDM (Dense Wavelength Division Multiplexing) permite multiplexar decenas o cientos de canales ópticos independientes sobre un único hilo de fibra física utilizando frecuencias de luz muy cercanas?",
+      "¿Sabías que... el Centro de Mantenimiento y Operación (CMT) gestiona de forma centralizada la supervisión de alarmas, umbrales de potencia óptica (RX/TX) y estado de los equipos de transmisión para garantizar la disponibilidad?",
+      "¿Sabías que... los conectores de fibra óptica tipo APC (Angled Physical Contact) poseen un pulido en un ángulo de 8 grados para minimizar la reflexión de retorno (back-reflection) hacia la fuente láser?",
+      "¿Sabías que... los conectores UPC (Ultra Physical Contact) tienen una terminación plana ligeramente abovedada y generan mayor retorno óptico que los APC, recomendándose para conmutación interna y equipos de datos?",
+      "¿Sabías que... la red de acceso inalámbrico y móvil de Antel se conecta directamente mediante enlaces de alta capacidad de fibra óptica hacia las estaciones radiobase (Cell Sites), garantizando el backhaul para 4G y 5G?",
+      "¿Sabías que... el estándar OTN (Optical Transport Network / ITU-T G.709) añade una capa de encapsulamiento digital similar a SDH/SONET pero adaptada al tráfico de paquetes, aportando capacidades OAM nativas a nivel óptico?",
+      "¿Sabías que... en las bandejas de empalme o bandejas ODF (Optical Distribution Frame), el radio de curvatura de la fibra nunca debe ser inferior a 30 mm para evitar microfisuras y fugas de luz por macrocurvatura?",
+      "¿Sabías que... el fenómeno físico de la dispersión cromática ensancha los pulsos de luz a medida que viajan por largas distancias en la fibra, requiriendo módulos de compensación o detección coherente?",
+      "¿Sabías que... los amplificadores de fibra dopada con erbio (EDFA) permiten amplificar señales ópticas de manera totalmente óptica en la banda C sin necesidad de conversiones previas a señales eléctricas?",
+      "¿Sabías que... el sincronismo de red mediante protocolos como SyncE (Synchronous Ethernet) y IEEE 1588v2 (PTP) es vital en las estaciones de telecomunicaciones para evitar jitter y asegurar la fase en servicios móviles?",
+      "¿Sabías que... el servicio de Internet Corporativo e infraestructura MPLS de Antel garantiza anchos de banda simétricos de alta disponibilidad con estrictos SLA para banca, instituciones y grandes empresas?",
+      "¿Sabías que... las pruebas de potencia óptica con un Power Meter y una fuente de luz estable permiten certificar la pérdida total de inserción (Insertion Loss) de un enlace antes de ponerlo en servicio comercial?",
+      "¿Sabías que... los transceptores ópticos enchufables modernos (como SFP+, QSFP28 o CFP) incorporan diagnósticos digitales DOM para monitorear temperatura interna, voltaje y potencia óptica RX/TX en tiempo real?",
+      "¿Sabías que... la arquitectura de red abierta (Open Line Systems) desacopla la capa fotónica de los transponedores, permitiendo integrar equipos de distintos fabricantes con mayor flexibilidad y escalabilidad?",
+      "¿Sabías que... la interconexión de centros de datos regionales a través de los cables submarinos de Antel posiciona a Uruguay como un nodo exportador de servicios de tránsito IP y almacenamiento en la nube en el Cono Sur?"
     ];
 
     const networkQuiz = [
@@ -742,7 +741,7 @@
         explicacion: "¡Correcto! Infinera es pionera en el uso de PICs y tecnología coherente avanzada (ICE) integrada para redes ópticas de gran capacidad."
       },
       {
-        pregunta: "¿Cuál es la principal ventaja de la plataforma ZTE ZXA10 C600 frente a generaciones anteriores como el C300?",
+        pregunta: "¿Cuál es the principal ventaja de la plataforma ZTE ZXA10 C600 frente a generaciones anteriores como el C300?",
         opciones: ["Opera únicamente con ADSL de cobre", "Es una arquitectura basada en SDN/NFV nativa para XGS-PON y 10G-GPON de ultra alta densidad", "Solo soporta 4 puertos de cliente", "Funciona sin energía eléctrica auxiliar"],
         correcta: 1,
         explicacion: "¡Correcto! El ZTE C600 es una OLT de próxima generación orientada a SDN/NFV y tecnologías de acceso 10G como XGS-PON."
@@ -754,7 +753,7 @@
         explicacion: "¡Correcto! El MA5200 operaba como un potente Broadband Access Server (BAS) para gestión de sesiones y suscriptores."
       },
       {
-        pregunta: "¿Qué permiten las tecnologías ROADM sin dirección y sin contención en los sistemas DWDM de Nokia (ej. 1830 PSS)?",
+        pregunta: "¿Qué permiten las plataformas ROADM sin dirección y sin contención en los sistemas DWDM de Nokia (ej. 1830 PSS)?",
         opciones: ["Bloquear totalmente el tráfico de datos", "Aprovisionar y reencaminar longitudes de onda de forma flexible y automatizada sin restricciones de puerto", "Reducir la velocidad del enlace a 10 Mbps", "Eliminar por completo los amplificadores ópticos"],
         correcta: 1,
         explicacion: "¡Correcto! Los ROADMs colorless, directionless y contentionless brindan máxima flexibilidad en la conmutación óptica de capas DWDM."
@@ -861,7 +860,7 @@
       const catElem = document.getElementById('infoTipCategory');
       if (txtElem && catElem) {
         txtElem.innerText = listaTipsCarrier[indiceTipActual];
-        catElem.innerText = `⚡ Tip ${indiceTipActual + 1} de 30 (Carrier Engineering)`;
+        catElem.innerText = `⚡ Tip ${indiceTipActual + 1} de 30 (Antel & Carrier)`;
       }
     }
 
