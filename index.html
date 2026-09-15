@@ -50,7 +50,7 @@
     /* PANTALLA DE ACCESO */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(4, 8, 20, 0.92); backdrop-filter: blur(8px); z-index: 9999;
+      background: rgba(4, 8, 20, 0.92); backdrop-filter: blur(8px); z-index: 99999;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 20px;
     }
@@ -129,6 +129,8 @@
       border-radius: 14px; margin-bottom: 14px;
       box-shadow: 0 0 20px rgba(0, 114, 206, 0.25);
       flex-wrap: wrap; gap: 10px;
+      position: relative;
+      z-index: 50;
     }
 
     .title-noc { display: flex; align-items: center; gap: 12px; font-size: 1.35rem; font-weight: 800; }
@@ -176,12 +178,25 @@
     }
     .dropbtn-green { background: #15803d; }
     .dropbtn-red { background: #b91c1c; }
+    
+    /* MENÚ DESPLEGABLE CORREGIDO CON Z-INDEX MÁXIMO */
     .dropdown-content {
-      display: none; position: absolute; right: 0; background-color: var(--card); backdrop-filter: blur(10px);
-      min-width: 210px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; z-index: 100;
+      display: none; 
+      position: absolute; 
+      right: 0; 
+      top: 100%;
+      margin-top: 6px;
+      background-color: #081124; 
+      backdrop-filter: blur(14px);
+      min-width: 220px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+      border: 1px solid var(--accent); 
+      border-radius: 10px; 
+      z-index: 999999;
     }
-    .dropdown-content a { color: var(--text); padding: 10px 14px; text-decoration: none; display: block; font-size: 0.85rem; }
-    .dropdown-content a:hover { background: var(--card-header); }
+    .dropdown-content a { color: var(--text); padding: 12px 14px; text-decoration: none; display: block; font-size: 0.85rem; border-bottom: 1px solid rgba(30,58,138,0.3); }
+    .dropdown-content a:last-child { border-bottom: none; }
+    .dropdown-content a:hover { background: rgba(0, 114, 206, 0.3); color: #38bdf8; }
     .dropdown:hover .dropdown-content { display: block; }
 
     .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
@@ -285,7 +300,7 @@
   </div>
 
   <!-- 🧠 MÓDULO DE QUIZ Y CÁPSULAS TÉCNICAS DE REDES -->
-  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0, 114, 206, 0.2);">
+  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0, 114, 206, 0.2); position: relative; z-index: 1;">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 1.2rem;">🧠</span>
