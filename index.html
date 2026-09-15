@@ -17,6 +17,7 @@
       --antel-blue: #0072ce;
       --accent: #38bdf8;
       --green: #22c55e;
+      --red: #ef4444;
       --text: #f1f5f9;
       --text-muted: #94a3b8;
     }
@@ -118,7 +119,7 @@
       font-size: 0.9rem; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;
       box-shadow: 0 4px 12px rgba(0, 114, 206, 0.4);
     }
-    .error-pin { color: #ef4444; font-size: 0.8rem; display: none; font-weight: bold; }
+    .error-pin { color: var(--red); font-size: 0.8rem; display: none; font-weight: bold; }
 
     /* PANEL PRINCIPAL NOC */
     .header-noc {
@@ -159,11 +160,11 @@
     }
     @keyframes shine { to { background-position: 200% center; } }
 
-    .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .clock-noc-box {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: rgba(15, 23, 42, 0.9); padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9); padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);
     }
     .clock-noc { font-family: monospace; font-size: 0.95rem; font-weight: bold; color: var(--accent); }
     .date-noc { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
@@ -174,6 +175,7 @@
       border: none; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
     }
     .dropbtn-green { background: #15803d; }
+    .dropbtn-red { background: #b91c1c; }
     .dropdown-content {
       display: none; position: absolute; right: 0; background-color: var(--card); backdrop-filter: blur(10px);
       min-width: 210px; box-shadow: 0px 8px 16px rgba(0,0,0,0.6); border: 1px solid var(--border); border-radius: 8px; z-index: 100;
@@ -263,7 +265,7 @@
       </div>
       
       <div class="dropdown">
-        <button class="dropbtn dropbtn-green" onclick="playPop();">📞 Llamar NOC ▾</button>
+        <button class="dropbtn dropbtn-green" onclick="playPop();">📞 Llamar ▾</button>
         <div class="dropdown-content">
           <a href="tel:25067907" onclick="playPop();">📞 Consola OMSED (25067907)</a>
           <a href="tel:08002287" onclick="playPop();">📞 CMT Antel (08002287)</a>
@@ -271,12 +273,14 @@
       </div>
 
       <div class="dropdown">
-        <button class="dropbtn" onclick="playPop();">🌐 Accesos Antel ▾</button>
+        <button class="dropbtn" onclick="playPop();">🌐 Accesos ▾</button>
         <div class="dropdown-content">
           <a href="http://monitoragg2.in.antel.net.uy:8000/login/" target="_blank" onclick="playPop();">📡 Monitor AGG2</a>
           <a href="https://prisma.ocp.in.iantel.com.uy/" target="_blank" onclick="playPop();">🔷 Prisma OCP</a>
         </div>
       </div>
+
+      <button class="dropbtn dropbtn-red" onclick="cerrarSesion()" title="Cerrar Sesión">🚪 Salir</button>
     </div>
   </div>
 
@@ -310,12 +314,12 @@
     <!-- CONTENEDOR MODO TEST / QUIZ -->
     <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
-        <span id="quizPreguntaNum">Pregunta 1 de 5</span>
+        <span id="quizPreguntaNum">Pregunta 1 de 10</span>
         <span>Puntaje: <strong id="quizPuntaje" style="color: var(--green);">0</strong></span>
       </div>
       
       <div id="quizPreguntaTexto" style="font-weight: bold; color: #fff; font-size: 0.85rem;">
-        ¿Cuál es la longitud de onda estándar utilizada en redes GPON de Antel para la bajada (downstream) de datos hacia el cliente?
+        Cargando pregunta...
       </div>
 
       <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
@@ -519,13 +523,14 @@
     }
     drawRadioTowerScene();
 
-    // 🧠 LÓGICA DE TIPS Y TRIVIA TÉCNICA
+    // 🧠 LÓGICA DE TIPS Y TRIVIA TÉCNICA (AMPLIADA)
     const networkTips = [
       { cat: "⚡ GPON / FTTH", text: "En las redes GPON de Antel, las longitudes de onda estándar son 1490 nm para datos downstream (bajada) y 1310 nm para upstream (subida), reservándose 1550 nm para servicios de CATV RF overlay." },
       { cat: "📡 Radioenlaces / Microondas", text: "Los radioenlaces digitales en alta disponibilidad utilizan esquemas de modulación adaptativa (ACM) como QAM-256 o QAM-1024 para maximizar el throughput según las condiciones climáticas y el desvanecimiento por trayecto." },
+      { cat: "📐 Zona de Fresnel", text: "Para un enlace de radio frecuencia sin obstrucciones, se requiere despejar al menos el 60% del radio de la primera Zona de Fresnel para evitar caídas severas de potencia en recepción." },
       { cat: "🖧 Conmutación y VLANs", text: "El estándar IEEE 802.1Q agrega una etiqueta (tag) de 4 bytes a la trama Ethernet original, permitiendo gestionar hasta 4,094 VLANs simultáneas en los switches de agregación (AGG)." },
       { cat: "🔗 Enlaces EPL (Ethernet Private Line)", text: "Un servicio EPL proporciona una conexión Ethernet punto a punto dedicada con ancho de banda garantizado y transparencia total de protocolos de Capa 2 entre las puntas del cliente." },
-      { cat: "🔍 Operación y Herramientas NOC", text: "Monitorear métricas de BER (Bit Error Rate), niveles ópticos de RX/TX en OLTs/ONUs y tablas MAC/ARP es fundamental para la rápida detección preventiva de degradaciones de planta externa." }
+      { cat: "🧵 Fibra Óptica y Atenuación", text: "Las fusiones de fibra óptica por arco eléctrico bien calibradas generan típicamente una pérdida menor a 0.02 dB, siendo clave revisar el OTDR ante reflexiones anómalas." }
     ];
 
     const networkQuiz = [
@@ -534,6 +539,12 @@
         opciones: ["1310 nm", "1490 nm", "1550 nm", "850 nm"],
         correcta: 1,
         explicacion: "Correcto! 1490 nm se utiliza para downstream de datos, 1310 nm para upstream y 1550 nm para video analógico/RF."
+      },
+      {
+        pregunta: "¿Qué porcentaje del radio de la primera Zona de Fresnel se recomienda despejar como mínimo para evitar atenuación por difracción?",
+        opciones: ["Al menos 20%", "Al menos 40%", "Al menos 60%", "100% obligatorio sin margen"],
+        correcta: 2,
+        explicacion: "Correcto! Se requiere despejar un mínimo de 60% de la primera Zona de Fresnel para que las ondas lleguen en fase y sin pérdidas significativas."
       },
       {
         pregunta: "¿Qué especifica el estándar IEEE 802.1Q en redes de área local?",
@@ -548,16 +559,40 @@
         explicacion: "Correcto! La ventana de 1550 nm ofrece la menor atenuación en fibra monomodo estándar (aprox. 0.2 dB/km), ideal para larga distancia."
       },
       {
-        pregunta: "¿Qué función cumple principalmente un puerto de agregación (AGG) en la arquitectura de red?",
-        opciones: ["Alimentar energía a los equipos de radio", "Concentrar el tráfico de múltiples accesos y enrutar hacia el core", "Convertir señales eléctricas a satelitales", "Monitorear la temperatura de la central"],
+        pregunta: "¿Qué mide principalmente un OTDR (Optical Time Domain Reflectometer) en una traza de fibra óptica?",
+        opciones: ["El consumo eléctrico exacto del láser emisor", "La atenuación, eventos de fusión, conectores y reflexiones a lo largo de la fibra", "La velocidad máxima de sincronismo IP del cliente", "La temperatura ambiente de la troncal OSP"],
         correcta: 1,
-        explicacion: "Correcto! Los nodos de agregación concentran el tráfico proveniente de las distintas tecnologías de acceso para transportarlo eficientemente al núcleo de la red."
+        explicacion: "Correcto! El OTDR inyecta pulsos de luz y analiza la retrodispersión (Rayleigh) para ubicar cortes, pérdidas por empalme y atenuación distribuida."
       },
       {
-        pregunta: "¿Cuál es una ventaja principal de un servicio EPL (Ethernet Private Line frente a internet convencional?",
-        opciones: ["Ancho de banda dedicado y simétrico con aislamiento total", "Direccionamiento IP público ilimitado gratuito", "Velocidad compartida con prioridad dinámica", "Independencia total de la infraestructura física"],
+        pregunta: "¿Qué función cumple principalmente un puerto de agregación (AGG) en la arquitectura de red de telecomunicaciones?",
+        opciones: ["Alimentar energía a los equipos de radio", "Concentrar el tráfico de múltiples accesos y enrutar hacia el core", "Convertir señales eléctricas a satelitales", "Monitorear la temperatura de la central"],
+        correcta: 1,
+        explicacion: "Correcto! Los nodos de agregación concentran el tráfico proveniente de las distintas tecnologías de acceso para transportarlo eficientemente al núcleo."
+      },
+      {
+        pregunta: "En radioenlaces de microondas, ¿qué efecto climático produce comúnmente desvanecimientos profundos (fading) por multicamino?",
+        opciones: ["Tormentas de nieve densa", "Gradientes térmicos extremos y capas atmosféricas con distintos índices de refracción", "Variaciones en la tensión eléctrica de la torre", "Interferencia directa de redes Wi-Fi hogareñas"],
+        correcta: 1,
+        explicacion: "Correcto! Los cambios de temperatura y humedad en la tropósfera generan inversión térmica y multicamino, afectando la recepción del radioenlace."
+      },
+      {
+        pregunta: "¿Cuál es una ventaja principal de un servicio EPL (Ethernet Private Line) frente al acceso a internet convencional?",
+        opciones: ["Ancho de banda dedicado y simétrico con aislamiento total de Capa 2", "Direccionamiento IP público ilimitado gratuito", "Velocidad compartida con prioridad dinámica", "Independencia total de la infraestructura física"],
         correcta: 0,
         explicacion: "Correcto! EPL garantiza un enlace dedicado punto a punto con ancho de banda simétrico y baja latencia sin contención de tráfico."
+      },
+      {
+        pregunta: "¿Qué indica un valor elevado de BER (Bit Error Rate) en un enlace digital de transmisión?",
+        opciones: ["Excelente calidad de la señal y ancho de banda al máximo", "Alta tasa de errores de bits corrompidos en la transmisión, requiriendo revisión física", "Que el equipo se encuentra en modo de ahorro de energía", "Que la sincronización horaria NTP es perfecta"],
+        correcta: 1,
+        explicacion: "Correcto! Un BER alto denota degradación en el medio físico (ruido, atenuación o interferencia), provocando retransmisiones y pérdida de paquetes."
+      },
+      {
+        pregunta: "En una red GPON, ¿cómo se evita la colisión de datos en el sentido ascendente (upstream) desde múltiples ONUs hacia la OLT?",
+        opciones: ["Mediante un switch Ethernet Gigabit intermedio", "A través de un esquema de Acceso Múltiple por División de Tiempo (TDMA)", "Asignando frecuencias de radio distintas a cada abonado", "Mediante la modulación QAM de alta densidad"],
+        correcta: 1,
+        explicacion: "Correcto! La OLT asigna a cada ONU una ranura de tiempo estricta (TDMA) para transmitir sus datos upstream de manera ordenada y sin colisiones."
       }
     ];
 
@@ -638,7 +673,7 @@
       expDiv.style.display = 'block';
 
       if (seleccionada === q.correcta) {
-        quizScore += 20;
+        quizScore += 10;
         document.getElementById('quizPuntaje').innerText = quizScore;
         expDiv.style.borderLeftColor = '#22c55e';
         expDiv.innerHTML = `✅ ¡Correcto! ${q.explicacion}`;
@@ -663,7 +698,7 @@
             <span style="font-size: 2rem;">🏆</span>
             <h3 style="color:var(--accent); margin:0;">¡Trivia Completada!</h3>
             <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Tu puntaje final es de <strong>${quizScore} / 100</strong> puntos.</p>
-            <button onclick="reiniciarQuiz()" style="background:var(--antel-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:10px;">🔄 Volver a Intentar</button>
+            <button onclick="playPop(); reiniciarQuiz()" style="background:var(--antel-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:10px;">🔄 Volver a Intentar</button>
           </div>`;
         playWelcome();
       }
@@ -673,7 +708,7 @@
       currentQuizIndex = 0;
       quizScore = 0;
       document.getElementById('quizPuntaje').innerText = '0';
-      location.reload(); 
+      cargarPreguntaQuiz();
     }
 
     // 🔊 AUDIO Y FUNCIONES DE DATOS
@@ -754,6 +789,24 @@
       } catch(e) {}
     }
 
+    function playLogoutSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        [659.25, 523.25, 329.63].forEach((freq, index) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const startTime = now + (index * 0.09);
+          osc.frequency.setValueAtTime(freq, startTime);
+          gain.gain.setValueAtTime(0.2, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.25);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(startTime); osc.stop(startTime + 0.25);
+        });
+      } catch(e) {}
+    }
+
     function playWindowsSuccess() {
       try {
         const ctx = getAudioContext();
@@ -807,6 +860,15 @@
         toggleCoverEyes(false);
         setTimeout(() => err.style.display = 'none', 2500);
       }
+    }
+
+    function cerrarSesion() {
+      playLogoutSound();
+      sessionStorage.removeItem('cmt_auth');
+      setTimeout(() => {
+        document.getElementById('pinInput').value = '';
+        document.getElementById('lockScreen').style.display = 'flex';
+      }, 300);
     }
 
     document.getElementById('pinInput').addEventListener('keypress', function (e) {
@@ -899,7 +961,7 @@
         actualizarUI(datosGlobales, time);
         playWindowsSuccess();
       } else {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#ef4444; padding: 25px;">❌ Error de conexión con la API.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--red); padding: 25px;">❌ Error de conexión con la API.</td></tr>';
       }
     }
 
