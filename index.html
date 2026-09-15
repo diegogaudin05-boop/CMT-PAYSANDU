@@ -348,68 +348,68 @@
   <!-- ========================================== -->
 <!-- BLOQUE DINÁMICO: TIPS CARRIER VS QUIZ      -->
 <!-- ========================================== -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-7xl mx-auto mb-6">
+<div id="nocDualContainer" style="display: flex; gap: 16px; max-width: 1200px; margin: 0 auto 16px auto; flex-wrap: wrap;">
   
   <!-- Panel Izquierdo: 30 Tips Técnicos Carrier (ANTEL) -->
-  <div id="panel-tips" class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 transition-all duration-500 flex flex-col shadow-xl cursor-pointer hover:border-cyan-500" onclick="expandSection('tips')">
-    <div class="flex justify-between items-center mb-3">
-      <div class="flex items-center space-x-2">
-        <span class="text-xl">📚</span>
-        <h3 class="text-md font-bold text-cyan-400">30 Tips Técnicos Carrier (ANTEL)</h3>
+  <div id="panel-tips" style="flex: 1; min-width: 280px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 20px; transition: all 0.4s ease; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" onclick="expandSection('tips')">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.2rem;">📚</span>
+        <h3 style="margin: 0; font-size: 0.95rem; font-weight: bold; color: #38bdf8;">30 Tips Técnicos Carrier (ANTEL)</h3>
       </div>
-      <span id="badge-tips" class="text-[11px] px-2.5 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-medium">Desplegado por defecto</span>
+      <span id="badge-tips" style="font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(8, 47, 73, 0.9); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 600;">Desplegado por defecto</span>
     </div>
     
-    <div id="content-tips" class="space-y-2.5 text-xs text-slate-300 overflow-y-auto max-h-[400px] pr-1">
-      <p class="text-[11px] text-slate-400 italic mb-2">Base de conocimiento aplicada sobre infraestructura crítica: ZTE C600, Huawei NE40E/8000, Ciena 6500 R, Alcatel-Lucent 1830 PSS y transceptores ópticos.</p>
+    <div id="content-tips" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem; color: #cbd5e1; max-height: 380px; overflow-y: auto; padding-right: 4px;">
+      <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: #94a3b8; font-style: italic;">Base de conocimiento aplicada sobre infraestructura crítica: ZTE C600, Huawei NE40E/8000, Ciena 6500 R, Alcatel-Lucent 1830 PSS y transceptores ópticos.</p>
       
-      <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800">
-        <strong class="text-cyan-300">Tip 01 (ZTE C600):</strong> Verificación de umbrales ópticos en tarjetas PON clase C+ y control de potencia en OLT.
+      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <strong style="color: #38bdf8;">Tip 01 (ZTE C600):</strong> Verificación de umbrales ópticos en tarjetas PON clase C+ y control de potencia en OLT.
       </div>
-      <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800">
-        <strong class="text-cyan-300">Tip 08 (Huawei NE40E):</strong> Diagnóstico de estados BFD y convergencia de rutas en el core de transporte.
+      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <strong style="color: #38bdf8;">Tip 08 (Huawei NE40E):</strong> Diagnóstico de estados BFD y convergencia de rutas en el core de transporte.
       </div>
-      <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800">
-        <strong class="text-cyan-300">Tip 15 (Ciena 6500 R):</strong> Monitoreo de canales ROADM y gestión de longitudes de onda en DWDM.
+      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <strong style="color: #38bdf8;">Tip 15 (Ciena 6500 R):</strong> Monitoreo de canales ROADM y gestión de longitudes de onda en DWDM.
       </div>
-      <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800">
-        <strong class="text-cyan-300">Tip 22 (Alcatel-Lucent 1830 PSS):</strong> Comprobación de alarmas OLS y optimización de amplificadores Raman/EDFA.
+      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <strong style="color: #38bdf8;">Tip 22 (Alcatel-Lucent 1830 PSS):</strong> Comprobación de alarmas OLS y optimización de amplificadores Raman/EDFA.
       </div>
-      <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800">
-        <strong class="text-cyan-300">Tip 30 (SFPs / Transceptores):</strong> Análisis DDM/DOM para prevenir degradación de potencia RX/TX.
+      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <strong style="color: #38bdf8;">Tip 30 (SFPs / Transceptores):</strong> Análisis DDM/DOM para prevenir degradación de potencia RX/TX.
       </div>
     </div>
   </div>
 
   <!-- Panel Derecho: Quiz Multinivel Progresivo (30 Preguntas) -->
-  <div id="panel-quiz" class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 transition-all duration-500 flex flex-col shadow-xl cursor-pointer hover:border-amber-500" onclick="expandSection('quiz')">
-    <div class="flex justify-between items-center mb-3">
-      <div class="flex items-center space-x-2">
-        <span class="text-xl">⚡</span>
-        <h3 class="text-md font-bold text-amber-400">Quiz Multinivel (30 Preguntas)</h3>
+  <div id="panel-quiz" style="flex: 1; min-width: 280px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 20px; transition: all 0.4s ease; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" onclick="expandSection('quiz')">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.2rem;">⚡</span>
+        <h3 style="margin: 0; font-size: 0.95rem; font-weight: bold; color: #f59e0b;">Quiz Multinivel (30 Preguntas)</h3>
       </div>
-      <span id="badge-quiz" class="text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-medium">Hacer clic para expandir</span>
+      <span id="badge-quiz" style="font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(30, 41, 59, 0.9); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Hacer clic para expandir</span>
     </div>
 
-    <div id="content-quiz" class="space-y-3 text-xs text-slate-300">
-      <p class="text-[11px] text-slate-400">Evaluación técnica avanzada dividida en 3 niveles progresivos para ingenieros de guardia:</p>
+    <div id="content-quiz" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem; color: #cbd5e1;">
+      <p style="margin: 0; font-size: 0.75rem; color: #94a3b8;">Evaluación técnica avanzada dividida en 3 niveles progresivos para ingenieros de guardia:</p>
       
-      <div class="grid grid-cols-3 gap-2 text-center my-2">
-        <div class="p-2 bg-slate-950 rounded-lg border border-emerald-500/40">
-          <div class="text-[11px] text-emerald-400 font-bold">Nivel 1</div>
-          <div class="text-[10px] text-slate-400">5 Preguntas (Calentamiento)</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; margin: 4px 0;">
+        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.4);">
+          <div style="font-size: 0.75rem; color: #34d399; font-weight: bold;">Nivel 1</div>
+          <div style="font-size: 0.65rem; color: #94a3b8;">5 Preguntas</div>
         </div>
-        <div class="p-2 bg-slate-950 rounded-lg border border-amber-500/40">
-          <div class="text-[11px] text-amber-400 font-bold">Nivel 2</div>
-          <div class="text-[10px] text-slate-400">10 Preguntas (Intermedio)</div>
+        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.4);">
+          <div style="font-size: 0.75rem; color: #fbbf24; font-weight: bold;">Nivel 2</div>
+          <div style="font-size: 0.65rem; color: #94a3b8;">10 Preguntas</div>
         </div>
-        <div class="p-2 bg-slate-950 rounded-lg border border-rose-500/40">
-          <div class="text-[11px] text-rose-400 font-bold">Nivel 3</div>
-          <div class="text-[10px] text-slate-400">15 Preguntas (Experto Guardia)</div>
+        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(244, 63, 94, 0.4);">
+          <div style="font-size: 0.75rem; color: #fb7185; font-weight: bold;">Nivel 3</div>
+          <div style="font-size: 0.65rem; color: #94a3b8;">15 Preguntas</div>
         </div>
       </div>
 
-      <div class="p-2.5 bg-amber-950/30 border border-amber-800/40 rounded-lg text-[11px] text-amber-200">
+      <div style="padding: 10px; background: rgba(69, 26, 3, 0.3); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; font-size: 0.75rem; color: #fde68a;">
         💡 <strong>Dinámica:</strong> Al hacer clic aquí, este panel se expande para mostrar el cuestionario interactivo completo de FTTH, Agregación y Transporte.
       </div>
     </div>
@@ -418,7 +418,7 @@
 </div>
 
 <script>
-  // Lógica de acordeón cruzado (expande uno y contrae el otro)
+  // Lógica de acordeón cruzado adaptada con Flexbox puro
   function expandSection(section) {
     const panelTips = document.getElementById('panel-tips');
     const panelQuiz = document.getElementById('panel-quiz');
@@ -426,22 +426,36 @@
     const badgeQuiz = document.getElementById('badge-quiz');
 
     if (section === 'quiz') {
-      panelQuiz.classList.remove('lg:col-span-1');
-      panelQuiz.classList.add('lg:col-span-2');
+      panelQuiz.style.flex = '2.5';
+      panelTips.style.flex = '1';
       panelTips.style.opacity = '0.5';
       panelTips.style.transform = 'scale(0.98)';
-      badgeQuiz.className = 'text-[11px] px-2.5 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-medium';
+      panelQuiz.style.transform = 'scale(1)';
+      
+      badgeQuiz.style.background = 'rgba(69, 26, 3, 0.9)';
+      badgeQuiz.style.color = '#fde68a';
+      badgeQuiz.style.borderColor = 'rgba(245, 158, 11, 0.5)';
       badgeQuiz.innerText = 'Expandido (Activo)';
-      badgeTips.className = 'text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-medium';
+
+      badgeTips.style.background = 'rgba(30, 41, 59, 0.9)';
+      badgeTips.style.color = '#94a3b8';
+      badgeTips.style.borderColor = 'rgba(255,255,255,0.1)';
       badgeTips.innerText = 'Hacer clic para volver';
     } else {
-      panelQuiz.classList.remove('lg:col-span-2');
-      panelQuiz.classList.add('lg:col-span-1');
+      panelQuiz.style.flex = '1';
+      panelTips.style.flex = '2.5';
       panelTips.style.opacity = '1';
       panelTips.style.transform = 'scale(1)';
-      badgeTips.className = 'text-[11px] px-2.5 py-1 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-800 font-medium';
+      panelQuiz.style.transform = 'scale(0.98)';
+
+      badgeTips.style.background = 'rgba(8, 47, 73, 0.9)';
+      badgeTips.style.color = '#38bdf8';
+      badgeTips.style.borderColor = 'rgba(56, 189, 248, 0.4)';
       badgeTips.innerText = 'Desplegado por defecto';
-      badgeQuiz.className = 'text-[11px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-medium';
+
+      badgeQuiz.style.background = 'rgba(30, 41, 59, 0.9)';
+      badgeQuiz.style.color = '#94a3b8';
+      badgeQuiz.style.borderColor = 'rgba(255,255,255,0.1)';
       badgeQuiz.innerText = 'Hacer clic para expandir';
     }
   }
