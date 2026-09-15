@@ -280,6 +280,55 @@
     </div>
   </div>
 
+  <!-- 🧠 MÓDULO DE QUIZ Y CÁPSULAS TÉCNICAS DE REDES -->
+  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0, 114, 206, 0.2);">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.2rem;">🧠</span>
+        <div>
+          <span style="font-weight: bold; font-size: 0.9rem; color: var(--accent);">NOC Training & Network Trivia</span>
+          <span style="display: block; font-size: 0.65rem; color: var(--text-muted);">Cápsulas informativas y test de redes</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button onclick="playPop(); cambiarModoQuiz('info')" id="btnModoInfo" style="background: var(--antel-blue); color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">💡 Tips Técnicos</button>
+        <button onclick="playPop(); cambiarModoQuiz('quiz')" id="btnModoQuiz" style="background: rgba(30,58,138,0.6); color: var(--text-muted); border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">🎯 Trivia de Redes</button>
+      </div>
+    </div>
+
+    <!-- CONTENEDOR MODO INFORMATIVO (TIPS) -->
+    <div id="quizModoInfo" style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
+      <div id="infoTipText" style="background: rgba(8, 13, 26, 0.6); border-left: 3px solid var(--accent); padding: 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; line-height: 1.4;">
+        Cargando cápsula de ingeniería...
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span id="infoTipCategory" style="font-size: 0.7rem; color: var(--green); font-weight: bold;">⚡ OSP / Fibra Óptica</span>
+        <button onclick="playPop(); siguienteTip()" style="background: #1e3a8a; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;">Siguiente Tip ➡️</button>
+      </div>
+    </div>
+
+    <!-- CONTENEDOR MODO TEST / QUIZ -->
+    <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+        <span id="quizPreguntaNum">Pregunta 1 de 5</span>
+        <span>Puntaje: <strong id="quizPuntaje" style="color: var(--green);">0</strong></span>
+      </div>
+      
+      <div id="quizPreguntaTexto" style="font-weight: bold; color: #fff; font-size: 0.85rem;">
+        ¿Cuál es la longitud de onda estándar utilizada en redes GPON de Antel para la bajada (downstream) de datos hacia el cliente?
+      </div>
+
+      <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+        <!-- Se inyectan dinámicamente -->
+      </div>
+
+      <div id="quizExplicacion" style="display: none; background: rgba(15, 23, 42, 0.9); padding: 8px; border-radius: 6px; font-size: 0.75rem; color: #cbd5e1; border-left: 3px solid var(--green);">
+      </div>
+
+      <button id="quizBtnSiguiente" onclick="playPop(); siguientePreguntaQuiz()" style="background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-top: 4px;">Siguiente Pregunta ➡️</button>
+    </div>
+  </div>
+
   <div class="kpi-container">
     <div class="kpi-card"><span class="kpi-title">⚡ Total Servicios</span><span class="kpi-value" id="kpiServicios">0</span></div>
     <div class="kpi-card"><span class="kpi-title"><span class="anim-modem">🛜</span> Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
@@ -383,7 +432,6 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Estrellas y partículas de fondo
     const stars = Array.from({ length: 60 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -392,14 +440,11 @@
       speed: Math.random() * 0.2 + 0.05
     }));
 
-    // Ondas de radio propagándose desde la torre
     let waveRadius = 0;
-    const maxWaveRadius = Math.max(window.innerWidth, window.innerHeight);
 
     function drawRadioTowerScene() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. Dibujar estrellas / partículas de espacio tecnológico
       ctx.fillStyle = '#38bdf8';
       stars.forEach(s => {
         ctx.globalAlpha = s.alpha;
@@ -413,7 +458,6 @@
       const centerX = canvas.width / 2;
       const towerTopY = canvas.height * 0.32;
 
-      // 2. Dibujar ondas concéntricas de radio en bucle (inspirado en la imagen)
       ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
       ctx.lineWidth = 1.8;
       for (let i = 0; i < 5; i++) {
@@ -421,12 +465,11 @@
         let alpha = Math.max(0, 1 - (r / 550));
         ctx.globalAlpha = alpha * 0.6;
         ctx.beginPath();
-        ctx.arc(centerX, towerTopY, r, Math.PI, 2 * Math.PI); // Arcos superiores hacia el cielo
+        ctx.arc(centerX, towerTopY, r, Math.PI, 2 * Math.PI);
         ctx.stroke();
       }
       waveRadius += 1.2;
 
-      // 3. Dibujar la estructura de la torre de celosía holográfica en el centro inferior
       const baseWidth = 140;
       const towerHeight = canvas.height * 0.65;
       const baseY = canvas.height + 20;
@@ -434,7 +477,6 @@
       ctx.strokeStyle = 'rgba(0, 114, 206, 0.55)';
       ctx.lineWidth = 1.2;
 
-      // Líneas verticales de la torre
       ctx.beginPath();
       ctx.moveTo(centerX, towerTopY);
       ctx.lineTo(centerX - baseWidth/2, baseY);
@@ -442,7 +484,6 @@
       ctx.lineTo(centerX + baseWidth/2, baseY);
       ctx.stroke();
 
-      // Entrelazado de celosía (triángulos de la torre)
       let steps = 12;
       for (let j = 0; j < steps; j++) {
         let y1 = towerTopY + (towerHeight / steps) * j;
@@ -455,34 +496,187 @@
         ctx.lineTo(centerX + w2/2, y2);
         ctx.moveTo(centerX + w1/2, y1);
         ctx.lineTo(centerX - w2/2, y2);
-        // Travesaños horizontales
         ctx.moveTo(centerX - w1/2, y1);
         ctx.lineTo(centerX + w1/2, y1);
         ctx.stroke();
       }
 
-      // Antenas laterales (Parabólicas)
       ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
       ctx.beginPath();
       ctx.ellipse(centerX - 42, towerTopY + 90, 12, 6, Math.PI / 4, 0, Math.PI * 2);
       ctx.ellipse(centerX + 42, towerTopY + 90, 12, 6, -Math.PI / 4, 0, Math.PI * 2);
       ctx.fill();
 
-      // Vértice superior brillante
       ctx.shadowBlur = 15;
       ctx.shadowColor = '#38bdf8';
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(centerX, towerTopY, 3.5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0; // Reset sombra
+      ctx.shadowBlur = 0;
 
       requestAnimationFrame(drawRadioTowerScene);
     }
     drawRadioTowerScene();
 
+    // 🧠 LÓGICA DE TIPS Y TRIVIA TÉCNICA
+    const networkTips = [
+      { cat: "⚡ GPON / FTTH", text: "En las redes GPON de Antel, las longitudes de onda estándar son 1490 nm para datos downstream (bajada) y 1310 nm para upstream (subida), reservándose 1550 nm para servicios de CATV RF overlay." },
+      { cat: "📡 Radioenlaces / Microondas", text: "Los radioenlaces digitales en alta disponibilidad utilizan esquemas de modulación adaptativa (ACM) como QAM-256 o QAM-1024 para maximizar el throughput según las condiciones climáticas y el desvanecimiento por trayecto." },
+      { cat: "🖧 Conmutación y VLANs", text: "El estándar IEEE 802.1Q agrega una etiqueta (tag) de 4 bytes a la trama Ethernet original, permitiendo gestionar hasta 4,094 VLANs simultáneas en los switches de agregación (AGG)." },
+      { cat: "🔗 Enlaces EPL (Ethernet Private Line)", text: "Un servicio EPL proporciona una conexión Ethernet punto a punto dedicada con ancho de banda garantizado y transparencia total de protocolos de Capa 2 entre las puntas del cliente." },
+      { cat: "🔍 Operación y Herramientas NOC", text: "Monitorear métricas de BER (Bit Error Rate), niveles ópticos de RX/TX en OLTs/ONUs y tablas MAC/ARP es fundamental para la rápida detección preventiva de degradaciones de planta externa." }
+    ];
 
-    // 🔊 MOTOR DE AUDIO NATIVO Y LÓGICA ANTERIOR
+    const networkQuiz = [
+      {
+        pregunta: "¿Cuál es la longitud de onda estándar utilizada en GPON para el canal de bajada (downstream) hacia el abonado?",
+        opciones: ["1310 nm", "1490 nm", "1550 nm", "850 nm"],
+        correcta: 1,
+        explicacion: "Correcto! 1490 nm se utiliza para downstream de datos, 1310 nm para upstream y 1550 nm para video analógico/RF."
+      },
+      {
+        pregunta: "¿Qué especifica el estándar IEEE 802.1Q en redes de área local?",
+        opciones: ["El protocolo de enrutamiento OSPF", "El etiquetado de VLANs en tramas Ethernet", "La alimentación PoE en puertos Gigabit", "La agregación de enlaces físicos (Trunking LACP)"],
+        correcta: 1,
+        explicacion: "Correcto! 802.1Q define el mecanismo de etiquetado (VLAN tagging) en las tramas Ethernet para segmentación de tráfico."
+      },
+      {
+        pregunta: "En transmisión por fibra óptica monomodo estándar (G.652), ¿en qué ventana se registra la menor atenuación teórica?",
+        opciones: ["Ventana de 850 nm", "Ventana de 1310 nm", "Ventana de 1550 nm", "Ventana de 650 nm"],
+        correcta: 2,
+        explicacion: "Correcto! La ventana de 1550 nm ofrece la menor atenuación en fibra monomodo estándar (aprox. 0.2 dB/km), ideal para larga distancia."
+      },
+      {
+        pregunta: "¿Qué función cumple principalmente un puerto de agregación (AGG) en la arquitectura de red?",
+        opciones: ["Alimentar energía a los equipos de radio", "Concentrar el tráfico de múltiples accesos y enrutar hacia el core", "Convertir señales eléctricas a satelitales", "Monitorear la temperatura de la central"],
+        correcta: 1,
+        explicacion: "Correcto! Los nodos de agregación concentran el tráfico proveniente de las distintas tecnologías de acceso para transportarlo eficientemente al núcleo de la red."
+      },
+      {
+        pregunta: "¿Cuál es una ventaja principal de un servicio EPL (Ethernet Private Line frente a internet convencional?",
+        opciones: ["Ancho de banda dedicado y simétrico con aislamiento total", "Direccionamiento IP público ilimitado gratuito", "Velocidad compartida con prioridad dinámica", "Independencia total de la infraestructura física"],
+        correcta: 0,
+        explicacion: "Correcto! EPL garantiza un enlace dedicado punto a punto con ancho de banda simétrico y baja latencia sin contención de tráfico."
+      }
+    ];
+
+    let currentTipIndex = 0;
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+
+    function cambiarModoQuiz(modo) {
+      const infoBox = document.getElementById('quizModoInfo');
+      const testBox = document.getElementById('quizModoTest');
+      const btnInfo = document.getElementById('btnModoInfo');
+      const btnTest = document.getElementById('btnModoQuiz');
+
+      if (modo === 'info') {
+        infoBox.style.display = 'flex';
+        testBox.style.display = 'none';
+        btnInfo.style.background = 'var(--antel-blue)';
+        btnInfo.style.color = '#fff';
+        btnTest.style.background = 'rgba(30,58,138,0.6)';
+        btnTest.style.color = 'var(--text-muted)';
+        mostrarTipActual();
+      } else {
+        infoBox.style.display = 'none';
+        testBox.style.display = 'flex';
+        btnTest.style.background = 'var(--antel-blue)';
+        btnTest.style.color = '#fff';
+        btnInfo.style.background = 'rgba(30,58,138,0.6)';
+        btnInfo.style.color = 'var(--text-muted)';
+        cargarPreguntaQuiz();
+      }
+    }
+
+    function mostrarTipActual() {
+      const tip = networkTips[currentTipIndex];
+      document.getElementById('infoTipText').innerText = tip.text;
+      document.getElementById('infoTipCategory').innerText = tip.cat;
+    }
+
+    function siguienteTip() {
+      currentTipIndex = (currentTipIndex + 1) % networkTips.length;
+      mostrarTipActual();
+    }
+
+    function cargarPreguntaQuiz() {
+      const q = networkQuiz[currentQuizIndex];
+      document.getElementById('quizPreguntaNum').innerText = `Pregunta ${currentQuizIndex + 1} de ${networkQuiz.length}`;
+      document.getElementById('quizPreguntaTexto').innerText = q.pregunta;
+      document.getElementById('quizExplicacion').style.display = 'none';
+      document.getElementById('quizBtnSiguiente').style.display = 'none';
+
+      const opcionesDiv = document.getElementById('quizOpciones');
+      opcionesDiv.innerHTML = '';
+
+      q.opciones.forEach((opcion, index) => {
+        opcionesDiv.innerHTML += `
+          <button onclick="responderQuiz(${index})" style="background: rgba(15,23,42,0.8); border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; font-size: 0.78rem; text-align: left; cursor: pointer; transition: 0.2s;" class="quiz-op-btn">
+            ${index + 1}. ${opcion}
+          </button>`;
+      });
+    }
+
+    function responderQuiz(seleccionada) {
+      const q = networkQuiz[currentQuizIndex];
+      const botones = document.querySelectorAll('.quiz-op-btn');
+      
+      botones.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.correcta) {
+          btn.style.background = 'rgba(34, 197, 94, 0.25)';
+          btn.style.borderColor = '#22c55e';
+        } else if (idx === seleccionada && seleccionada !== q.correcta) {
+          btn.style.background = 'rgba(239, 68, 68, 0.25)';
+          btn.style.borderColor = '#ef4444';
+        }
+      });
+
+      const expDiv = document.getElementById('quizExplicacion');
+      expDiv.style.display = 'block';
+
+      if (seleccionada === q.correcta) {
+        quizScore += 20;
+        document.getElementById('quizPuntaje').innerText = quizScore;
+        expDiv.style.borderLeftColor = '#22c55e';
+        expDiv.innerHTML = `✅ ¡Correcto! ${q.explicacion}`;
+        playPop();
+      } else {
+        expDiv.style.borderLeftColor = '#ef4444';
+        expDiv.innerHTML = `❌ Incorrecto. ${q.explicacion}`;
+        playErrorSound();
+      }
+
+      document.getElementById('quizBtnSiguiente').style.display = 'block';
+    }
+
+    function siguientePreguntaQuiz() {
+      currentQuizIndex++;
+      if (currentQuizIndex < networkQuiz.length) {
+        cargarPreguntaQuiz();
+      } else {
+        const testBox = document.getElementById('quizModoTest');
+        testBox.innerHTML = `
+          <div style="text-align:center; padding: 20px; display:flex; flex-direction:column; gap:10px;">
+            <span style="font-size: 2rem;">🏆</span>
+            <h3 style="color:var(--accent); margin:0;">¡Trivia Completada!</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Tu puntaje final es de <strong>${quizScore} / 100</strong> puntos.</p>
+            <button onclick="reiniciarQuiz()" style="background:var(--antel-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:10px;">🔄 Volver a Intentar</button>
+          </div>`;
+        playWelcome();
+      }
+    }
+
+    function reiniciarQuiz() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      document.getElementById('quizPuntaje').innerText = '0';
+      location.reload(); 
+    }
+
+    // 🔊 AUDIO Y FUNCIONES DE DATOS
     const API_URL = "https://script.google.com/macros/s/AKfycbyRK9V5hx0DNsJjcsX4evEKF9PyN8Kh4JvGX9HXgn3PIoOsO2JxtLm6zWr8IJ5YCrte/exec"; 
     let datosGlobales = [];
     let audioCtx = null;
@@ -595,6 +789,7 @@
         obtenerDatos();
       }
       calcularIP();
+      mostrarTipActual();
     });
 
     function verificarPin() {
