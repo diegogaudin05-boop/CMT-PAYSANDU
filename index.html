@@ -445,40 +445,91 @@
       <button class="dropbtn dropbtn-red" onclick="cerrarSesion()" title="Cerrar Sesión">🚪 Salir</button>
     </div>
   </div>
-<!-- 🧠 MÓDULO DE 30 TIPS TÉCNICOS CARRIER -->
-  <div class="tips-vault-box">
-    <div class="tips-header">
-      <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
-      <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
+
+  <!-- ========================================== -->
+<!-- BLOQUE COMPACTO: TIPS EN LÍNEA & QUIZ OCULTO -->
+<!-- ========================================== -->
+<div style="max-width: 1200px; margin: 0 auto 16px auto; display: flex; flex-direction: column; gap: 10px;">
+
+  <!-- 1. Barra de Tips Técnicos (Compacta, de a uno) -->
+  <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+      <span style="font-size: 1rem; flex-shrink: 0;">💡</span>
+      <div id="tip-container" style="font-size: 0.8rem; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        <strong style="color: #38bdf8;">Tip 01 (ZTE C600):</strong> Verificación de umbrales ópticos en tarjetas PON clase C+ y control de potencia en OLT.
+      </div>
     </div>
-    <div id="infoTipText" class="tips-content">
-      Cargando cápsula de ingeniería...
-    </div>
-    <div class="tips-footer">
-      <button class="tip-btn" onclick="anteriorTip()">⬅️ Anterior</button>
-      <button class="tip-btn" onclick="siguienteTip()">Siguiente ➡️</button>
+    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: 10px;">
+      <button onclick="cambiarTip(-1)" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;">◀</button>
+      <span id="tip-counter" style="font-size: 0.7rem; color: #94a3b8; min-width: 30px; text-align: center;">1/5</span>
+      <button onclick="cambiarTip(1)" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; border-radius: 6px; width: 26px; height: 26px; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;">▶</button>
     </div>
   </div>
+
+  <!-- 2. Panel de Quiz (Completamente colapsado y discreto) -->
+  <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
+    <div onclick="toggleQuizCompacto()" style="padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(30, 41, 59, 0.5);">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 0.9rem;">⚡</span>
+        <span style="font-size: 0.8rem; font-weight: 600; color: #fbbf24;">Quiz Multinivel (Opcional - 30 Preguntas)</span>
+      </div>
+      <span id="quiz-toggle-icon" style="font-size: 0.75rem; color: #94a3b8; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 10px;">Desplegar ▼</span>
+    </div>
+    
+    <div id="quiz-body-compacto" style="display: none; padding: 14px; background: rgba(2, 6, 23, 0.9); border-top: 1px solid rgba(245, 158, 11, 0.2); font-size: 0.8rem; color: #cbd5e1;">
+      <p style="margin: 0 0 10px 0; color: #94a3b8; font-size: 0.75rem;">Evaluación técnica avanzada dividida en 3 niveles progresivos para ingenieros de guardia:</p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 90px; padding: 8px; background: rgba(15, 23, 42, 0.9); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3); text-align: center;">
+          <div style="color: #34d399; font-weight: bold; font-size: 0.75rem;">Nivel 1</div>
+          <div style="color: #94a3b8; font-size: 0.65rem;">5 Preguntas</div>
+        </div>
+        <div style="flex: 1; min-width: 90px; padding: 8px; background: rgba(15, 23, 42, 0.9); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center;">
+          <div style="color: #fbbf24; font-weight: bold; font-size: 0.75rem;">Nivel 2</div>
+          <div style="color: #94a3b8; font-size: 0.65rem;">10 Preguntas</div>
+        </div>
+        <div style="flex: 1; min-width: 90px; padding: 8px; background: rgba(15, 23, 42, 0.9); border-radius: 8px; border: 1px solid rgba(244, 63, 94, 0.3); text-align: center;">
+          <div style="color: #fb7185; font-weight: bold; font-size: 0.75rem;">Nivel 3</div>
+          <div style="color: #94a3b8; font-size: 0.65rem;">15 Preguntas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Base de datos de tips técnicos reducida para rotación limpia
+  const tipsCarrier = [
+    '<strong style="color: #38bdf8;">Tip 01 (ZTE C600):</strong> Verificación de umbrales ópticos en tarjetas PON clase C+ y control de potencia en OLT.',
+    '<strong style="color: #38bdf8;">Tip 08 (Huawei NE40E):</strong> Diagnóstico de estados BFD y convergencia de rutas en el core de transporte.',
+    '<strong style="color: #38bdf8;">Tip 15 (Ciena 6500 R):</strong> Monitoreo de canales ROADM y gestión de longitudes de onda en DWDM.',
+    '<strong style="color: #38bdf8;">Tip 22 (Alcatel-Lucent 1830 PSS):</strong> Comprobación de alarmas OLS y optimización de amplificadores Raman/EDFA.',
+    '<strong style="color: #38bdf8;">Tip 30 (SFPs / Transceptores):</strong> Análisis DDM/DOM para prevenir degradación de potencia RX/TX.'
+  ];
   
- 
-    <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
-      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
-        <span id="quizPreguntaNum">Pregunta 1 de 15</span>
-        <span>Puntaje: <strong id="quizPuntaje" style="color: var(--green);">0</strong></span>
-      </div>
-      
-      <div id="quizPreguntaTexto" style="font-weight: bold; color: #fff; font-size: 0.85rem;">
-        Cargando pregunta...
-      </div>
+  let currentTipIndex = 0;
 
-      <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
+  function cambiarTip(direccion) {
+    currentTipIndex += direccion;
+    if (currentTipIndex >= tipsCarrier.length) currentTipIndex = 0;
+    if (currentTipIndex < 0) currentTipIndex = tipsCarrier.length - 1;
+    
+    document.getElementById('tip-container').innerHTML = tipsCarrier[currentTipIndex];
+    document.getElementById('tip-counter').innerText = `${currentTipIndex + 1}/${tipsCarrier.length}`;
+  }
 
-      <div id="quizExplicacion" style="display: none; background: rgba(15, 23, 42, 0.9); padding: 8px; border-radius: 6px; font-size: 0.75rem; color: #cbd5e1; border-left: 3px solid var(--green);"></div>
-
-      <button id="quizBtnSiguiente" onclick="playPop(); siguientePreguntaQuiz()" style="background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-top: 4px;">Siguiente Pregunta ➡️</button>
-    </div>
-  </div>
-
+  function toggleQuizCompacto() {
+    const body = document.getElementById('quiz-body-compacto');
+    const icon = document.getElementById('quiz-toggle-icon');
+    if (body.style.display === 'none' || body.style.display === '') {
+      body.style.display = 'block';
+      icon.innerText = 'Ocultar ▲';
+    } else {
+      body.style.display = 'none';
+      icon.innerText = 'Desplegar ▼';
+    }
+  }
+</script>
   <div class="kpi-container">
     <div class="kpi-card"><span class="kpi-title">⚡ Total Servicios</span><span class="kpi-value" id="kpiServicios">0</span></div>
     <div class="kpi-card"><span class="kpi-title"><span class="anim-modem">🛜</span> Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
