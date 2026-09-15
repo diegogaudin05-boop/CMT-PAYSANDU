@@ -11,11 +11,12 @@
   <style>
     :root {
       --bg: #040814;
-      --card: rgba(10, 17, 35, 0.85);
+      --card: rgba(10, 17, 35, 0.88);
       --card-header: rgba(26, 38, 65, 0.9);
-      --border: rgba(30, 58, 138, 0.6);
+      --border: rgba(56, 189, 248, 0.4);
       --antel-blue: #0072ce;
       --accent: #38bdf8;
+      --neon-orange: #ff5722;
       --green: #22c55e;
       --red: #ef4444;
       --text: #f1f5f9;
@@ -49,99 +50,124 @@
     /* PANTALLA DE ACCESO */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(4, 8, 20, 0.92); backdrop-filter: blur(8px); z-index: 99999;
+      background: rgba(4, 8, 20, 0.94); backdrop-filter: blur(10px); z-index: 99999;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 20px;
     }
     .lock-box {
-      background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); padding: 25px 20px;
-      border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(0, 114, 206, 0.4);
-      max-width: 340px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
+      background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); padding: 25px 20px;
+      border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(56, 189, 248, 0.35);
+      max-width: 350px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
-    .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; }
+    .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
 
     .access-visual {
-      display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; width: 100%; padding: 5px 0;
+      display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
 
-    /* 🗼 TORRE DE TELECOMUNICACIONES DETALLADA (BASADA EN FOTO) */
-    .telecom-tower {
+    /* 🗼 NUEVA TORRE VECTORIAL FUTURISTA (ESTILO ILUSTRACIÓN VECTOR) */
+    .vector-tower-container {
       position: relative;
-      width: 65px;
-      height: 105px;
+      width: 75px;
+      height: 110px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    /* ONDAS DE RADIO LATERALES */
-    .wave-side {
+
+    /* ONDA WI-FI FLOTANTE ANIMADA */
+    .floating-wifi-icon {
       position: absolute;
+      left: -22px;
       top: 15px;
-      width: 16px;
-      height: 30px;
-      border: 2px solid var(--accent);
+      font-size: 1.2rem;
+      animation: floatWifi 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px var(--accent));
+    }
+    @keyframes floatWifi {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+      50% { transform: translateY(-6px) scale(1.15); opacity: 1; }
+    }
+
+    .orbit-dot-1, .orbit-dot-2 {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
       border-radius: 50%;
-      animation: sideWavePulse 1.4s infinite linear;
-      opacity: 0;
+      box-shadow: 0 0 6px var(--accent);
     }
-    .wave-left { left: -14px; border-right: none; border-top: none; border-bottom: none; }
-    .wave-right { right: -14px; border-left: none; border-top: none; border-bottom: none; }
+    .orbit-dot-1 { right: -12px; top: 35px; animation: orbitPulse 1.5s infinite alternate; }
+    .orbit-dot-2 { left: -8px; bottom: 30px; animation: orbitPulse 2s infinite alternate; background: var(--neon-orange); }
 
-    @keyframes sideWavePulse {
-      0% { transform: scale(0.6); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: scale(1.4); opacity: 0; }
+    @keyframes orbitPulse {
+      0% { transform: scale(0.8); opacity: 0.4; }
+      100% { transform: scale(1.4); opacity: 1; }
     }
 
-    /* CÚPULA SUPERIOR Y ANTENAS */
-    .tower-top-dome {
+    /* ANTENAS LATERALES COLOR NARANJA/CORAL FUTURISTA */
+    .vector-panel-left, .vector-panel-right {
       position: absolute;
-      top: 0;
-      width: 24px;
-      height: 16px;
-      background: linear-gradient(135deg, #cbd5e1, #64748b);
-      border-radius: 50% 50% 20% 20%;
-      border: 1px solid #fff;
-      box-shadow: 0 0 8px var(--accent);
+      top: 14px;
+      width: 9px;
+      height: 28px;
+      background: linear-gradient(135deg, #ff7043, #d84315);
+      border-radius: 4px;
+      border: 1px solid #ffccbc;
+      box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+      animation: panelGlow 2s infinite alternate;
     }
-    .tower-spire {
+    .vector-panel-left { left: 12px; }
+    .vector-panel-right { right: 12px; }
+
+    @keyframes panelGlow {
+      0% { box-shadow: 0 0 5px rgba(255, 87, 34, 0.4); }
+      100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.9); }
+    }
+
+    /* MÁSTILES SUPERIORES GEMELOS */
+    .vector-spire-left, .vector-spire-right {
       position: absolute;
-      top: -10px;
+      top: 2px;
       width: 2px;
-      height: 12px;
-      background: #38bdf8;
+      height: 16px;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
     }
-    .panel-antenna-left, .panel-antenna-right {
-      position: absolute;
-      top: 18px;
-      width: 6px;
-      height: 22px;
-      background: linear-gradient(90deg, #94a3b8, #f1f5f9);
-      border-radius: 3px;
-      border: 1px solid #0072ce;
-    }
-    .panel-antenna-left { left: 10px; }
-    .panel-antenna-right { right: 10px; }
+    .vector-spire-left { left: 32px; }
+    .vector-spire-right { right: 32px; }
 
-    /* ESTRUCTURA CELOSÍA ROJA Y BLANCA */
-    .tower-lattice {
+    /* ESTRUCTURA RETICULADA ROJA Y BLANCA GEOMÉTRICA */
+    .vector-lattice-body {
       position: absolute;
       bottom: 0;
-      width: 28px;
-      height: 85px;
-      background: repeating-linear-gradient(45deg, #ef4444, #ef4444 6px, #ffffff 6px, #ffffff 12px);
+      width: 32px;
+      height: 82px;
+      background: repeating-linear-gradient(45deg, #ef4444, #ef4444 7px, #ffffff 7px, #ffffff 14px);
       border-left: 2px solid #b91c1c;
       border-right: 2px solid #b91c1c;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
-      clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.8), 0 0 15px rgba(239, 68, 68, 0.4);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+
+    /* NUBE INFERIOR VECTORIAL ESTILO ILUSTRACIÓN */
+    .vector-cloud-base {
+      position: absolute;
+      bottom: -4px;
+      width: 65px;
+      height: 18px;
+      background: rgba(255, 193, 7, 0.25);
+      border-radius: 50% 50% 10% 10%;
+      border-top: 1px solid rgba(255, 193, 7, 0.6);
+      box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
     }
 
     .avatar-container {
       position: relative; width: 75px; height: 75px;
-      background: radial-gradient(circle, rgba(0,114,206,0.3) 0%, rgba(15,23,42,0.8) 70%);
+      background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.85) 70%);
       border: 2px solid var(--border); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 20px rgba(0,114,206,0.3);
+      box-shadow: 0 0 25px rgba(56,189,248,0.3);
     }
     .avatar-face { font-size: 2.5rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .avatar-hands {
@@ -154,23 +180,23 @@
 
     .pin-input {
       font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 190px;
-      padding: 8px; background: rgba(8, 13, 26, 0.8); border: 1px solid var(--border);
-      color: #fff; border-radius: 10px; outline: none;
+      padding: 8px; background: rgba(8, 13, 26, 0.85); border: 1px solid var(--border);
+      color: #fff; border-radius: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
     .btn-pin {
-      background: var(--antel-blue); color: white; border: none; padding: 11px 20px;
+      background: linear-gradient(135deg, var(--antel-blue), #0284c7); color: white; border: none; padding: 11px 20px;
       font-size: 0.9rem; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;
-      box-shadow: 0 4px 12px rgba(0, 114, 206, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 114, 206, 0.5);
     }
     .error-pin { color: var(--red); font-size: 0.8rem; display: none; font-weight: bold; }
 
     /* PANEL PRINCIPAL NOC */
     .header-noc {
       display: flex; justify-content: space-between; align-items: center;
-      background: var(--card); backdrop-filter: blur(10px);
+      background: var(--card); backdrop-filter: blur(12px);
       border: 1px solid var(--border); padding: 10px 16px;
       border-radius: 14px; margin-bottom: 14px;
-      box-shadow: 0 0 20px rgba(0, 114, 206, 0.25);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
       flex-wrap: wrap; gap: 10px;
       position: relative;
       z-index: 50;
@@ -182,7 +208,7 @@
     .tower-icon { font-size: 1.8rem; display: inline-block; animation: pulseTower 2s infinite ease-in-out; }
     @keyframes pulseTower {
       0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
-      50% { transform: scale(1.15); filter: drop-shadow(0 0 10px var(--accent)); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 12px var(--accent)); }
       100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--accent)); }
     }
 
@@ -228,9 +254,9 @@
       min-width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
       border: 1px solid var(--accent); border-radius: 10px; z-index: 999999;
     }
-    .dropdown-content a { color: var(--text); padding: 12px 14px; text-decoration: none; display: block; font-size: 0.85rem; border-bottom: 1px solid rgba(30,58,138,0.3); }
+    .dropdown-content a { color: var(--text); padding: 12px 14px; text-decoration: none; display: block; font-size: 0.85rem; border-bottom: 1px solid rgba(56,189,248,0.2); }
     .dropdown-content a:last-child { border-bottom: none; }
-    .dropdown-content a:hover { background: rgba(0, 114, 206, 0.3); color: #38bdf8; }
+    .dropdown-content a:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; }
     .dropdown:hover .dropdown-content { display: block; }
 
     .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
@@ -264,7 +290,7 @@
 
     .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
-    input[type="text"]:focus { border-color: var(--accent); }
+    input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 8px rgba(56,189,248,0.4); }
 
     .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     button.btn-main { background: #0284c7; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
@@ -284,8 +310,8 @@
     .tool-box-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .floating-ball { animation: floatBall 3s infinite ease-in-out; }
     @keyframes floatBall {
-      0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0,114,206,0.6); }
-      50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(0,114,206,0.8); }
+      0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(56,189,248,0.6); }
+      50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(56,189,248,0.8); }
     }
   </style>
 </head>
@@ -293,18 +319,20 @@
 
   <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
 
-  <!-- PANTALLA DE ACCESO CON NUEVA TORRE INTERACTIVA -->
+  <!-- PANTALLA DE ACCESO CON NUEVA TORRE VECTORIAL FUTURISTA -->
   <div id="lockScreen">
     <div class="lock-box">
       <div class="access-visual">
-        <div class="telecom-tower" title="Torre de Telecomunicaciones Celular/Radioenlace">
-          <div class="wave-side wave-left"></div>
-          <div class="wave-side wave-right"></div>
-          <div class="tower-spire"></div>
-          <div class="tower-top-dome"></div>
-          <div class="panel-antenna-left"></div>
-          <div class="panel-antenna-right"></div>
-          <div class="tower-lattice"></div>
+        <div class="vector-tower-container" title="Torre Vectorial de Telecomunicaciones Avanzadas">
+          <div class="floating-wifi-icon">🛜</div>
+          <div class="orbit-dot-1"></div>
+          <div class="orbit-dot-2"></div>
+          <div class="vector-spire-left"></div>
+          <div class="vector-spire-right"></div>
+          <div class="vector-panel-left"></div>
+          <div class="vector-panel-right"></div>
+          <div class="vector-lattice-body"></div>
+          <div class="vector-cloud-base"></div>
         </div>
         <div id="avatarBox" class="avatar-container">
           <span class="avatar-face">👨🏻‍💻</span>
@@ -360,14 +388,14 @@
     </div>
   </div>
 
-  <!-- 🧠 MÓDULO AMPLIADO DE TIPS TÉCNICOS Y TRIVIA (HUAWEI NE40, ATN, CISCO, GPON, ETC.) -->
-  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(0, 114, 206, 0.2); position: relative; z-index: 1;">
+  <!-- 🧠 MÓDULO AMPLIADO DE TIPS TÉCNICOS Y TRIVIA (DWDM NOKIA/INFINERA, ZTE C300/C600, HUAWEI MA5200) -->
+  <div style="background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.2); position: relative; z-index: 1;">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 1.2rem;">🧠</span>
         <div>
-          <span style="font-weight: bold; font-size: 0.9rem; color: var(--accent);">NOC Training & Carrier Engineering Vault</span>
-          <span style="display: block; font-size: 0.65rem; color: var(--text-muted);">Cápsulas de Huawei NE40, ATN, Cisco, GPON y Redes</span>
+          <span style="font-weight: bold; font-size: 0.9rem; color: var(--accent);">NOC Carrier Engineering Vault (DWDM Nokia/Infinera, ZTE, Huawei)</span>
+          <span style="display: block; font-size: 0.65rem; color: var(--text-muted);">Cápsulas técnicas de DWDM, GPON C300/C600 y MA5200</span>
         </div>
       </div>
       <div style="display: flex; gap: 6px;">
@@ -377,11 +405,11 @@
     </div>
 
     <div id="quizModoInfo" style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 8px;">
-      <div id="infoTipText" style="background: rgba(8, 13, 26, 0.6); border-left: 3px solid var(--accent); padding: 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; line-height: 1.4;">
+      <div id="infoTipText" style="background: rgba(8, 13, 26, 0.7); border-left: 3px solid var(--accent); padding: 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; line-height: 1.4;">
         Cargando cápsula de ingeniería...
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span id="infoTipCategory" style="font-size: 0.7rem; color: var(--green); font-weight: bold;">⚡ Huawei & Cisco Core</span>
+        <span id="infoTipCategory" style="font-size: 0.7rem; color: var(--green); font-weight: bold;">⚡ Nokia / Infinera / ZTE / Huawei</span>
         <button onclick="playPop(); siguienteTip()" style="background: #1e3a8a; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;">Siguiente Tip ➡️</button>
       </div>
     </div>
@@ -622,109 +650,109 @@
       }
     }
 
-    /* 🧠 NUEVOS TIPS TÉCNICOS EXPANDIDOS (HUAWEI NE40, ATN 950, CISCO, GPON, ETC.) */
+    /* 🧠 NUEVOS TIPS TÉCNICOS EXPANDIDOS (DWDM NOKIA/INFINERA, ZTE C300/C600, HUAWEI MA5200) */
     const networkTips = [
-      { cat: "🌐 Huawei NE40 / Core Routing", text: "El Huawei NE40E es un router de borde universal de alta capacidad. Soporta tablas de enrutamiento masivas, MPLS VPN, segment routing (SRv6) y fuentes de poder redundantes para garantizar alta disponibilidad en el backbone de telecomunicaciones." },
-      { cat: "📡 Huawei ATN 950 / Acceso IP", text: "La serie Huawei ATN 950 (como ATN 950B) son equipos de pasarela multiservicio orientados a transporte móvil y empresarial. Combinan interfaces TDM, Ethernet Gigabit y capacidades MPLS-TP para backhauling celular de alta precisión." },
-      { cat: "🔵 Cisco Carrier Routing", text: "Los routers y switches de plataforma Cisco (ASR y Catalyst) implementan IOS-XE, permitiendo telemetría nativa basada en gRPC, Netconf/YANG y monitoreo en tiempo real del estado de buffers y colas QOS." },
-      { cat: "⚡ GPON / FTTH Architecture", text: "En redes GPON de Antel, las longitudes de onda estándar son 1490 nm para downstream (datos), 1310 nm para upstream (datos) y 1550 nm para TV RF overlay, operando sobre divisores ópticos pasivos (splitters)." },
-      { cat: "📡 Radioenlaces y Microondas", text: "Los radioenlaces digitales en alta disponibilidad utilizan modulación adaptativa (ACM) hasta QAM-1024 y esquemas de protección 1+1 o Space Diversity para mitigar desvanecimientos por trayecto y lluvia." },
-      { cat: "📐 Zona de Fresnel", text: "Para evitar atenuación severa en radioenlaces, se debe despejar como mínimo el 60% del radio de la primera Zona de Fresnel calculada con la frecuencia de operación y la distancia." },
-      { cat: "🖧 Conmutación y VLANs 802.1Q", text: "El etiquetado IEEE 802.1Q añade un tag de 4 bytes a la trama Ethernet, soportando hasta 4,094 VLANs simultáneas para aislar el tráfico de clientes en switches de agregación (AGG)." },
-      { cat: "🔗 Enlaces EPL (Ethernet Private Line)", text: "Un servicio EPL entrega una conexión Capa 2 punto a punto dedicada, garantizando ancho de banda simétrico y total transparencia de protocolos de red entre los extremos." },
-      { cat: "🧵 OTDR y Fibra Óptica", text: "El reflectometró óptico (OTDR) inyecta pulsos de luz para analizar la retrodispersión Rayleigh, permitiendo ubicar empalmes defectuosos, atenuaciones anómalas y cortes en la planta externa (OSP)." }
+      { cat: "🌐 Nokia DWDM & Photonic Networks", text: "Las plataformas DWDM de Nokia (como la serie 1830 PSS) integran ROADMs sin dirección y sin contención, permitiendo el aprovisionamiento flexible de longitudes de onda de 100G a 800G+ en el backbone de transporte óptico." },
+      { cat: "💡 Infinera DWDM & Transport Core", text: "Infinera destaca por sus tecnologías PIC (Photonic Integrated Circuits) y motores ópticos ICE (como ICE6), ofreciendo alta capacidad de transmisión coherente de larga distancia con mínima latencia y gran eficiencia espectral." },
+      { cat: "⚡ ZTE C300 & C600 GPON/XGS-PON", text: "El ZTE ZXA10 C300 es una OLT multiservicio de gran capacidad (GPON/EPON), mientras que el ZTE ZXA10 C600 es una plataforma de acceso óptico basada en arquitectura C-RAN/SDN, nativa para XGS-PON y redes 10G-GPON de ultra alta velocidad." },
+      { cat: "🖧 Huawei MA5200 / MA5200G", text: "El Huawei MA5200 (y MA5200G) es un legendario router de acceso broadband (BAS) de alto rendimiento, optimizado para la autenticación de abonados PPPoE/IPoE, gestión de sesiones y control de políticas QoS en redes de operadores." },
+      { cat: "📡 Huawei NE40 / Core Routing", text: "El Huawei NE40E es un router de borde universal de alta capacidad. Soporta tablas de enrutamiento masivas, MPLS VPN, segment routing (SRv6) y fuentes de poder redundantes para alta disponibilidad en el núcleo de red." },
+      { cat: "📡 Huawei ATN 950 / Acceso IP", text: "La serie Huawei ATN 950 (como ATN 950B) son equipos de pasarela multiservicio orientados a transporte móvil y empresarial, combinando interfaces TDM, Ethernet Gigabit y MPLS-TP." },
+      { cat: "🔵 Cisco Carrier Routing", text: "Los routers y switches Cisco (ASR y Catalyst) implementan IOS-XE, permitiendo telemetría nativa gRPC, Netconf/YANG y monitoreo en tiempo real de buffers y colas QOS." },
+      { cat: "⚡ GPON / FTTH Architecture", text: "En redes GPON de Antel, las longitudes de onda son 1490 nm (downstream datos), 1310 nm (upstream datos) y 1550 nm (TV RF overlay) sobre splitters ópticos pasivos." },
+      { cat: "🧵 OTDR y Fibra Óptica", text: "El reflectómetro óptico (OTDR) inyecta pulsos de luz para analizar la retrodispersión Rayleigh, permitiendo ubicar empalmes defectuosos, atenuaciones anómalas y cortes en planta externa (OSP)." }
     ];
 
     const networkQuiz = [
       {
-        pregunta: "¿Qué tipo de equipo es principalmente el Huawei NE40E en la arquitectura de red?",
-        opciones: ["Un switch de acceso hogareño ADSL", "Un router de borde (Edge/Core) universal de alta capacidad", "Una antena sectorial Wi-Fi de exterior", "Un conversor de medios eléctrico a coaxial"],
-        correcta: 1,
-        explicacion: "Correcto! El Huawei NE40E es un router de borde de gama alta diseñado para núcleos y bordes de red carrier con soporte MPLS y SRv6."
+        pregunta: "¿Qué tecnología caracteriza principalmente a las plataformas DWDM de Infinera en el transporte óptico?",
+        opciones: ["Circuitos Fotónicos Integrados (PIC) y motores ópticos ICE", "Transmisores de radio FM analógicos", "Conmutación exclusiva por paquetes coaxiales", "Modulación de amplitud en banda base"],
+        correcta: 0,
+        explicacion: "Correcto! Infinera es pionera en el uso de PICs y tecnología coherente avanzada (ICE) integrada para redes ópticas de gran capacidad."
       },
       {
-        pregunta: "¿Cuál es el propósito principal de la serie Huawei ATN 950 en redes de operadores?",
-        opciones: ["Proveer telefonía fija analógica residencial", "Servir como pasarela multiservicio para transporte y backhaul móvil", "Gestionar exclusivamente cámaras de seguridad", "Actuar como servidor de bases de datos central"],
+        pregunta: "¿Cuál es la principal ventaja de la plataforma ZTE ZXA10 C600 frente a generaciones anteriores como el C300?",
+        opciones: ["Opera únicamente con ADSL de cobre", "Es una arquitectura basada en SDN/NFV nativa para XGS-PON y 10G-GPON de ultra alta densidad", "Solo soporta 4 puertos de cliente", "Funciona sin energía eléctrica auxiliar"],
         correcta: 1,
-        explicacion: "Correcto! Los ATN (Access Transport Network) de Huawei se especializan en backhaul móvil y transporte multiservicio corporativo."
+        explicacion: "Correcto! El ZTE C600 es una OLT de próxima generación orientada a SDN/NFV y tecnologías de acceso 10G como XGS-PON."
       },
       {
-        pregunta: "En los equipos Cisco con IOS-XE, ¿qué protocolo moderno se utiliza comúnmente para telemetría y automatización de red?",
-        opciones: ["Telnet sin cifrar", "gRPC / NETCONF con modelos YANG", "FTP clásico", "ARP estático"],
-        correcta: 1,
-        explicacion: "Correcto! NETCONF/YANG y gRPC permiten streaming de telemetría y configuración programática avanzada en equipos Cisco modernos."
+        pregunta: "¿Qué rol principal cumplía el equipo Huawei MA5200 (MA5200G) en la arquitectura de red de los operadores?",
+        opciones: ["Router de acceso broadband (BAS) para autenticación PPPoE/IPoE y control de abonados", "Antena omnidireccional Wi-Fi de exteriores", "Switch de borde de red doméstica simple", "Conversor de señal satelital de TV"],
+        correcta: 0,
+        explicacion: "Correcto! El MA5200 operaba como un potente Broadband Access Server (BAS) para gestión de sesiones y suscriptores."
       },
       {
-        pregunta: "¿Cuál es la longitud de onda utilizada en GPON para el canal de bajada (downstream) hacia el abonado?",
+        pregunta: "¿Qué permiten las tecnologías ROADM sin dirección y sin contención en los sistemas DWDM de Nokia (ej. 1830 PSS)?",
+        opciones: ["Bloquear totalmente el tráfico de datos", "Aprovisionar y reencaminar longitudes de onda de forma flexible y automatizada sin restricciones de puerto", "Reducir la velocidad del enlace a 10 Mbps", "Eliminar por completo los amplificadores ópticos"],
+        correcta: 1,
+        explicacion: "Correcto! Los ROADMs colorles, directionless y contentionless brindan máxima flexibilidad en la conmutación óptica de capas DWDM."
+      },
+      {
+        pregunta: "¿Qué tipo de equipo es el Huawei NE40E en la arquitectura de red carrier?",
+        opciones: ["Un switch de acceso hogareño", "Un router de borde (Edge/Core) universal de alta capacidad", "Una antena sectorial Wi-Fi", "Un servidor DHCP básico"],
+        correcta: 1,
+        explicacion: "Correcto! El Huawei NE40E es un router de borde de gama alta para núcleos y bordes de red con soporte MPLS y SRv6."
+      },
+      {
+        pregunta: "¿Cuál es el propósito principal de la serie Huawei ATN 950?",
+        opciones: ["Telefonía fija analógica", "Pasarela multiservicio para transporte y backhaul móvil", "Gestión de cámaras de seguridad", "Base de datos SQL central"],
+        correcta: 1,
+        explicacion: "Correcto! Los ATN de Huawei se especializan en transporte y backhaul para celdas móviles y servicios corporativos."
+      },
+      {
+        pregunta: "¿Qué longitud de onda se utiliza en GPON para el canal de bajada (downstream) hacia el abonado?",
         opciones: ["1310 nm", "1490 nm", "1550 nm", "850 nm"],
         correcta: 1,
         explicacion: "Correcto! 1490 nm transporta datos downstream, 1310 nm maneja upstream y 1550 nm se reserva para video RF."
       },
       {
-        pregunta: "¿Qué porcentaje del radio de la primera Zona de Fresnel se recomienda despejar como mínimo en un enlace de microondas?",
+        pregunta: "¿Qué porcentaje del radio de la primera Zona de Fresnel se recomienda despejar como mínimo en microondas?",
         opciones: ["Al menos 20%", "Al menos 40%", "Al menos 60%", "100% estricto sin tolerancia"],
         correcta: 2,
-        explicacion: "Correcto! Despejar al menos el 60% evita pérdidas significativas de potencia por difracción en el trayecto."
+        explicacion: "Correcto! Despejar al menos el 60% evita pérdidas significativas de potencia por difracción."
       },
       {
-        pregunta: "¿Qué especifica el estándar IEEE 802.1Q en redes Ethernet?",
-        opciones: ["El etiquetado de VLANs (VLAN tagging)", "La velocidad de fibra monomodo", "El protocolo de enrutamiento OSPF", "La potencia de transmisión Wi-Fi"],
+        pregunta: "¿Qué especifica el estándar IEEE 802.1Q?",
+        opciones: ["El etiquetado de VLANs (VLAN tagging)", "La velocidad de fibra monomodo", "El protocolo OSPF", "La potencia Wi-Fi"],
         correcta: 0,
-        explicacion: "Correcto! 802.1Q define el sistema de etiquetado en tramas Ethernet para la segmentación de redes virtuales."
+        explicacion: "Correcto! 802.1Q define el sistema de etiquetado en tramas Ethernet para segmentación virtual."
       },
       {
-        pregunta: "En una red GPON, ¿cómo se evitan las colisiones de datos en sentido ascendente (upstream) desde las ONUs hacia la OLT?",
-        opciones: ["Mediante un switch Ethernet común", "A través de un esquema TDMA (Acceso Múltiple por División de Tiempo)", "Con frecuencias de radio independientes", "Usando cables coaxiales dedicados"],
+        pregunta: "¿Cómo se evitan las colisiones upstream en GPON desde las ONUs hacia la OLT?",
+        opciones: ["Switch Ethernet común", "Esquema TDMA (Acceso Múltiple por División de Tiempo)", "Frecuencias de radio independientes", "Cables coaxiales dedicados"],
         correcta: 1,
-        explicacion: "Correcto! La OLT asigna intervalos de tiempo precisos (TDMA) a cada ONU para transmitir upstream sin colisiones."
+        explicacion: "Correcto! La OLT asigna intervalos de tiempo precisos (TDMA) para transmitir upstream sin colisiones."
       },
       {
         pregunta: "¿Qué mide un OTDR en una traza de fibra óptica?",
-        opciones: ["El consumo eléctrico del nodo", "Atenuación, pérdidas por empalme, eventos y reflexiones a lo largo del hilo", "La velocidad de sincronismo IP del router", "La temperatura ambiente de la central"],
+        opciones: ["Consumo eléctrico del nodo", "Atenuación, pérdidas por empalme, eventos y reflexiones a lo largo del hilo", "Velocidad IP del router", "Temperatura ambiente"],
         correcta: 1,
-        explicacion: "Correcto! El OTDR evalúa la retrodispersión de la luz para diagnosticar la salud física de la fibra óptica."
+        explicacion: "Correcto! El OTDR evalúa la retrodispersión de la luz para diagnosticar la salud física de la fibra."
       },
       {
-        pregunta: "¿Qué ventaja principal ofrece un enlace EPL (Ethernet Private Line) frente al acceso a internet dedicado estándar?",
-        opciones: ["Conexión Capa 2 punto a punto dedicada con ancho de banda simétrico y aislamiento total", "IPs públicas ilimitadas gratuitas", "Velocidad compartida con prioridad web", "Independencia de medios físicos"],
+        pregunta: "¿Qué ventaja ofrece un enlace EPL (Ethernet Private Line)?",
+        opciones: ["Conexión Capa 2 punto a punto dedicada con ancho de banda simétrico y aislamiento total", "IPs públicas ilimitadas", "Velocidad compartida con prioridad web", "Independencia de medios físicos"],
         correcta: 0,
-        explicacion: "Correcto! EPL garantiza un canal dedicado de Capa 2 punto a punto sin contención de tráfico."
+        explicacion: "Correcto! EPL garantiza un canal dedicado de Capa 2 punto a punto sin contención."
       },
       {
-        pregunta: "¿Qué indica un valor elevado de BER (Bit Error Rate) en un enlace digital de transmisión?",
-        opciones: ["Excelente rendimiento y cero errores", "Alta tasa de errores de bits corrompidos, denotando problemas físicos o interferencia", "Modo de ahorro de energía activo", "Sincronización horaria perfecta"],
+        pregunta: "¿Qué indica un valor elevado de BER (Bit Error Rate) en un enlace digital?",
+        opciones: ["Excelente rendimiento", "Alta tasa de errores de bits corrompidos, denotando problemas físicos o interferencia", "Ahorro de energía activo", "Sincronización horaria perfecta"],
         correcta: 1,
-        explicacion: "Correcto! Un BER alto evidencia problemas en el medio físico de transmisión que corrompen los datos."
+        explicacion: "Correcto! Un BER alto evidencia problemas en el medio físico de transmisión."
       },
       {
-        pregunta: "En enrutamiento IP, ¿qué protocolo de puerta de enlace interior (IGP) utiliza el algoritmo de estado de enlace (SPF de Dijkstra)?",
+        pregunta: "¿Qué protocolo IGP utiliza el algoritmo SPF de Dijkstra?",
         opciones: ["RIPv2", "OSPF", "BGP", "PPP"],
         correcta: 1,
-        explicacion: "Correcto! OSPF (Open Shortest Path First) es un protocolo IGP basado en estado de enlace."
+        explicacion: "Correcto! OSPF es un protocolo IGP basado en estado de enlace."
       },
       {
-        pregunta: "¿Qué función cumple un puerto de agregación (AGG) en la red de telecomunicaciones?",
-        opciones: ["Concentrar el tráfico proveniente de múltiples accesos y transportarlo hacia el núcleo", "Alimentar energía a los equipos terminales", "Convertir señales eléctricas en satelitales", "Medir el viento en las torres"],
+        pregunta: "En transceiver SFP+ monomodo tipo WDM (BiDi), ¿cómo opera?",
+        opciones: ["Utiliza un solo hilo de fibra óptica transmitiendo en una longitud de onda y recibiendo en otra diferente", "Requiere dos hilos separados obligatoriamente", "Opera sobre cable coaxial", "Funciona sin fibra óptica"],
         correcta: 0,
-        explicacion: "Correcto! Los nodos de agregación concentran y estructuran el tráfico de las zonas de acceso."
-      },
-      {
-        pregunta: "En radioenlaces, ¿qué causa comúnmente desvanecimientos profundos (fading) por multicamino?",
-        opciones: ["Tormentas de nieve", "Gradientes térmicos y capas atmosféricas con distintos índices de refracción", "Fluctuaciones eléctricas en la torre", "Interferencia de Bluetooth"],
-        correcta: 1,
-        explicacion: "Correcto! Las variaciones atmosféricas y de temperatura generan multicamino y desvanecimientos en microondas."
-      },
-      {
-        pregunta: "¿Qué define el protocolo BGP (Border Gateway Protocol) en internet?",
-        opciones: ["El enrutamiento entre sistemas autónomos (AS) en el núcleo de internet", "La asignación de IPs locales DHCP", "La velocidad de los puertos SFP+", "El cifrado de contraseñas de consola"],
-        correcta: 0,
-        explicacion: "Correcto! BGP es el protocolo de enrutamiento que interconecta los diferentes Sistemas Autónomos a escala global."
-      },
-      {
-        pregunta: "¿Qué significa que un transceiver SFP+ sea monomodo (SM) de tipo WDM (BiDi)?",
-        opciones: ["Utiliza un solo hilo de fibra óptica transmitiendo en una longitud de onda y recibiendo en otra diferente", "Requiere dos hilos separados obligatoriamente", "Opera únicamente sobre cable coaxial", "Funciona sin fibra óptica mediante láser inalámbrico"],
-        correcta: 0,
-        explicacion: "Correcto! Los módulos BiDi (Bidireccionales) utilizan WDM para enviar y recibir datos sobre una sola hebra de fibra usando distintas longitudes de onda."
+        explicacion: "Correcto! Los módulos BiDi utilizan WDM para enviar y recibir datos sobre una sola hebra de fibra."
       }
     ];
 
@@ -780,7 +808,7 @@
 
       q.opciones.forEach((opcion, index) => {
         opcionesDiv.innerHTML += `
-          <button onclick="responderQuiz(${index})" style="background: rgba(15,23,42,0.8); border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; font-size: 0.78rem; text-align: left; cursor: pointer; transition: 0.2s;" class="quiz-op-btn">
+          <button onclick="responderQuiz(${index})" style="background: rgba(15,23,42,0.85); border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; font-size: 0.78rem; text-align: left; cursor: pointer; transition: 0.2s;" class="quiz-op-btn">
             ${index + 1}. ${opcion}
           </button>`;
       });
