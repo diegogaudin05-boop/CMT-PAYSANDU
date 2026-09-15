@@ -65,7 +65,6 @@
       display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
 
-    /* MINI TORRE DE RADIOENLACE EN LOGIN */
     .radio-tower {
       position: relative; width: 50px; height: 90px; display: flex; flex-direction: column; align-items: center;
     }
@@ -92,7 +91,6 @@
       box-shadow: inset 0 0 8px rgba(0,0,0,0.6); clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
     }
 
-    /* AVATAR INTERACTIVO */
     .avatar-container {
       position: relative; width: 75px; height: 75px;
       background: radial-gradient(circle, rgba(0,114,206,0.3) 0%, rgba(15,23,42,0.8) 70%);
@@ -179,7 +177,6 @@
     .dropbtn-green { background: #15803d; }
     .dropbtn-red { background: #b91c1c; }
     
-    /* MENÚ DESPLEGABLE CORREGIDO CON Z-INDEX MÁXIMO */
     .dropdown-content {
       display: none; 
       position: absolute; 
@@ -203,6 +200,56 @@
     .kpi-card { background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
     .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
     .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+
+    /* BARRA DESPLEGABLE CON CHEVRON TRIPLE */
+    .expand-toggle-bar {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .expand-toggle-bar:hover {
+      background: rgba(15, 23, 42, 0.95);
+      border-color: var(--accent);
+    }
+    .triple-chevron-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 5px;
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: 900;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .triple-chevron-container span {
+      display: block;
+      text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+    }
+    .expand-toggle-bar.active .triple-chevron-container {
+      transform: rotate(180deg);
+    }
+
+    /* CONTENEDOR COLAPSIBLE DE LA TABLA Y BUSCADORES */
+    #collapsibleContent {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    #collapsibleContent.show {
+      max-height: 3000px;
+      opacity: 1;
+    }
 
     .search-container { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     input[type="text"] { width: 100%; padding: 11px 14px; background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; }
@@ -233,7 +280,7 @@
 </head>
 <body>
 
-  <!-- 📡 FONDO ANIMADO INTERACTIVO (Torre holográfica y ondas de radio) -->
+  <!-- 📡 FONDO ANIMADO INTERACTIVO -->
   <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
 
   <!-- PANTALLA DE ACCESO -->
@@ -337,12 +384,9 @@
         Cargando pregunta...
       </div>
 
-      <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-        <!-- Se inyectan dinámicamente -->
-      </div>
+      <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
 
-      <div id="quizExplicacion" style="display: none; background: rgba(15, 23, 42, 0.9); padding: 8px; border-radius: 6px; font-size: 0.75rem; color: #cbd5e1; border-left: 3px solid var(--green);">
-      </div>
+      <div id="quizExplicacion" style="display: none; background: rgba(15, 23, 42, 0.9); padding: 8px; border-radius: 6px; font-size: 0.75rem; color: #cbd5e1; border-left: 3px solid var(--green);"></div>
 
       <button id="quizBtnSiguiente" onclick="playPop(); siguientePreguntaQuiz()" style="background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-top: 4px;">Siguiente Pregunta ➡️</button>
     </div>
@@ -354,38 +398,52 @@
     <div class="kpi-card"><span class="kpi-title">📅 Último Sync</span><span class="kpi-value" id="kpiSync" style="font-size:0.9rem;">-</span></div>
   </div>
 
-  <div class="search-container">
-    <input type="text" id="buscarServicio" placeholder="⚡ Buscar SERVICIO (ej. PC2559, P97006A...)" onkeyup="filtrar()">
-    <input type="text" id="buscarGeneral" placeholder="🔍 Buscar por Cliente, Infra, Radio, Contacto..." onkeyup="filtrar()">
+  <!-- 🔽 BARRA DESPLEGABLE CON CHEVRON TRIPLE (CENTRAL) -->
+  <div class="expand-toggle-bar" id="expandToggleBar" onclick="toggleMainData()">
+    <span style="font-size: 0.82rem; font-weight: bold; color: var(--accent);">📋 Directorio y Registros de Clientes</span>
+    <div class="triple-chevron-container" title="Desplegar / Ocultar registros">
+      <span>⌄</span>
+      <span>⌄</span>
+      <span>⌄</span>
+    </div>
+    <span style="font-size: 0.75rem; color: var(--text-muted);" id="toggleStatusLabel">Clic para desplegar</span>
   </div>
 
-  <div class="top-actions">
-    <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
-    <button class="btn-main" id="btnActualizar" onclick="playPop(); obtenerDatos()">
-      🔄 Actualizar Datos
-    </button>
-  </div>
+  <!-- 📂 CONTENEDOR OCULTO POR DEFECTO CON LA DATA Y BUSCADORES -->
+  <div id="collapsibleContent">
+    <div class="search-container">
+      <input type="text" id="buscarServicio" placeholder="⚡ Buscar SERVICIO (ej. PC2559, P97006A...)" onkeyup="filtrar()">
+      <input type="text" id="buscarGeneral" placeholder="🔍 Buscar por Cliente, Infra, Radio, Contacto..." onkeyup="filtrar()">
+    </div>
 
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>👤 CLIENTE</th>
-          <th>⚡ SERVICIO</th>
-          <th><span class="anim-modem">🛜</span> INFRA</th>
-          <th><span class="anim-antena">🗼</span> RADIO</th>
-          <th><span class="anim-port">🖧</span> PUERTO AGG</th>
-          <th>🏷️ VLAN</th>
-          <th><span class="anim-chain">🔗</span> EPL</th>
-          <th>📅 FECHA</th>
-          <th>📍 UBICACIÓN</th>
-          <th>📞 CONTACTO</th>
-        </tr>
-      </thead>
-      <tbody id="contenidoTabla">
-        <tr><td colspan="10" style="text-align:center; padding: 25px;">Escaneando nodos de red Antel... 📡</td></tr>
-      </tbody>
-    </table>
+    <div class="top-actions">
+      <span id="contador" style="font-size: 0.85rem; color: var(--text-muted);">Sincronizando red...</span>
+      <button class="btn-main" id="btnActualizar" onclick="playPop(); obtenerDatos()">
+        🔄 Actualizar Datos
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>👤 CLIENTE</th>
+            <th>⚡ SERVICIO</th>
+            <th><span class="anim-modem">🛜</span> INFRA</th>
+            <th><span class="anim-antena">🗼</span> RADIO</th>
+            <th><span class="anim-port">🖧</span> PUERTO AGG</th>
+            <th>🏷️ VLAN</th>
+            <th><span class="anim-chain">🔗</span> EPL</th>
+            <th>📅 FECHA</th>
+            <th>📍 UBICACIÓN</th>
+            <th>📞 CONTACTO</th>
+          </tr>
+        </thead>
+        <tbody id="contenidoTabla">
+          <tr><td colspan="10" style="text-align:center; padding: 25px;">Escaneando nodos de red Antel... 📡</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- 🧮 CALCULADORA IP FLOTANTE -->
@@ -440,7 +498,7 @@
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
-    // 📡 ANIMACIÓN DE FONDO CON CANVAS (TORRE HOLOGRÁFICA Y ONDAS DE RADIO)
+    // 📡 ANIMACIÓN DE FONDO CON CANVAS
     const canvas = document.getElementById('radioCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -538,7 +596,24 @@
     }
     drawRadioTowerScene();
 
-    // 🧠 LÓGICA DE TIPS Y TRIVIA TÉCNICA (AMPLIADA)
+    // 🔽 FUNCIÓN PARA DESPLEGAR/OCULTAR LA DATA DE CLIENTES
+    function toggleMainData() {
+      playPop();
+      const content = document.getElementById('collapsibleContent');
+      const bar = document.getElementById('expandToggleBar');
+      const label = document.getElementById('toggleStatusLabel');
+      
+      content.classList.toggle('show');
+      bar.classList.toggle('active');
+
+      if (content.classList.contains('show')) {
+        label.innerText = "Clic para ocultar";
+      } else {
+        label.innerText = "Clic para desplegar";
+      }
+    }
+
+    // 🧠 MÓDULO DE TIPS Y TRIVIA TÉCNICA
     const networkTips = [
       { cat: "⚡ GPON / FTTH", text: "En las redes GPON de Antel, las longitudes de onda estándar son 1490 nm para datos downstream (bajada) y 1310 nm para upstream (subida), reservándose 1550 nm para servicios de CATV RF overlay." },
       { cat: "📡 Radioenlaces / Microondas", text: "Los radioenlaces digitales en alta disponibilidad utilizan esquemas de modulación adaptativa (ACM) como QAM-256 o QAM-1024 para maximizar el throughput según las condiciones climáticas y el desvanecimiento por trayecto." },
