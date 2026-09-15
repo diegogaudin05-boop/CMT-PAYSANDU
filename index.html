@@ -46,7 +46,8 @@
       pointer-events: none;
       background: radial-gradient(circle at 50% 30%, #0c1c3c 0%, #040814 75%);
     }
-/* PANTALLA DE ACCESO - NUEVO SERVIDOR E INGENIERO */
+
+    /* PANTALLA DE ACCESO */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(4, 8, 20, 0.94); backdrop-filter: blur(10px); z-index: 99999;
@@ -56,39 +57,139 @@
     .lock-box {
       background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); padding: 25px 20px;
       border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(56, 189, 248, 0.35);
-      max-width: 380px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
+      max-width: 350px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
     .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
 
-    /* Servidor Animado */
-    .server-rack-box {
-      position: relative; width: 100px; height: 90px; background: #090d16;
-      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 12px;
-      display: flex; flex-direction: column; justify-content: space-around; padding: 8px;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 15px rgba(56, 189, 248, 0.2);
+    .access-visual {
+      display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
-    .server-led-row { display: flex; align-items: center; justify-content: space-between; }
-    .server-led { width: 6px; height: 6px; border-radius: 50%; }
 
-    /* Ingeniero Interactivo */
-    .engineer-avatar-container {
-      position: absolute; bottom: -12px; right: -15px; font-size: 2.2rem;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    /* 🗼 NUEVA TORRE VECTORIAL FUTURISTA (ESTILO ILUSTRACIÓN VECTOR) */
+    .vector-tower-container {
+      position: relative;
+      width: 75px;
+      height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
+    /* ONDA WI-FI FLOTANTE ANIMADA */
+    .floating-wifi-icon {
+      position: absolute;
+      left: -22px;
+      top: 15px;
+      font-size: 1.2rem;
+      animation: floatWifi 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px var(--accent));
+    }
+    @keyframes floatWifi {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+      50% { transform: translateY(-6px) scale(1.15); opacity: 1; }
+    }
+
+    .orbit-dot-1, .orbit-dot-2 {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .orbit-dot-1 { right: -12px; top: 35px; animation: orbitPulse 1.5s infinite alternate; }
+    .orbit-dot-2 { left: -8px; bottom: 30px; animation: orbitPulse 2s infinite alternate; background: var(--neon-orange); }
+
+    @keyframes orbitPulse {
+      0% { transform: scale(0.8); opacity: 0.4; }
+      100% { transform: scale(1.4); opacity: 1; }
+    }
+
+    /* ANTENAS LATERALES COLOR NARANJA/CORAL FUTURISTA */
+    .vector-panel-left, .vector-panel-right {
+      position: absolute;
+      top: 14px;
+      width: 9px;
+      height: 28px;
+      background: linear-gradient(135deg, #ff7043, #d84315);
+      border-radius: 4px;
+      border: 1px solid #ffccbc;
+      box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
+      animation: panelGlow 2s infinite alternate;
+    }
+    .vector-panel-left { left: 12px; }
+    .vector-panel-right { right: 12px; }
+
+    @keyframes panelGlow {
+      0% { box-shadow: 0 0 5px rgba(255, 87, 34, 0.4); }
+      100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.9); }
+    }
+
+    /* MÁSTILES SUPERIORES GEMELOS */
+    .vector-spire-left, .vector-spire-right {
+      position: absolute;
+      top: 2px;
+      width: 2px;
+      height: 16px;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .vector-spire-left { left: 32px; }
+    .vector-spire-right { right: 32px; }
+
+    /* ESTRUCTURA RETICULADA ROJA Y BLANCA GEOMÉTRICA */
+    .vector-lattice-body {
+      position: absolute;
+      bottom: 0;
+      width: 32px;
+      height: 82px;
+      background: repeating-linear-gradient(45deg, #ef4444, #ef4444 7px, #ffffff 7px, #ffffff 14px);
+      border-left: 2px solid #b91c1c;
+      border-right: 2px solid #b91c1c;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.8), 0 0 15px rgba(239, 68, 68, 0.4);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+
+    /* NUBE INFERIOR VECTORIAL ESTILO ILUSTRACIÓN */
+    .vector-cloud-base {
+      position: absolute;
+      bottom: -4px;
+      width: 65px;
+      height: 18px;
+      background: rgba(255, 193, 7, 0.25);
+      border-radius: 50% 50% 10% 10%;
+      border-top: 1px solid rgba(255, 193, 7, 0.6);
+      box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
+    }
+
+    .avatar-container {
+      position: relative; width: 75px; height: 75px;
+      background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.85) 70%);
+      border: 2px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 25px rgba(56,189,248,0.3);
+    }
+    .avatar-face { font-size: 2.5rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .avatar-hands {
+      position: absolute; top: 28px; font-size: 1.8rem;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+      transform: translateY(28px) scale(0.4); opacity: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+    .avatar-container.hiding .avatar-hands { transform: translateY(-2px) scale(1.1); opacity: 1; }
+    .avatar-container.hiding .avatar-face { transform: scale(0.85); filter: brightness(0.7); }
 
     .pin-input {
-      font-size: 1.5rem; letter-spacing: 6px; text-align: center; width: 100%;
-      padding: 10px; background: rgba(8, 13, 26, 0.85); border: 1px solid var(--border);
+      font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 190px;
+      padding: 8px; background: rgba(8, 13, 26, 0.85); border: 1px solid var(--border);
       color: #fff; border-radius: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
     .btn-pin {
       background: linear-gradient(135deg, var(--antel-blue), #0284c7); color: white; border: none; padding: 11px 20px;
       font-size: 0.9rem; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;
-      box-shadow: 0 4px 15px rgba(0, 114, 206, 0.5); transition: background 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 114, 206, 0.5);
     }
-    .btn-pin:hover { background: #0284c7; }
     .error-pin { color: var(--red); font-size: 0.8rem; display: none; font-weight: bold; }
+
     /* PANEL PRINCIPAL NOC */
     .header-noc {
       display: flex; justify-content: space-between; align-items: center;
@@ -344,122 +445,46 @@
       <button class="dropbtn dropbtn-red" onclick="cerrarSesion()" title="Cerrar Sesión">🚪 Salir</button>
     </div>
   </div>
-
-  <!-- ========================================== -->
-<!-- BLOQUE DINÁMICO: TIPS CARRIER VS QUIZ      -->
-<!-- ========================================== -->
-<div id="nocDualContainer" style="display: flex; gap: 16px; max-width: 1200px; margin: 0 auto 16px auto; flex-wrap: wrap;">
+<!-- 🧠 MÓDULO DE 30 TIPS TÉCNICOS CARRIER -->
+  <div class="tips-vault-box">
+    <div class="tips-header">
+      <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
+      <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
+    </div>
+    <div id="infoTipText" class="tips-content">
+      Cargando cápsula de ingeniería...
+    </div>
+    <div class="tips-footer">
+      <button class="tip-btn" onclick="anteriorTip()">⬅️ Anterior</button>
+      <button class="tip-btn" onclick="siguienteTip()">Siguiente ➡️</button>
+    </div>
+  </div>
   
-  <!-- Panel Izquierdo: 30 Tips Técnicos Carrier (ANTEL) -->
-  <div id="panel-tips" style="flex: 1; min-width: 280px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 20px; transition: all 0.4s ease; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" onclick="expandSection('tips')">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 1.2rem;">📚</span>
-        <h3 style="margin: 0; font-size: 0.95rem; font-weight: bold; color: #38bdf8;">30 Tips Técnicos Carrier (ANTEL)</h3>
+ 
+    <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+        <span id="quizPreguntaNum">Pregunta 1 de 15</span>
+        <span>Puntaje: <strong id="quizPuntaje" style="color: var(--green);">0</strong></span>
       </div>
-      <span id="badge-tips" style="font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(8, 47, 73, 0.9); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 600;">Desplegado por defecto</span>
-    </div>
-    
-    <div id="content-tips" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem; color: #cbd5e1; max-height: 380px; overflow-y: auto; padding-right: 4px;">
-      <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: #94a3b8; font-style: italic;">Base de conocimiento aplicada sobre infraestructura crítica: ZTE C600, Huawei NE40E/8000, Ciena 6500 R, Alcatel-Lucent 1830 PSS y transceptores ópticos.</p>
       
-      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-        <strong style="color: #38bdf8;">Tip 01 (ZTE C600):</strong> Verificación de umbrales ópticos en tarjetas PON clase C+ y control de potencia en OLT.
+      <div id="quizPreguntaTexto" style="font-weight: bold; color: #fff; font-size: 0.85rem;">
+        Cargando pregunta...
       </div>
-      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-        <strong style="color: #38bdf8;">Tip 08 (Huawei NE40E):</strong> Diagnóstico de estados BFD y convergencia de rutas en el core de transporte.
-      </div>
-      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-        <strong style="color: #38bdf8;">Tip 15 (Ciena 6500 R):</strong> Monitoreo de canales ROADM y gestión de longitudes de onda en DWDM.
-      </div>
-      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-        <strong style="color: #38bdf8;">Tip 22 (Alcatel-Lucent 1830 PSS):</strong> Comprobación de alarmas OLS y optimización de amplificadores Raman/EDFA.
-      </div>
-      <div style="padding: 10px; background: rgba(2, 6, 23, 0.8); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-        <strong style="color: #38bdf8;">Tip 30 (SFPs / Transceptores):</strong> Análisis DDM/DOM para prevenir degradación de potencia RX/TX.
-      </div>
+
+      <div id="quizOpciones" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
+
+      <div id="quizExplicacion" style="display: none; background: rgba(15, 23, 42, 0.9); padding: 8px; border-radius: 6px; font-size: 0.75rem; color: #cbd5e1; border-left: 3px solid var(--green);"></div>
+
+      <button id="quizBtnSiguiente" onclick="playPop(); siguientePreguntaQuiz()" style="background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-top: 4px;">Siguiente Pregunta ➡️</button>
     </div>
   </div>
 
-  <!-- Panel Derecho: Quiz Multinivel Progresivo (30 Preguntas) -->
-  <div id="panel-quiz" style="flex: 1; min-width: 280px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 20px; transition: all 0.4s ease; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" onclick="expandSection('quiz')">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 1.2rem;">⚡</span>
-        <h3 style="margin: 0; font-size: 0.95rem; font-weight: bold; color: #f59e0b;">Quiz Multinivel (30 Preguntas)</h3>
-      </div>
-      <span id="badge-quiz" style="font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(30, 41, 59, 0.9); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Hacer clic para expandir</span>
-    </div>
-
-    <div id="content-quiz" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.8rem; color: #cbd5e1;">
-      <p style="margin: 0; font-size: 0.75rem; color: #94a3b8;">Evaluación técnica avanzada dividida en 3 niveles progresivos para ingenieros de guardia:</p>
-      
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; margin: 4px 0;">
-        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.4);">
-          <div style="font-size: 0.75rem; color: #34d399; font-weight: bold;">Nivel 1</div>
-          <div style="font-size: 0.65rem; color: #94a3b8;">5 Preguntas</div>
-        </div>
-        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.4);">
-          <div style="font-size: 0.75rem; color: #fbbf24; font-weight: bold;">Nivel 2</div>
-          <div style="font-size: 0.65rem; color: #94a3b8;">10 Preguntas</div>
-        </div>
-        <div style="padding: 8px; background: rgba(2, 6, 23, 0.9); border-radius: 8px; border: 1px solid rgba(244, 63, 94, 0.4);">
-          <div style="font-size: 0.75rem; color: #fb7185; font-weight: bold;">Nivel 3</div>
-          <div style="font-size: 0.65rem; color: #94a3b8;">15 Preguntas</div>
-        </div>
-      </div>
-
-      <div style="padding: 10px; background: rgba(69, 26, 3, 0.3); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; font-size: 0.75rem; color: #fde68a;">
-        💡 <strong>Dinámica:</strong> Al hacer clic aquí, este panel se expande para mostrar el cuestionario interactivo completo de FTTH, Agregación y Transporte.
-      </div>
-    </div>
+  <div class="kpi-container">
+    <div class="kpi-card"><span class="kpi-title">⚡ Total Servicios</span><span class="kpi-value" id="kpiServicios">0</span></div>
+    <div class="kpi-card"><span class="kpi-title"><span class="anim-modem">🛜</span> Nodos / Infra</span><span class="kpi-value" id="kpiInfra">0</span></div>
+    <div class="kpi-card"><span class="kpi-title">📅 Último Sync</span><span class="kpi-value" id="kpiSync" style="font-size:0.9rem;">-</span></div>
   </div>
 
-</div>
-
-<script>
-  // Lógica de acordeón cruzado adaptada con Flexbox puro
-  function expandSection(section) {
-    const panelTips = document.getElementById('panel-tips');
-    const panelQuiz = document.getElementById('panel-quiz');
-    const badgeTips = document.getElementById('badge-tips');
-    const badgeQuiz = document.getElementById('badge-quiz');
-
-    if (section === 'quiz') {
-      panelQuiz.style.flex = '2.5';
-      panelTips.style.flex = '1';
-      panelTips.style.opacity = '0.5';
-      panelTips.style.transform = 'scale(0.98)';
-      panelQuiz.style.transform = 'scale(1)';
-      
-      badgeQuiz.style.background = 'rgba(69, 26, 3, 0.9)';
-      badgeQuiz.style.color = '#fde68a';
-      badgeQuiz.style.borderColor = 'rgba(245, 158, 11, 0.5)';
-      badgeQuiz.innerText = 'Expandido (Activo)';
-
-      badgeTips.style.background = 'rgba(30, 41, 59, 0.9)';
-      badgeTips.style.color = '#94a3b8';
-      badgeTips.style.borderColor = 'rgba(255,255,255,0.1)';
-      badgeTips.innerText = 'Hacer clic para volver';
-    } else {
-      panelQuiz.style.flex = '1';
-      panelTips.style.flex = '2.5';
-      panelTips.style.opacity = '1';
-      panelTips.style.transform = 'scale(1)';
-      panelQuiz.style.transform = 'scale(0.98)';
-
-      badgeTips.style.background = 'rgba(8, 47, 73, 0.9)';
-      badgeTips.style.color = '#38bdf8';
-      badgeTips.style.borderColor = 'rgba(56, 189, 248, 0.4)';
-      badgeTips.innerText = 'Desplegado por defecto';
-
-      badgeQuiz.style.background = 'rgba(30, 41, 59, 0.9)';
-      badgeQuiz.style.color = '#94a3b8';
-      badgeQuiz.style.borderColor = 'rgba(255,255,255,0.1)';
-      badgeQuiz.innerText = 'Hacer clic para expandir';
-    }
-  }
-</script>
   <!-- BARRA DESPLEGABLE CON CHEVRON TRIPLE -->
   <div class="expand-toggle-bar" id="expandToggleBar" onclick="toggleMainData()">
     <span style="font-size: 0.82rem; font-weight: bold; color: var(--accent);">📋 Directorio y Registros de Clientes</span>
