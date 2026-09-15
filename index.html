@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -65,7 +66,7 @@
       display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
 
-    /* 🗼 NUEVA TORRE VECTORIAL FUTURISTA (ESTILO ILUSTRACIÓN VECTOR) */
+    /* TORRE VECTORIAL FUTURISTA */
     .vector-tower-container {
       position: relative;
       width: 75px;
@@ -75,7 +76,6 @@
       align-items: center;
     }
 
-    /* ONDA WI-FI FLOTANTE ANIMADA */
     .floating-wifi-icon {
       position: absolute;
       left: -22px;
@@ -105,7 +105,6 @@
       100% { transform: scale(1.4); opacity: 1; }
     }
 
-    /* ANTENAS LATERALES COLOR NARANJA/CORAL FUTURISTA */
     .vector-panel-left, .vector-panel-right {
       position: absolute;
       top: 14px;
@@ -125,7 +124,6 @@
       100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.9); }
     }
 
-    /* MÁSTILES SUPERIORES GEMELOS */
     .vector-spire-left, .vector-spire-right {
       position: absolute;
       top: 2px;
@@ -137,7 +135,6 @@
     .vector-spire-left { left: 32px; }
     .vector-spire-right { right: 32px; }
 
-    /* ESTRUCTURA RETICULADA ROJA Y BLANCA GEOMÉTRICA */
     .vector-lattice-body {
       position: absolute;
       bottom: 0;
@@ -150,7 +147,6 @@
       clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
     }
 
-    /* NUBE INFERIOR VECTORIAL ESTILO ILUSTRACIÓN */
     .vector-cloud-base {
       position: absolute;
       bottom: -4px;
@@ -264,7 +260,6 @@
     .kpi-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
     .kpi-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
 
-    /* BARRA DESPLEGABLE CON CHEVRON TRIPLE */
     .expand-toggle-bar {
       background: var(--card); backdrop-filter: blur(10px);
       border: 1px solid var(--border); border-radius: 10px;
@@ -313,7 +308,8 @@
       0%, 100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(56,189,248,0.6); }
       50% { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(56,189,248,0.8); }
     }
- /* 🎨 DISEÑO DE LA CAJA DE TIPS TÉCNICOS */
+
+    /* CAJA DE TIPS Y MÓDULO DE TRIVIA INTEGRADO */
     .tips-vault-box {
       background: var(--card);
       backdrop-filter: blur(10px);
@@ -377,7 +373,7 @@
 
   <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
 
-  <!-- PANTALLA DE ACCESO CON NUEVA TORRE VECTORIAL FUTURISTA -->
+  <!-- PANTALLA DE ACCESO -->
   <div id="lockScreen">
     <div class="lock-box">
       <div class="access-visual">
@@ -445,38 +441,30 @@
       <button class="dropbtn dropbtn-red" onclick="cerrarSesion()" title="Cerrar Sesión">🚪 Salir</button>
     </div>
   </div>
-<!-- 🧠 MÓDULO DE 30 TIPS TÉCNICOS CARRIER -->
+
+  <!-- MÓDULO DE TIPS Y TRIVIA CARRIER -->
   <div class="tips-vault-box">
-    <div class="tips-header">
-      <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
-      <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+      <button id="btnModoInfo" onclick="playPop(); cambiarModoQuiz('info')" style="background: var(--antel-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; cursor: pointer; flex: 1;">🧠 Tips Carrier</button>
+      <button id="btnModoQuiz" onclick="playPop(); cambiarModoQuiz('quiz')" style="background: rgba(30,58,138,0.6); color: var(--text-muted); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; cursor: pointer; flex: 1;">🎯 Trivia Técnica</button>
     </div>
-    <div id="infoTipText" class="tips-content">
-      Cargando cápsula de ingeniería...
+
+    <!-- VISTA TIPS -->
+    <div id="quizModoInfo" style="display: flex; flex-direction: column;">
+      <div class="tips-header" style="border-bottom: none; margin-bottom: 6px; padding-bottom: 0;">
+        <span class="tips-title">🧠 NOC Carrier Engineering Vault</span>
+        <span id="infoTipCategory" class="tips-counter">⚡ Tip 1 de 30</span>
+      </div>
+      <div id="infoTipText" class="tips-content">
+        Cargando cápsula de ingeniería...
+      </div>
+      <div class="tips-footer">
+        <button class="tip-btn" onclick="playPop(); anteriorTip()">⬅️ Anterior</button>
+        <button class="tip-btn" onclick="playPop(); siguienteTip()">Siguiente ➡️</button>
+      </div>
     </div>
-    <div class="tips-footer">
-      <button class="tip-btn" onclick="anteriorTip()">⬅️ Anterior</button>
-      <button class="tip-btn" onclick="siguienteTip()">Siguiente ➡️</button>
-    </div>
-  </div>
-  <!-- 🎯 MÓDULO DE QUIZ TÉCNICO OPERATIVO -->
-  <div class="tips-vault-box" style="border-color: rgba(34, 197, 94, 0.4);">
-    <div class="tips-header" style="border-color: rgba(34, 197, 94, 0.3);">
-      <span class="tips-title" style="color: var(--green);">🎯 Quiz Técnico Operativo</span>
-      <span id="quizCounter" class="tips-counter">Pregunta 1 de 3</span>
-    </div>
-    <div id="quizQuestionBox" class="tips-content" style="font-weight: 600; min-height: 40px;">
-      Cargando pregunta...
-    </div>
-    <div id="quizOptionsBox" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-      <!-- Las opciones se cargan dinámicamente con JavaScript -->
-    </div>
-    <div id="quizFeedback" style="font-size: 0.85rem; font-weight: bold; margin-bottom: 10px; min-height: 20px;"></div>
-    <div class="tips-footer">
-      <button class="tip-btn" onclick="siguientePreguntaQuiz()">Siguiente Pregunta ➡️</button>
-    </div>
-  </div>
- 
+
+    <!-- VISTA TRIVIA / QUIZ -->
     <div id="quizModoTest" style="font-size: 0.82rem; display: none; flex-direction: column; gap: 10px;">
       <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
         <span id="quizPreguntaNum">Pregunta 1 de 15</span>
@@ -501,7 +489,7 @@
     <div class="kpi-card"><span class="kpi-title">📅 Último Sync</span><span class="kpi-value" id="kpiSync" style="font-size:0.9rem;">-</span></div>
   </div>
 
-  <!-- BARRA DESPLEGABLE CON CHEVRON TRIPLE -->
+  <!-- BARRA DESPLEGABLE -->
   <div class="expand-toggle-bar" id="expandToggleBar" onclick="toggleMainData()">
     <span style="font-size: 0.82rem; font-weight: bold; color: var(--accent);">📋 Directorio y Registros de Clientes</span>
     <div class="triple-chevron-container" title="Desplegar / Ocultar registros">
@@ -713,17 +701,37 @@
       }
     }
 
-    /* 🧠 NUEVOS TIPS TÉCNICOS EXPANDIDOS (DWDM NOKIA/INFINERA, ZTE C300/C600, HUAWEI MA5200) */
-    const networkTips = [
-      { cat: "🌐 Nokia DWDM & Photonic Networks", text: "Las plataformas DWDM de Nokia (como la serie 1830 PSS) integran ROADMs sin dirección y sin contención, permitiendo el aprovisionamiento flexible de longitudes de onda de 100G a 800G+ en el backbone de transporte óptico." },
-      { cat: "💡 Infinera DWDM & Transport Core", text: "Infinera destaca por sus tecnologías PIC (Photonic Integrated Circuits) y motores ópticos ICE (como ICE6), ofreciendo alta capacidad de transmisión coherente de larga distancia con mínima latencia y gran eficiencia espectral." },
-      { cat: "⚡ ZTE C300 & C600 GPON/XGS-PON", text: "El ZTE ZXA10 C300 es una OLT multiservicio de gran capacidad (GPON/EPON), mientras que el ZTE ZXA10 C600 es una plataforma de acceso óptico basada en arquitectura C-RAN/SDN, nativa para XGS-PON y redes 10G-GPON de ultra alta velocidad." },
-      { cat: "🖧 Huawei MA5200 / MA5200G", text: "El Huawei MA5200 (y MA5200G) es un legendario router de acceso broadband (BAS) de alto rendimiento, optimizado para la autenticación de abonados PPPoE/IPoE, gestión de sesiones y control de políticas QoS en redes de operadores." },
-      { cat: "📡 Huawei NE40 / Core Routing", text: "El Huawei NE40E es un router de borde universal de alta capacidad. Soporta tablas de enrutamiento masivas, MPLS VPN, segment routing (SRv6) y fuentes de poder redundantes para alta disponibilidad en el núcleo de red." },
-      { cat: "📡 Huawei ATN 950 / Acceso IP", text: "La serie Huawei ATN 950 (como ATN 950B) son equipos de pasarela multiservicio orientados a transporte móvil y empresarial, combinando interfaces TDM, Ethernet Gigabit y MPLS-TP." },
-      { cat: "🔵 Cisco Carrier Routing", text: "Los routers y switches Cisco (ASR y Catalyst) implementan IOS-XE, permitiendo telemetría nativa gRPC, Netconf/YANG y monitoreo en tiempo real de buffers y colas QOS." },
-      { cat: "⚡ GPON / FTTH Architecture", text: "En redes GPON de Antel, las longitudes de onda son 1490 nm (downstream datos), 1310 nm (upstream datos) y 1550 nm (TV RF overlay) sobre splitters ópticos pasivos." },
-      { cat: "🧵 OTDR y Fibra Óptica", text: "El reflectómetro óptico (OTDR) inyecta pulsos de luz para analizar la retrodispersión Rayleigh, permitiendo ubicar empalmes defectuosos, atenuaciones anómalas y cortes en planta externa (OSP)." }
+    const listaTipsCarrier = [
+      "Tip 1 (DWDM): En plataformas Nokia/Infinera, monitoree siempre el nivel de OSNR (Optical Signal-to-Noise Ratio) antes de escalar una atenuación por degradación de fibra.",
+      "Tip 2 (ZTE GPON): Utilice el comando 'show pon onu state' en la OLT ZTE C300/C600 para verificar rápidamente ONUs en estado dying-gasp o fuera de sincronismo.",
+      "Tip 3 (Huawei MA5200): Para depurar sesiones PPPoE colgadas en ruteadores de bordes, ejecute 'display pppoe-server session all' filtrando por slot y puerto.",
+      "Tip 4 (Fibra Óptica): Al realizar mediciones con OTDR en enlaces metropolitanos, ajuste el ancho de pulso a menor valor para eventos cercanos y alta resolución en empalmes.",
+      "Tip 5 (DWDM): Una fluctuación repentina de BER (Bit Error Rate) en canales 100G/400G suele estar asociada a efectos no lineales como SPM o XPM en la fibra G.652.",
+      "Tip 6 (ZTE C300): El comando 'show gpon onu startup-parameter' permite auditar los parámetros de registro automático y perfiles T-CONT asignados por DBA.",
+      "Tip 7 (Sincronización): Los relojes de red basados en IEEE 1588v2 (PTP) requieren verificar el parámetro PDV (Packet Delay Variation) para evitar jitter de fase en radiobases.",
+      "Tip 8 (Ethernet / EPL): En circuitos Metro Ethernet Carrier Ethernet (MEF), valide siempre el cumplimiento de las tramas con MTU superior a 9000 bytes (Jumbo Frames).",
+      "Tip 9 (Huawei): El comando 'display alarm active' en equipos de transporte y ruteo Huawei agrupa fallas críticas por severidad; priorice alarmas RDI y LOS.",
+      "Tip 10 (Seguridad NOC): Nunca comparta credenciales de acceso administrativo multi-nivel a plataformas críticas; utilice sesiones auditadas por TACACS+ / RADIUS.",
+      "Tip 11 (DWDM Nokia): La sintonización de transponedores coherentemente requiere validar la potencia óptica de recepción (ROP) dentro de la ventana de -7dBm a -14dBm.",
+      "Tip 12 (ZTE C600): Para reiniciar de forma lógica una controladora o tarjeta de servicio GPON sin intervención física en gabinete, emplee 'reboot board slot <rack/shelf/slot>'.",
+      "Tip 13 (Conectonería): Inspeccione con microscopio óptico los conectores SC/APC o LC/UPC antes de interconectar; una micropartícula de grasa atenúa hasta 3dB.",
+      "Tip 14 (MPLS-TE): En redes de transporte IP/MPLS, los túneles RSVP-TE con rutas explicitas evitan ruteos sub óptimos ante cortes de fibra troncal principal.",
+      "Tip 15 (BGP Carrier): Monitoree los contadores de prefijos recibidos y aceptados en sesiones eBGP con operadores internacionales para prevenir blackholes o loops.",
+      "Tip 16 (Redes PON): El presupuesto óptico estándar clase B+ permite hasta 28dB de atenuación, mientras que la clase C+ extiende el límite hasta 32dB.",
+      "Tip 17 (Mediciones de Potencia): Al medir potencia láser en 1310nm y 1550nm, asegúrese de calibrar el medidor óptico (Power Meter) en la longitud de onda exacta bajo prueba.",
+      "Tip 18 (Protección OSP): Los sistemas de conmutación de protección óptica tipo 1+1 APS (Automatic Protection Switching) deben conmutar en menos de 50 milisegundos.",
+      "Tip 19 (Equipos de Campo): En gabinetes exteriores (outdoor), verifique periódicamente los filtros de aire y los umbrales térmicos de los sistemas de aire acondicionado peltier o forzado.",
+      "Tip 20 (QoS Carrier): Las colas de prioridad estricta (PQ) para tráfico de voz VoIP (EF - Expedited Forwarding) no deben superar el 15% del ancho de banda total del enlace.",
+      "Tip 21 (ZTE GPON): El comando 'show mac-address onu' es fundamental para trazar la MAC del CPE del cliente final detrás de la ONT bridge o router en modo router.",
+      "Tip 22 (DWDM ROADM): Los nodos ROADM con tecnología WSS (Wavelength Selective Switch) permiten agregar y quitar longitudes de onda de manera remota sin cortes de tráfico adyacente.",
+      "Tip 23 (Ciberseguridad OT): En redes de infraestructura crítica de telecomunicaciones, mantenga deshabilitados protocolos inseguros como Telnet y HTTP plano, prefiriendo SSHv2 y HTTPS.",
+      "Tip 24 (Ethernet OAM): Protocolos como 802.3ah (EFM OAM) y 802.1ag (CFM) son vitales para el monitoreo de enlaces Ethernet punto a punto y detección de fallas de vínculo en capa 2.",
+      "Tip 25 (Baterías / Energía DC): En plantas de fuerza -48VDC, la prueba de autonomía de baterías se realiza monitoreando la caída de tensión bajo carga real de los racks de transmisión.",
+      "Tip 26 (Troubleshooting IP): El comando 'traceroute mpls' o 'tracert' con soporte de etiquetas ayuda a aislar saltos con pérdidas en redes MPLS de transporte metropolitano.",
+      "Tip 27 (ZTE C300): Para verificar la tabla de asignación de VLANs en un puerto PON específico, utilice 'show vlan port <interface>' de manera rápida y eficiente.",
+      "Tip 28 (Fibra Oscura): Al certificar hilos de fibra oscura para clientes corporativos (EPL), documente las pérdidas bidireccionales tanto a 1310nm como a 1550nm.",
+      "Tip 29 (Gestión de Alarmas): Ante una falla masiva de nodo, priorice la atención en los equipos de agregación troncal (Aggregation Routers) sobre los accesos individuales de abonados.",
+      "Tip 30 (Buenas Prácticas NOC): Documente siempre cada maniobra en la bitácora de guardia con hora exacta, ticket asociado y nombre de técnico responsable para trazabilidad operativa."
     ];
 
     const networkQuiz = [
@@ -731,95 +739,95 @@
         pregunta: "¿Qué tecnología caracteriza principalmente a las plataformas DWDM de Infinera en el transporte óptico?",
         opciones: ["Circuitos Fotónicos Integrados (PIC) y motores ópticos ICE", "Transmisores de radio FM analógicos", "Conmutación exclusiva por paquetes coaxiales", "Modulación de amplitud en banda base"],
         correcta: 0,
-        explicacion: "Correcto! Infinera es pionera en el uso de PICs y tecnología coherente avanzada (ICE) integrada para redes ópticas de gran capacidad."
+        explicacion: "¡Correcto! Infinera es pionera en el uso de PICs y tecnología coherente avanzada (ICE) integrada para redes ópticas de gran capacidad."
       },
       {
         pregunta: "¿Cuál es la principal ventaja de la plataforma ZTE ZXA10 C600 frente a generaciones anteriores como el C300?",
         opciones: ["Opera únicamente con ADSL de cobre", "Es una arquitectura basada en SDN/NFV nativa para XGS-PON y 10G-GPON de ultra alta densidad", "Solo soporta 4 puertos de cliente", "Funciona sin energía eléctrica auxiliar"],
         correcta: 1,
-        explicacion: "Correcto! El ZTE C600 es una OLT de próxima generación orientada a SDN/NFV y tecnologías de acceso 10G como XGS-PON."
+        explicacion: "¡Correcto! El ZTE C600 es una OLT de próxima generación orientada a SDN/NFV y tecnologías de acceso 10G como XGS-PON."
       },
       {
         pregunta: "¿Qué rol principal cumplía el equipo Huawei MA5200 (MA5200G) en la arquitectura de red de los operadores?",
         opciones: ["Router de acceso broadband (BAS) para autenticación PPPoE/IPoE y control de abonados", "Antena omnidireccional Wi-Fi de exteriores", "Switch de borde de red doméstica simple", "Conversor de señal satelital de TV"],
         correcta: 0,
-        explicacion: "Correcto! El MA5200 operaba como un potente Broadband Access Server (BAS) para gestión de sesiones y suscriptores."
+        explicacion: "¡Correcto! El MA5200 operaba como un potente Broadband Access Server (BAS) para gestión de sesiones y suscriptores."
       },
       {
         pregunta: "¿Qué permiten las tecnologías ROADM sin dirección y sin contención en los sistemas DWDM de Nokia (ej. 1830 PSS)?",
         opciones: ["Bloquear totalmente el tráfico de datos", "Aprovisionar y reencaminar longitudes de onda de forma flexible y automatizada sin restricciones de puerto", "Reducir la velocidad del enlace a 10 Mbps", "Eliminar por completo los amplificadores ópticos"],
         correcta: 1,
-        explicacion: "Correcto! Los ROADMs colorles, directionless y contentionless brindan máxima flexibilidad en la conmutación óptica de capas DWDM."
+        explicacion: "¡Correcto! Los ROADMs colorless, directionless y contentionless brindan máxima flexibilidad en la conmutación óptica de capas DWDM."
       },
       {
         pregunta: "¿Qué tipo de equipo es el Huawei NE40E en la arquitectura de red carrier?",
         opciones: ["Un switch de acceso hogareño", "Un router de borde (Edge/Core) universal de alta capacidad", "Una antena sectorial Wi-Fi", "Un servidor DHCP básico"],
         correcta: 1,
-        explicacion: "Correcto! El Huawei NE40E es un router de borde de gama alta para núcleos y bordes de red con soporte MPLS y SRv6."
+        explicacion: "¡Correcto! El Huawei NE40E es un router de borde de gama alta para núcleos y bordes de red con soporte MPLS y SRv6."
       },
       {
         pregunta: "¿Cuál es el propósito principal de la serie Huawei ATN 950?",
         opciones: ["Telefonía fija analógica", "Pasarela multiservicio para transporte y backhaul móvil", "Gestión de cámaras de seguridad", "Base de datos SQL central"],
         correcta: 1,
-        explicacion: "Correcto! Los ATN de Huawei se especializan en transporte y backhaul para celdas móviles y servicios corporativos."
+        explicacion: "¡Correcto! Los ATN de Huawei se especializan en transporte y backhaul para celdas móviles y servicios corporativos."
       },
       {
         pregunta: "¿Qué longitud de onda se utiliza en GPON para el canal de bajada (downstream) hacia el abonado?",
         opciones: ["1310 nm", "1490 nm", "1550 nm", "850 nm"],
         correcta: 1,
-        explicacion: "Correcto! 1490 nm transporta datos downstream, 1310 nm maneja upstream y 1550 nm se reserva para video RF."
+        explicacion: "¡Correcto! 1490 nm transporta datos downstream, 1310 nm maneja upstream y 1550 nm se reserva para video RF."
       },
       {
         pregunta: "¿Qué porcentaje del radio de la primera Zona de Fresnel se recomienda despejar como mínimo en microondas?",
         opciones: ["Al menos 20%", "Al menos 40%", "Al menos 60%", "100% estricto sin tolerancia"],
         correcta: 2,
-        explicacion: "Correcto! Despejar al menos el 60% evita pérdidas significativas de potencia por difracción."
+        explicacion: "¡Correcto! Despejar al menos el 60% evita pérdidas significativas de potencia por difracción."
       },
       {
         pregunta: "¿Qué especifica el estándar IEEE 802.1Q?",
         opciones: ["El etiquetado de VLANs (VLAN tagging)", "La velocidad de fibra monomodo", "El protocolo OSPF", "La potencia Wi-Fi"],
         correcta: 0,
-        explicacion: "Correcto! 802.1Q define el sistema de etiquetado en tramas Ethernet para segmentación virtual."
+        explicacion: "¡Correcto! 802.1Q define el sistema de etiquetado en tramas Ethernet para segmentación virtual."
       },
       {
         pregunta: "¿Cómo se evitan las colisiones upstream en GPON desde las ONUs hacia la OLT?",
         opciones: ["Switch Ethernet común", "Esquema TDMA (Acceso Múltiple por División de Tiempo)", "Frecuencias de radio independientes", "Cables coaxiales dedicados"],
         correcta: 1,
-        explicacion: "Correcto! La OLT asigna intervalos de tiempo precisos (TDMA) para transmitir upstream sin colisiones."
+        explicacion: "¡Correcto! La OLT asigna intervalos de tiempo precisos (TDMA) para transmitir upstream sin colisiones."
       },
       {
         pregunta: "¿Qué mide un OTDR en una traza de fibra óptica?",
         opciones: ["Consumo eléctrico del nodo", "Atenuación, pérdidas por empalme, eventos y reflexiones a lo largo del hilo", "Velocidad IP del router", "Temperatura ambiente"],
         correcta: 1,
-        explicacion: "Correcto! El OTDR evalúa la retrodispersión de la luz para diagnosticar la salud física de la fibra."
+        explicacion: "¡Correcto! El OTDR evalúa la retrodispersión de la luz para diagnosticar la salud física de la fibra."
       },
       {
         pregunta: "¿Qué ventaja ofrece un enlace EPL (Ethernet Private Line)?",
         opciones: ["Conexión Capa 2 punto a punto dedicada con ancho de banda simétrico y aislamiento total", "IPs públicas ilimitadas", "Velocidad compartida con prioridad web", "Independencia de medios físicos"],
         correcta: 0,
-        explicacion: "Correcto! EPL garantiza un canal dedicado de Capa 2 punto a punto sin contención."
+        explicacion: "¡Correcto! EPL garantiza un canal dedicado de Capa 2 punto a punto sin contención."
       },
       {
         pregunta: "¿Qué indica un valor elevado de BER (Bit Error Rate) en un enlace digital?",
-        opciones: ["Excelente rendimiento", "Alta tasa de errores de bits corrompidos, denotando problemas físicos o interferencia", "Ahorro de energía activo", "Sincronización horaria perfecta"],
+        opciones: ["Excelente rendimiento", "Alta tasa de bits erróneos corrompidos, denotando problemas físicos o interferencia", "Ahorro de energía activo", "Sincronización horaria perfecta"],
         correcta: 1,
-        explicacion: "Correcto! Un BER alto evidencia problemas en el medio físico de transmisión."
+        explicacion: "¡Correcto! Un BER alto evidencia problemas en el medio físico de transmisión."
       },
       {
         pregunta: "¿Qué protocolo IGP utiliza el algoritmo SPF de Dijkstra?",
         opciones: ["RIPv2", "OSPF", "BGP", "PPP"],
         correcta: 1,
-        explicacion: "Correcto! OSPF es un protocolo IGP basado en estado de enlace."
+        explicacion: "¡Correcto! OSPF es un protocolo IGP basado en estado de enlace."
       },
       {
         pregunta: "En transceiver SFP+ monomodo tipo WDM (BiDi), ¿cómo opera?",
         opciones: ["Utiliza un solo hilo de fibra óptica transmitiendo en una longitud de onda y recibiendo en otra diferente", "Requiere dos hilos separados obligatoriamente", "Opera sobre cable coaxial", "Funciona sin fibra óptica"],
         correcta: 0,
-        explicacion: "Correcto! Los módulos BiDi utilizan WDM para enviar y recibir datos sobre una sola hebra de fibra."
+        explicacion: "¡Correcto! Los módulos BiDi utilizan WDM para enviar y recibir datos sobre una sola hebra de fibra."
       }
     ];
 
-    let currentTipIndex = 0;
+    let indiceTipActual = 0;
     let currentQuizIndex = 0;
     let quizScore = 0;
 
@@ -836,7 +844,7 @@
         btnInfo.style.color = '#fff';
         btnTest.style.background = 'rgba(30,58,138,0.6)';
         btnTest.style.color = 'var(--text-muted)';
-        mostrarTipActual();
+        actualizarVistaTip();
       } else {
         infoBox.style.display = 'none';
         testBox.style.display = 'flex';
@@ -848,15 +856,23 @@
       }
     }
 
-    function mostrarTipActual() {
-      const tip = networkTips[currentTipIndex];
-      document.getElementById('infoTipText').innerText = tip.text;
-      document.getElementById('infoTipCategory').innerText = tip.cat;
+    function actualizarVistaTip() {
+      const txtElem = document.getElementById('infoTipText');
+      const catElem = document.getElementById('infoTipCategory');
+      if (txtElem && catElem) {
+        txtElem.innerText = listaTipsCarrier[indiceTipActual];
+        catElem.innerText = `⚡ Tip ${indiceTipActual + 1} de 30 (Carrier Engineering)`;
+      }
     }
 
     function siguienteTip() {
-      currentTipIndex = (currentTipIndex + 1) % networkTips.length;
-      mostrarTipActual();
+      indiceTipActual = (indiceTipActual + 1) % listaTipsCarrier.length;
+      actualizarVistaTip();
+    }
+
+    function anteriorTip() {
+      indiceTipActual = (indiceTipActual - 1 + listaTipsCarrier.length) % listaTipsCarrier.length;
+      actualizarVistaTip();
     }
 
     function cargarPreguntaQuiz() {
@@ -871,7 +887,7 @@
 
       q.opciones.forEach((opcion, index) => {
         opcionesDiv.innerHTML += `
-          <button onclick="responderQuiz(${index})" style="background: rgba(15,23,42,0.85); border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; font-size: 0.78rem; text-align: left; cursor: pointer; transition: 0.2s;" class="quiz-op-btn">
+          <button onclick="playPop(); responderQuiz(${index})" style="background: rgba(15,23,42,0.85); border: 1px solid var(--border); color: #fff; padding: 8px; border-radius: 6px; font-size: 0.78rem; text-align: left; cursor: pointer; transition: 0.2s;" class="quiz-op-btn">
             ${index + 1}. ${opcion}
           </button>`;
       });
@@ -899,7 +915,7 @@
         quizScore += Math.round(100 / networkQuiz.length);
         document.getElementById('quizPuntaje').innerText = quizScore;
         expDiv.style.borderLeftColor = '#22c55e';
-        expDiv.innerHTML = `✅ ¡Correcto! ${q.explicacion}`;
+        expDiv.innerHTML = `✅ ${q.explicacion}`;
         playPop();
       } else {
         expDiv.style.borderLeftColor = '#ef4444';
@@ -1064,7 +1080,7 @@
         obtenerDatos();
       }
       calcularIP();
-      mostrarTipActual();
+      actualizarVistaTip();
     });
 
     function verificarPin() {
@@ -1259,161 +1275,6 @@
       });
       renderizar(filtrados);
     }
- 
-  // BASE DE DATOS DE LOS 30 TIPS TÉCNICOS CARRIER
-    const listaTipsCarrier = [
-      "Tip 1 (DWDM): En plataformas Nokia/Infinera, monitoree siempre el nivel de OSNR (Optical Signal-to-Noise Ratio) antes de escalar una atenuación por degradación de fibra.",
-      "Tip 2 (ZTE GPON): Utilice el comando 'show pon onu state' en la OLT ZTE C300/C600 para verificar rápidamente ONUs en estado dying-gasp o fuera de sincronismo.",
-      "Tip 3 (Huawei MA5200): Para depurar sesiones PPPoE colgadas en ruteadores de bordes, ejecute 'display pppoe-server session all' filtrando por slot y puerto.",
-      "Tip 4 (Fibra Óptica): Al realizar mediciones con OTDR en enlaces metropolitanos, ajuste el ancho de pulso a menor valor para eventos cercanos y alta resolución en empalmes.",
-      "Tip 5 (DWDM): Una fluctuación repentina de BER (Bit Error Rate) en canales 100G/400G suele estar asociada a efectos no lineales como SPM o XPM en la fibra G.652.",
-      "Tip 6 (ZTE C300): El comando 'show gpon onu startup-parameter' permite auditar los parámetros de registro automático y perfiles T-CONT asignados por DBA.",
-      "Tip 7 (Sincronización): Los relojes de red basados en IEEE 1588v2 (PTP) requieren verificar el parámetro PDV (Packet Delay Variation) para evitar jitter de fase en radiobases.",
-      "Tip 8 (Ethernet / EPL): En circuitos Metro Ethernet Carrier Ethernet (MEF), valide siempre el cumplimiento de las tramas con MTU superior a 9000 bytes (Jumbo Frames).",
-      "Tip 9 (Huawei): El comando 'display alarm active' en equipos de transporte y ruteo Huawei agrupa fallas críticas por severidad; priorice alarmas RDI y LOS.",
-      "Tip 10 (Seguridad NOC): Nunca comparta credenciales de acceso administrativo multi-nivel a plataformas críticas; utilice sesiones auditadas por TACACS+ / RADIUS.",
-      "Tip 11 (DWDM Nokia): La sintonización de transponedores coherentemente requiere validar la potencia óptica de recepción (ROP) dentro de la ventana de -7dBm a -14dBm.",
-      "Tip 12 (ZTE C600): Para reiniciar de forma lógica una controladora o tarjeta de servicio GPON sin intervención física en gabinete, emplee 'reboot board slot <rack/shelf/slot>'.",
-      "Tip 13 (Conectonería): Inspeccione con microscopio óptico los conectores SC/APC o LC/UPC antes de interconectar; una micropartícula de grasa atenúa hasta 3dB.",
-      "Tip 14 (MPLS-TE): En redes de transporte IP/MPLS, los túneles RSVP-TE con rutas explicitas evitan ruteos sub óptimos ante cortes de fibra troncal principal.",
-      "Tip 15 (BGP Carrier): Monitoree los contadores de prefijos recibidos y aceptados en sesiones eBGP con operadores internacionales para prevenir blackholes o loops.",
-      "Tip 16 (Redes PON): El presupuesto óptico estándar clase B+ permite hasta 28dB de atenuación, mientras que la clase C+ extiende el límite hasta 32dB.",
-      "Tip 17 (Mediciones de Potencia): Al medir potencia láser en 1310nm y 1550nm, asegúrese de calibrar el medidor óptico (Power Meter) en la longitud de onda exacta bajo prueba.",
-      "Tip 18 (Protección OSP): Los sistemas de conmutación de protección óptica tipo 1+1 APS (Automatic Protection Switching) deben conmutar en menos de 50 milisegundos.",
-      "Tip 19 (Equipos de Campo): En gabinetes exteriores (outdoor), verifique periódicamente los filtros de aire y los umbrales térmicos de los sistemas de aire acondicionado peltier o forzado.",
-      "Tip 20 (QoS Carrier): Las colas de prioridad estricta (PQ) para tráfico de voz VoIP (EF - Expedited Forwarding) no deben superar el 15% del ancho de banda total del enlace.",
-      "Tip 21 (ZTE GPON): El comando 'show mac-address onu' es fundamental para trazar la MAC del CPE del cliente final detrás de la ONT bridge o router en modo router.",
-      "Tip 22 (DWDM ROADM): Los nodos ROADM con tecnología WSS (Wavelength Selective Switch) permiten agregar y quitar longitudes de onda de manera remota sin cortes de tráfico adyacente.",
-      "Tip 23 (Ciberseguridad OT): En redes de infraestructura crítica de telecomunicaciones, mantenga deshabilitados protocolos inseguros como Telnet y HTTP plano, prefiriendo SSHv2 y HTTPS.",
-      "Tip 24 (Ethernet OAM): Protocolos como 802.3ah (EFM OAM) y 802.1ag (CFM) son vitales para el monitoreo de enlaces Ethernet punto a punto y detección de fallas de vínculo en capa 2.",
-      "Tip 25 (Baterías / Energía DC): En plantas de fuerza -48VDC, la prueba de autonomía de baterías se realiza monitoreando la caída de tensión bajo carga real de los racks de transmisión.",
-      "Tip 26 (Troubleshooting IP): El comando 'traceroute mpls' o 'tracert' con soporte de etiquetas ayuda a aislar saltos con pérdidas en redes MPLS de transporte metropolitano.",
-      "Tip 27 (ZTE C300): Para verificar la tabla de asignación de VLANs en un puerto PON específico, utilice 'show vlan port <interface>' de manera rápida y eficiente.",
-      "Tip 28 (Fibra Oscura): Al certificar hilos de fibra oscura para clientes corporativos (EPL), documente las pérdidas bidireccionales tanto a 1310nm como a 1550nm.",
-      "Tip 29 (Gestión de Alarmas): Ante una falla masiva de nodo, priorice la atención en los equipos de agregación troncal (Aggregation Routers) sobre los accesos individuales de abonados.",
-      "Tip 30 (Buenas Prácticas NOC): Documente siempre cada maniobra en la bitácora de guardia con hora exacta, ticket asociado y nombre de técnico responsable para trazabilidad operativa."
-    ];
-
-    let indiceTipActual = 0;
-
-    function actualizarVistaTip() {
-      const txtElem = document.getElementById('infoTipText');
-      const catElem = document.getElementById('infoTipCategory');
-      if (txtElem && catElem) {
-        txtElem.innerText = listaTipsCarrier[indiceTipActual];
-        catElem.innerText = `⚡ Tip ${indiceTipActual + 1} de 30 (Carrier Engineering)`;
-      }
-    }
-
-    function siguienteTip() {
-      indiceTipActual = (indiceTipActual + 1) % listaTipsCarrier.length;
-      actualizarVistaTip();
-    }
-
-    function anteriorTip() {
-      indiceTipActual = (indiceTipActual - 1 + listaTipsCarrier.length) % listaTipsCarrier.length;
-      actualizarVistaTip();
-    }
-
-    // Inicializar el primer tip al cargar la página
-    actualizarVistaTip();
- // 🎯 BANCO DE PREGUNTAS DEL QUIZ TÉCNICO (Versión Segura)
-  if (typeof quizData === 'undefined') {
-    var quizData = [
-      {
-        pregunta: "¿Cuál es el comando estándar en OLTs Huawei para verificar la potencia óptica y el estado de una ONU remota?",
-        opciones: [
-          "A) display ont optical-info slot/port/ontid",
-          "B) show running-config interface",
-          "C) ping sweep gateway"
-        ],
-        correcta: 0
-      },
-      {
-        pregunta: "En redes de transporte óptico DWDM, ¿qué tecnología permite ROADMs sin dirección y sin contención?",
-        opciones: [
-          "A) Conversión O-E-O fija tradicional",
-          "B) Plataformas fotónicas avanzadas (ej. Nokia 1830 PSS)",
-          "C) Enlaces de radioenlace analógico en banda C"
-        ],
-        correcta: 1
-      },
-      {
-        pregunta: "En una OLT ZTE C300/C600, ¿qué comando se emplea para monitorear la potencia óptica de recepción (Rx) en los puertos PON?",
-        opciones: [
-          "A) show pon power olt gpon-olt_x/x/x",
-          "B) check optical transceiver status",
-          "C) display interface gpon brief"
-        ],
-        correcta: 0
-      }
-    ];
-  }
-
-  if (typeof currentQuizIndex === 'undefined') {
-    var currentQuizIndex = 0;
-  }
-  
-  if (typeof puntajeQuiz === 'undefined') {
-    var puntajeQuiz = 0;
-  }
-
-  function cargarPreguntaQuiz() {
-    const q = quizData[currentQuizIndex];
-    const counterEl = document.getElementById('quizCounter');
-    const questionEl = document.getElementById('quizQuestionBox');
-    
-    if (counterEl) counterEl.innerText = `Pregunta ${currentQuizIndex + 1} de ${quizData.length}`;
-    if (questionEl) questionEl.innerText = q.pregunta;
-    
-    const optionsBox = document.getElementById('quizOptionsBox');
-    if (optionsBox) {
-      optionsBox.innerHTML = '';
-      q.opciones.forEach((op, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'tip-btn';
-        btn.style.textAlign = 'left';
-        btn.innerText = op;
-        btn.onclick = () => verificarRespuestaQuiz(index);
-        optionsBox.appendChild(btn);
-      });
-    }
-    
-    const feedbackEl = document.getElementById('quizFeedback');
-    if (feedbackEl) feedbackEl.innerText = '';
-  }
-
-  function verificarRespuestaQuiz(seleccionada) {
-    const q = quizData[currentQuizIndex];
-    const feedback = document.getElementById('quizFeedback');
-    
-    if (feedback) {
-      if (seleccionada === q.correcta) {
-        feedback.style.color = "var(--green)";
-        feedback.innerText = "✔️ ¡Correcto! Excelente dominio técnico.";
-        puntajeQuiz++;
-      } else {
-        feedback.style.color = "var(--red)";
-        feedback.innerText = "❌ Incorrecto. La opción correcta era la " + ["A", "B", "C"][q.correcta];
-      }
-    }
-  }
-
-  function siguientePreguntaQuiz() {
-    if (typeof playPop === 'function') {
-      playPop();
-    }
-    currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
-    cargarPreguntaQuiz();
-  }
-
-  // Inicializar al cargar
-  try {
-    cargarPreguntaQuiz();
-  } catch (e) {
-    console.error("Error al iniciar el quiz:", e);
-  }
-  
   </script>
 </body>
 </html>
