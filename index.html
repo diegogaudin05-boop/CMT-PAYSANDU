@@ -494,8 +494,8 @@
 <!-- TOOLBOX FLOTANTE CON MENÚ EN ABANICO -->
 <div id="toolboxContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
   
-  <!-- Botones en Abanico (Ocultos por defecto) -->
-  <div id="fanMenu" style="position: absolute; bottom: 60px; right: 0; display: flex; flex-direction: column-reverse; gap: 10px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
+  <!-- Botones en Abanico (Ocultos por defecto, ordenados de arriba hacia abajo: ping, ip, optica, dbm) -->
+  <div id="fanMenu" style="position: absolute; bottom: 65px; right: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
     <button onclick="openTool('ping')" class="fan-btn" title="Ping ICMP (-t)">ping</button>
     <button onclick="openTool('ip')" class="fan-btn" title="Calculadora IP">ip</button>
     <button onclick="openTool('optica')" class="fan-btn" title="Óptica">opt</button>
@@ -526,6 +526,33 @@
       </div>
       <div id="resPing" style="background:#020617; border:1px solid var(--border); height:130px; margin-top:10px; padding:8px; font-family:monospace; font-size:0.75rem; overflow-y:auto; color:#38bdf8; border-radius:8px;">Listo para testear...</div>
     </div>
+
+    <!-- PANEL CALCULADORA IP -->
+    <div id="panelIp" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Dirección IP:</label>
+      <input type="text" id="ipInput" value="192.168.1.10" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Máscara (ej. 24 o 255.255.255.0):</label>
+      <input type="text" id="maskInput" value="24" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <button onclick="calcularIP()" style="width:100%; background:var(--antel-blue); border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Calcular Subred</button>
+      <div id="resIp" style="background:#020617; border:1px solid var(--border); margin-top:10px; padding:8px; font-size:0.8rem; color:#e2e8f0; border-radius:8px;">Resultados aquí...</div>
+    </div>
+
+    <!-- PANEL ÓPTICA -->
+    <div id="panelOptica" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Distancia de Fibra (km):</label>
+      <input type="number" id="optKm" value="10" oninput="calcularOptica()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <div id="resOptica" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#38bdf8;">--</div>
+    </div>
+
+    <!-- PANEL dBm / mW -->
+    <div id="panelDbm" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Potencia en dBm:</label>
+      <input type="number" id="inputDbm" value="-10" oninput="calcularDbmToMw()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <div style="font-size:0.85rem; color:#94a3b8;">Equivalente en mW:</div>
+      <div id="resMw" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#22c55e; margin-top:5px;">--</div>
+    </div>
+
+  </div>
 
     <!-- PANEL CALCULADORA IP -->
     <div id="panelIp" class="tool-panel" style="display:none;">
@@ -1247,32 +1274,6 @@
 
 // === NUEVAS FUNCIONES DE LA SUITE TELECOM (TOOLBOX) ===
 
-function toggleToolBox() {
-  const box = document.getElementById('toolBox');
-  box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
-}
-
-function switchToolTab(tab) {
-  document.getElementById('panelOptica').style.display = tab === 'optica' ? 'block' : 'none';
-  document.getElementById('panelDbm').style.display = tab === 'dbm' ? 'block' : 'none';
-  document.getElementById('panelPing').style.display = tab === 'ping' ? 'block' : 'none';
-
-  document.getElementById('tabOptica').style.background = tab === 'optica' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
-  document.getElementById('tabOptica').style.color = tab === 'optica' ? 'white' : '#94a3b8';
-
-  document.getElementById('tabDbm').style.background = tab === 'dbm' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
-  document.getElementById('tabDbm').style.color = tab === 'dbm' ? 'white' : '#94a3b8';
-
-  document.getElementById('tabPing').style.background = tab === 'ping' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
-  document.getElementById('tabPing').style.color = tab === 'ping' ? 'white' : '#94a3b8';
-}
-
-function calcularOptica() {
-  const km = parseFloat(document.getElementById('optKm').value) || 0;
-  const atenuacion = (km * 0.25) + 1.5; 
-  document.getElementById('resOptica').innerText = atenuacion.toFixed(2) + " dB (Perdida Est.)";
-}
-calcularOptica();
 
 function calcularDbmToMw() {
   const dbm = parseFloat(document.getElementById('inputDbm').value) || 0;
