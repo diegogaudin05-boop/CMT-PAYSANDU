@@ -45,29 +45,76 @@
       background: radial-gradient(circle at 50% 30%, #0c1c3c 0%, #040814 75%);
     }
 
-/* ESCENA UNIFICADA DEL RACK E INGENIERO */
-    .scene-container {
+   /* PANTALLA DE ACCESO */
+    #lockScreen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(4, 8, 20, 0.94); backdrop-filter: blur(10px); z-index: 99999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 20px;
+    }
+    .lock-box {
+      background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); padding: 25px 20px;
+      border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(56, 189, 248, 0.35);
+      max-width: 380px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
+
+    .access-visual {
+      display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 5px; width: 100%; padding: 5px 0;
+    }
+
+    /* NUEVO CONTENEDOR DE SERVER.JPEG CON LUCES DINÁMICAS */
+    .server-icon-container {
       position: relative;
-      width: 100%;
-      max-width: 250px;
-      height: 160px;
-      margin: 0 auto 10px auto;
-      border-radius: 14px;
-      background: rgba(2, 6, 23, 0.9);
+      width: 75px;
+      height: 75px;
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.85);
       border: 2px solid var(--border);
-      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
     }
 
-    .scene-img {
+    .server-logo {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      z-index: 2;
+    }
+
+    .glow-effect {
+      position: absolute;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
+      animation: pulseGlow 3s infinite alternate;
+      z-index: 1;
     }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.7); opacity: 0.4; }
+      100% { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* Avatar del Ingeniero Interactivo */
+    .avatar-container {
+      position: relative; width: 75px; height: 75px;
+      background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.85) 70%);
+      border: 2px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 25px rgba(56,189,248,0.3);
+    }
+    .avatar-face { font-size: 2.5rem; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .avatar-hands {
+      position: absolute; top: 28px; font-size: 1.8rem;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+      transform: translateY(28px) scale(0.4); opacity: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+    .avatar-container.hiding .avatar-hands { transform: translateY(-2px) scale(1.1); opacity: 1; }
+    .avatar-container.hiding .avatar-face { transform: scale(0.85); filter: brightness(0.7); }
 
     .pin-input {
       font-size: 1.8rem; letter-spacing: 8px; text-align: center; width: 190px;
@@ -80,6 +127,7 @@
       box-shadow: 0 4px 15px rgba(0, 114, 206, 0.5);
     }
     .error-pin { color: var(--red); font-size: 0.8rem; display: none; font-weight: bold; }
+    
     /* PANEL PRINCIPAL NOC */
     .header-noc {
       display: flex; justify-content: space-between; align-items: center;
@@ -272,10 +320,20 @@
     <div class="lock-box">
       <h2>SERVER-CMT-PAY</h2>
       
-     <!-- Escena del Rack e Ingeniero -->
-    <div class="scene-container">
-      <img id="sceneAvatar" src="engineer-off.png" alt="CMT Operations" class="scene-img">
-    </div>
+      <!-- Zona visual superior: Server.jpeg con luces + Ingeniero Interactivo -->
+      <div class="access-visual">
+        <!-- Servidor con brillo dinámico -->
+        <div class="server-icon-container">
+          <img src="Server.jpeg" alt="Server CMT" class="server-logo">
+          <div class="glow-effect"></div>
+        </div>
+
+        <!-- Avatar del Ingeniero -->
+        <div id="avatarContainer" class="avatar-container">
+          <span class="avatar-face">👨‍💻</span>
+          <span class="avatar-hands">🤲</span>
+        </div>
+      </div>
 
       <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Ingrese PIN de acceso operativo</p>
       
@@ -1157,31 +1215,6 @@
       });
       renderizar(filtrados);
     }
-// ANIMACIÓN DE CONEXIÓN CON INGENIEROR AL INGRESAR PIN
-  const pinForm = document.querySelector('#lockScreen form');
-  const sceneAvatar = document.getElementById('sceneAvatar');
-
-  if (pinForm && sceneAvatar) {
-    pinForm.addEventListener('submit', (e) => {
-      e.preventDefault(); // Pausamos el envío inmediato
-      
-      // Cambiamos a la imagen con luces encendidas y cables conectados
-      sceneAvatar.src = 'engineer-on.png';
-
-      // Efecto visual de éxito en la caja
-      const lockBox = document.querySelector('.lock-box');
-      if (lockBox) {
-        lockBox.style.boxShadow = '0 0 40px rgba(34, 197, 94, 0.45)';
-        lockBox.style.borderColor = 'rgba(34, 197, 94, 0.6)';
-      }
-
-      // Esperamos 1.2 segundos para que se luzca la animación y enviamos
-      setTimeout(() => {
-        pinForm.submit();
-      }, 1200);
-    });
-  }
-  
   </script>
 </body>
 </html>
