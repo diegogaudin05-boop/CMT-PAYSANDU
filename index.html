@@ -494,16 +494,16 @@
 <!-- TOOLBOX FLOTANTE CON MENÚ EN ABANICO -->
 <div id="toolboxContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
   
-  <!-- Botones en Abanico (Esferas flotantes) -->
-  <div id="fanMenu" style="position: absolute; bottom: 65px; right: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
-    <button onclick="openTool('ping')" title="Ping ICMP (-t)" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">ping</button>
-    <button onclick="openTool('ip')" title="Calculadora IP" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">ip</button>
-    <button onclick="openTool('optica')" title="Óptica" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">opt</button>
-    <button onclick="openTool('dbm')" title="dBm/mW" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">dbm</button>
+  <!-- Botones en Abanico (Cápsulas con nombres completos y animación en cascada) -->
+  <div id="fanMenu" style="position: absolute; bottom: 65px; right: 0; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
+    <button onclick="openTool('ping')" title="Diagnóstico ICMP" style="padding: 6px 14px; border-radius: 20px; background: #1e3a8a; border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; transition: all 0.2s; transition-delay: 0s; white-space: nowrap;" onmouseover="this.style.background='#2563eb'; this.style.boxShadow='0 0 15px rgba(37,99,235,0.7)';" onmouseout="this.style.background='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.4)';">⚡ Ping ICMP</button>
+    <button onclick="openTool('ip')" title="Calculadora IP" style="padding: 6px 14px; border-radius: 20px; background: #1e3a8a; border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; transition: all 0.2s; transition-delay: 0.05s; white-space: nowrap;" onmouseover="this.style.background='#2563eb'; this.style.boxShadow='0 0 15px rgba(37,99,235,0.7)';" onmouseout="this.style.background='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.4)';">🌐 Calculadora IP</button>
+    <button onclick="openTool('optica')" title="Atenuación Óptica" style="padding: 6px 14px; border-radius: 20px; background: #1e3a8a; border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; transition: all 0.2s; transition-delay: 0.1s; white-space: nowrap;" onmouseover="this.style.background='#2563eb'; this.style.boxShadow='0 0 15px rgba(37,99,235,0.7)';" onmouseout="this.style.background='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.4)';">🔦 Óptica</button>
+    <button onclick="openTool('dbm')" title="Conversor dBm/mW" style="padding: 6px 14px; border-radius: 20px; background: #1e3a8a; border: 1px solid rgba(255,255,255,0.3); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; transition: all 0.2s; transition-delay: 0.15s; white-space: nowrap;" onmouseover="this.style.background='#2563eb'; this.style.boxShadow='0 0 15px rgba(37,99,235,0.7)';" onmouseout="this.style.background='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.4)';">📡 dBm / mW</button>
   </div>
 
   <!-- Botón Principal con LED -->
-  <button onclick="toggleFanMenu()" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--antel-blue), #0284c7); border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; position: relative;">
+  <button onclick="toggleFanMenu()" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--antel-blue), #0284c7); border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; position: relative; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
     🧰
     <span style="position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; animation: pulseGlow 2s infinite;"></span>
   </button>
@@ -553,33 +553,7 @@
     </div>
 
   </div>
-
-    <!-- PANEL CALCULADORA IP -->
-    <div id="panelIp" class="tool-panel" style="display:none;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Dirección IP:</label>
-      <input type="text" id="ipInput" value="192.168.1.10" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Máscara (ej. 24 o 255.255.255.0):</label>
-      <input type="text" id="maskInput" value="24" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <button onclick="calcularIP()" style="width:100%; background:var(--antel-blue); border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Calcular Subred</button>
-      <div id="resIp" style="background:#020617; border:1px solid var(--border); margin-top:10px; padding:8px; font-size:0.8rem; color:#e2e8f0; border-radius:8px;">Resultados aquí...</div>
-    </div>
-
-    <!-- PANEL ÓPTICA -->
-    <div id="panelOptica" class="tool-panel" style="display:none;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Distancia de Fibra (km):</label>
-      <input type="number" id="optKm" value="10" oninput="calcularOptica()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <div id="resOptica" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#38bdf8;">--</div>
-    </div>
-
-    <!-- PANEL dBm / mW -->
-    <div id="panelDbm" class="tool-panel" style="display:none;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Potencia en dBm:</label>
-      <input type="number" id="inputDbm" value="-10" oninput="calcularDbmToMw()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <div style="font-size:0.85rem; color:#94a3b8;">Equivalente en mW:</div>
-      <div id="resMw" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#22c55e; margin-top:5px;">--</div>
-    </div>
-
-  </div>
+</div>
   
   <div id="toast">📋 Copiado al portapapeles</div>
 
@@ -1283,18 +1257,36 @@ function calcularDbmToMw() {
 
 let pingInterval = null;
 
-  function toggleFanMenu() {
-    const menu = document.getElementById('fanMenu');
-    if (menu.style.opacity === '1') {
-      menu.style.opacity = '0';
-      menu.style.pointerEvents = 'none';
-      menu.style.transform = 'translateY(10px)';
-    } else {
-      menu.style.opacity = '1';
-      menu.style.pointerEvents = 'auto';
-      menu.style.transform = 'translateY(0)';
-    }
+  function playBeep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(700, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(350, ctx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.04);
+  } catch(e) {}
+}
+
+function toggleFanMenu() {
+  playBeep();
+  const menu = document.getElementById('fanMenu');
+  if (menu.style.opacity === '1') {
+    menu.style.opacity = '0';
+    menu.style.pointerEvents = 'none';
+    menu.style.transform = 'translateY(10px)';
+  } else {
+    menu.style.opacity = '1';
+    menu.style.pointerEvents = 'auto';
+    menu.style.transform = 'translateY(0)';
   }
+}
 
   function openTool(tool) {
     toggleFanMenu();
