@@ -45,7 +45,7 @@
       background: radial-gradient(circle at 50% 30%, #0c1c3c 0%, #040814 75%);
     }
 
-    /* PANTALLA DE ACCESO */
+   /* PANTALLA DE ACCESO */
     #lockScreen {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(4, 8, 20, 0.94); backdrop-filter: blur(10px); z-index: 99999;
@@ -55,106 +55,51 @@
     .lock-box {
       background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); padding: 25px 20px;
       border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(56, 189, 248, 0.35);
-      max-width: 350px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
+      max-width: 380px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
     .lock-box h2 { margin: 0; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
 
     .access-visual {
-      display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 5px; width: 100%; padding: 5px 0;
+      display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 5px; width: 100%; padding: 5px 0;
     }
 
-    /* TORRE VECTORIAL FUTURISTA */
-    .vector-tower-container {
+    /* NUEVO CONTENEDOR DE SERVER.JPEG CON LUCES DINÁMICAS */
+    .server-icon-container {
       position: relative;
       width: 75px;
-      height: 110px;
+      height: 75px;
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.85);
+      border: 2px solid var(--border);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
     }
 
-    .floating-wifi-icon {
+    .server-logo {
+      width: 75%;
+      height: 75%;
+      object-fit: contain;
+      z-index: 2;
+    }
+
+    .glow-effect {
       position: absolute;
-      left: -22px;
-      top: 15px;
-      font-size: 1.2rem;
-      animation: floatWifi 2s infinite ease-in-out;
-      filter: drop-shadow(0 0 8px var(--accent));
-    }
-    @keyframes floatWifi {
-      0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-      50% { transform: translateY(-6px) scale(1.15); opacity: 1; }
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
+      animation: pulseGlow 3s infinite alternate;
+      z-index: 1;
     }
 
-    .orbit-dot-1, .orbit-dot-2 {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--accent);
-    }
-    .orbit-dot-1 { right: -12px; top: 35px; animation: orbitPulse 1.5s infinite alternate; }
-    .orbit-dot-2 { left: -8px; bottom: 30px; animation: orbitPulse 2s infinite alternate; background: var(--neon-orange); }
-
-    @keyframes orbitPulse {
-      0% { transform: scale(0.8); opacity: 0.4; }
-      100% { transform: scale(1.4); opacity: 1; }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.7); opacity: 0.4; }
+      100% { transform: scale(1.3); opacity: 1; }
     }
 
-    .vector-panel-left, .vector-panel-right {
-      position: absolute;
-      top: 14px;
-      width: 9px;
-      height: 28px;
-      background: linear-gradient(135deg, #ff7043, #d84315);
-      border-radius: 4px;
-      border: 1px solid #ffccbc;
-      box-shadow: 0 0 10px rgba(255, 87, 34, 0.6);
-      animation: panelGlow 2s infinite alternate;
-    }
-    .vector-panel-left { left: 12px; }
-    .vector-panel-right { right: 12px; }
-
-    @keyframes panelGlow {
-      0% { box-shadow: 0 0 5px rgba(255, 87, 34, 0.4); }
-      100% { box-shadow: 0 0 12px rgba(255, 87, 34, 0.9); }
-    }
-
-    .vector-spire-left, .vector-spire-right {
-      position: absolute;
-      top: 2px;
-      width: 2px;
-      height: 16px;
-      background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
-    }
-    .vector-spire-left { left: 32px; }
-    .vector-spire-right { right: 32px; }
-
-    .vector-lattice-body {
-      position: absolute;
-      bottom: 0;
-      width: 32px;
-      height: 82px;
-      background: repeating-linear-gradient(45deg, #ef4444, #ef4444 7px, #ffffff 7px, #ffffff 14px);
-      border-left: 2px solid #b91c1c;
-      border-right: 2px solid #b91c1c;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.8), 0 0 15px rgba(239, 68, 68, 0.4);
-      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
-    }
-
-    .vector-cloud-base {
-      position: absolute;
-      bottom: -4px;
-      width: 65px;
-      height: 18px;
-      background: rgba(255, 193, 7, 0.25);
-      border-radius: 50% 50% 10% 10%;
-      border-top: 1px solid rgba(255, 193, 7, 0.6);
-      box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
-    }
-
+    /* Avatar del Ingeniero Interactivo */
     .avatar-container {
       position: relative; width: 75px; height: 75px;
       background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, rgba(15,23,42,0.85) 70%);
@@ -182,7 +127,7 @@
       box-shadow: 0 4px 15px rgba(0, 114, 206, 0.5);
     }
     .error-pin { color: var(--red); font-size: 0.8rem; display: none; font-weight: bold; }
-
+    
     /* PANEL PRINCIPAL NOC */
     .header-noc {
       display: flex; justify-content: space-between; align-items: center;
@@ -370,28 +315,26 @@
 
   <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
 
-  <!-- PANTALLA DE ACCESO -->
+ <!-- PANTALLA DE ACCESO -->
   <div id="lockScreen">
     <div class="lock-box">
+      <h2>SERVER-CMT-PAY</h2>
+      
+      <!-- Zona visual superior: Server.jpeg con luces + Ingeniero Interactivo -->
       <div class="access-visual">
-        <div class="vector-tower-container" title="Torre Vectorial de Telecomunicaciones Avanzadas">
-          <div class="floating-wifi-icon">🛜</div>
-          <div class="orbit-dot-1"></div>
-          <div class="orbit-dot-2"></div>
-          <div class="vector-spire-left"></div>
-          <div class="vector-spire-right"></div>
-          <div class="vector-panel-left"></div>
-          <div class="vector-panel-right"></div>
-          <div class="vector-lattice-body"></div>
-          <div class="vector-cloud-base"></div>
+        <!-- Servidor con brillo dinámico -->
+        <div class="server-icon-container">
+          <img src="Server.jpeg" alt="Server CMT" class="server-logo">
+          <div class="glow-effect"></div>
         </div>
-        <div id="avatarBox" class="avatar-container">
-          <span class="avatar-face">👨🏻‍💻</span>
+
+        <!-- Avatar del Ingeniero -->
+        <div id="avatarContainer" class="avatar-container">
+          <span class="avatar-face">👨‍💻</span>
           <span class="avatar-hands">🤲</span>
         </div>
       </div>
 
-      <h2>CMT PAYSANDÚ</h2>
       <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Ingrese PIN de acceso operativo</p>
       
       <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••"
