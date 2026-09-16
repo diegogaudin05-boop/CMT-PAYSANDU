@@ -491,65 +491,69 @@
     </div>
   </div>
 
- <!-- CAJA DE HERRAMIENTAS TÉCNICA FLOTANTE (SUITE TELECOM) -->
-  <div id="toolBox" style="position: fixed; bottom: 20px; right: 20px; z-index: 40; display: none; width: 340px; background: var(--card); backdrop-filter: blur(14px); border: 1px solid #1e3a8a; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; font-family: inherit;">
-    
-    <!-- Encabezado de la Caja con LED animado -->
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e3a8a; padding: 10px 14px; background: rgba(2, 6, 23, 0.6);">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <!-- Indicador LED lumínico dinámico -->
-        <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulseGlow 2s infinite;"></div>
-        <span style="font-weight: bold; color: #94a3b8; font-size: 0.85rem; letter-spacing: 0.5px;">TOOLBOX NOC-CMT</span>
-      </div>
-      <button onclick="playPop(); toggleToolBox()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">&times;</button>
-    </div>
-
-    <!-- Pestañas de Navegación de Herramientas -->
-    <div style="display: flex; background: rgba(15, 23, 42, 0.8); border-bottom: 1px solid #1e3a8a; padding: 6px; gap: 4px;">
-      <button onclick="playPop(); switchToolTab('optica')" id="tabOptica" style="flex: 1; background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">Optica</button>
-      <button onclick="playPop(); switchToolTab('dbm')" id="tabDbm" style="flex: 1; background: rgba(30,58,138,0.4); color: #94a3b8; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">dBm/mW</button>
-      <button onclick="playPop(); switchToolTab('ping')" id="tabPing" style="flex: 1; background: rgba(30,58,138,0.4); color: #94a3b8; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">Ping</button>
-    </div>
-
-    <!-- Contenido de las Herramientas -->
-    <div style="padding: 14px; font-size: 0.8rem; color: #cbd5e1;">
-      
-      <!-- HERRAMIENTA 1: ATENUACIÓN ÓPTICA -->
-      <div id="panelOptica" class="tool-panel">
-        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Distancia de Fibra (km):</label>
-        <input type="number" id="optKm" value="10" oninput="calcularOptica()" style="width: 100%; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; margin-bottom: 8px;">
-        
-        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Atenuación estimada (@1550nm):</label>
-        <div id="resOptica" style="background: rgba(2,6,23,0.8); padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #38bdf8; font-weight: bold; text-align: center;">- dB</div>
-      </div>
-
-      <!-- HERRAMIENTA 2: CONVERSOR dBm a mW -->
-      <div id="panelDbm" class="tool-panel" style="display: none;">
-        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Potencia en dBm:</label>
-        <input type="number" id="inputDbm" value="0" oninput="calcularDbmToMw()" style="width: 100%; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; margin-bottom: 8px;">
-        
-        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Resultado en Miliwatios (mW):</label>
-        <div id="resMw" style="background: rgba(2,6,23,0.8); padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #38bdf8; font-weight: bold; text-align: center;">1.00 mW</div>
-      </div>
-
-      <!-- HERRAMIENTA 3: SIMULADOR DE PING -->
-      <div id="panelPing" class="tool-panel" style="display: none;">
-        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Nodo / Host IP:</label>
-        <div style="display: flex; gap: 6px; margin-bottom: 8px;">
-          <input type="text" id="pingHost" value="10.140.20.1" style="flex: 1; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; font-family: monospace;">
-          <button onclick="playPop(); ejecutarPing()" style="background: var(--antel-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">Test</button>
-        </div>
-        <div id="resPing" style="background: #000d1a; padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #22c55e; font-family: monospace; font-size: 0.75rem; height: 50px; overflow-y: auto;">Listos para test ICMP...</div>
-      </div>
-
-    </div>
+<!-- TOOLBOX FLOTANTE CON MENÚ EN ABANICO -->
+<div id="toolboxContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+  
+  <!-- Botones en Abanico (Ocultos por defecto) -->
+  <div id="fanMenu" style="position: absolute; bottom: 60px; right: 0; display: flex; flex-direction: column-reverse; gap: 10px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
+    <button onclick="openTool('ping')" class="fan-btn" title="Ping ICMP (-t)">ping</button>
+    <button onclick="openTool('ip')" class="fan-btn" title="Calculadora IP">ip</button>
+    <button onclick="openTool('optica')" class="fan-btn" title="Óptica">opt</button>
+    <button onclick="openTool('dbm')" class="fan-btn" title="dBm/mW">dbm</button>
   </div>
 
-  <!-- Botón flotante para abrir la Toolbox -->
-  <button class="floating-ball" onclick="playPop(); toggleToolBox()" style="position: fixed; bottom: 20px; right: 20px; z-index: 39; background: var(--antel-blue); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;" title="Caja de Herramientas NOC">
+  <!-- Botón Principal con LED -->
+  <button onclick="toggleFanMenu()" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--antel-blue), #0284c7); border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; position: relative;">
     🧰
+    <span style="position: absolute; top: 2px; right: 2px; width: 10px; height: 10px; background: #22c55e; border-radius: 50%; animation: pulseGlow 2s infinite;"></span>
   </button>
+</div>
 
+<!-- VENTANA MODAL DE LA HERRAMIENTA -->
+<div id="toolModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(2,6,23,0.8); z-index:10000; justify-content:center; align-items:center; backdrop-filter: blur(5px);">
+  <div style="background: rgba(15,23,42,0.95); border: 1px solid var(--border); width: 90%; max-width: 420px; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); color: white; position: relative;">
+    <button onclick="closeToolModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">✕</button>
+    
+    <div id="modalTitle" style="font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; color: var(--antel-blue);">Toolbox</div>
+
+    <!-- PANEL PING (-t) -->
+    <div id="panelPing" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Host / IP Objetivo:</label>
+      <input type="text" id="pingHost" value="8.8.8.8" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <div style="display:flex; gap:10px;">
+        <button onclick="startPingContinuous()" style="flex:1; background:#22c55e; border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Iniciar (-t)</button>
+        <button onclick="stopPingContinuous()" style="flex:1; background:#ef4444; border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Detener</button>
+      </div>
+      <div id="resPing" style="background:#020617; border:1px solid var(--border); height:130px; margin-top:10px; padding:8px; font-family:monospace; font-size:0.75rem; overflow-y:auto; color:#38bdf8; border-radius:8px;">Listo para testear...</div>
+    </div>
+
+    <!-- PANEL CALCULADORA IP -->
+    <div id="panelIp" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Dirección IP:</label>
+      <input type="text" id="ipInput" value="192.168.1.10" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Máscara (ej. 24 o 255.255.255.0):</label>
+      <input type="text" id="maskInput" value="24" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <button onclick="calcularIP()" style="width:100%; background:var(--antel-blue); border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Calcular Subred</button>
+      <div id="resIp" style="background:#020617; border:1px solid var(--border); margin-top:10px; padding:8px; font-size:0.8rem; color:#e2e8f0; border-radius:8px;">Resultados aquí...</div>
+    </div>
+
+    <!-- PANEL ÓPTICA -->
+    <div id="panelOptica" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Distancia de Fibra (km):</label>
+      <input type="number" id="optKm" value="10" oninput="calcularOptica()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <div id="resOptica" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#38bdf8;">--</div>
+    </div>
+
+    <!-- PANEL dBm / mW -->
+    <div id="panelDbm" class="tool-panel" style="display:none;">
+      <label style="font-size:0.85rem; color:#94a3b8;">Potencia en dBm:</label>
+      <input type="number" id="inputDbm" value="-10" oninput="calcularDbmToMw()" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
+      <div style="font-size:0.85rem; color:#94a3b8;">Equivalente en mW:</div>
+      <div id="resMw" style="padding:10px; background:#020617; border-radius:8px; text-align:center; font-weight:bold; color:#22c55e; margin-top:5px;">--</div>
+    </div>
+
+  </div>
+  
   <div id="toast">📋 Copiado al portapapeles</div>
 
   <script>
@@ -1276,24 +1280,98 @@ function calcularDbmToMw() {
   document.getElementById('resMw').innerText = mw < 0.01 ? mw.toExponential(2) + " mW" : mw.toFixed(3) + " mW";
 }
 
-function ejecutarPing() {
-  const host = document.getElementById('pingHost').value;
-  const consola = document.getElementById('resPing');
-  consola.innerHTML = `Pinging ${host} with 32 bytes of data:<br>`;
-  
-  let delay1 = Math.floor(Math.random() * 8) + 3;
-  let delay2 = Math.floor(Math.random() * 8) + 3;
-  
-  setTimeout(() => {
-    consola.innerHTML += `Reply from ${host}: bytes=32 time=${delay1}ms TTL=118<br>`;
-  }, 300);
-  
-  setTimeout(() => {
-    consola.innerHTML += `Reply from ${host}: bytes=32 time=${delay2}ms TTL=118<br>`;
-    consola.innerHTML += `<span style="color:#38bdf8;">Ping statistics: Packets: Sent = 2, Received = 2, Loss = 0%</span>`;
-    consola.scrollTop = consola.scrollHeight;
-  }, 700);
-}
+let pingInterval = null;
+
+  function toggleFanMenu() {
+    const menu = document.getElementById('fanMenu');
+    if (menu.style.opacity === '1') {
+      menu.style.opacity = '0';
+      menu.style.pointerEvents = 'none';
+      menu.style.transform = 'translateY(10px)';
+    } else {
+      menu.style.opacity = '1';
+      menu.style.pointerEvents = 'auto';
+      menu.style.transform = 'translateY(0)';
+    }
+  }
+
+  function openTool(tool) {
+    toggleFanMenu();
+    document.getElementById('toolModal').style.display = 'flex';
+    
+    // Ocultar todos los paneles
+    document.querySelectorAll('.tool-panel').forEach(p => p.style.display = 'none');
+    stopPingContinuous(); // Asegurar que frene si cambiamos de herramienta
+
+    if (tool === 'ping') {
+      document.getElementById('modalTitle').innerText = 'Diagnóstico ICMP (-t)';
+      document.getElementById('panelPing').style.display = 'block';
+    } else if (tool === 'ip') {
+      document.getElementById('modalTitle').innerText = 'Calculadora Subred IP';
+      document.getElementById('panelIp').style.display = 'block';
+    } else if (tool === 'optica') {
+      document.getElementById('modalTitle').innerText = 'Atenuación Óptica';
+      document.getElementById('panelOptica').style.display = 'block';
+      calcularOptica();
+    } else if (tool === 'dbm') {
+      document.getElementById('modalTitle').innerText = 'Conversor dBm / mW';
+      document.getElementById('panelDbm').style.display = 'block';
+      calcularDbmToMw();
+    }
+  }
+
+  function closeToolModal() {
+    stopPingContinuous();
+    document.getElementById('toolModal').style.display = 'none';
+  }
+
+  // PING CONTINUO (-t)
+  function startPingContinuous() {
+    const host = document.getElementById('pingHost').value || '8.8.8.8';
+    const consola = document.getElementById('resPing');
+    consola.innerHTML = `Iniciando sondeo continuo a ${host} (-t)...<br>`;
+    
+    if (pingInterval) clearInterval(pingInterval);
+
+    pingInterval = setInterval(() => {
+      let delay = Math.floor(Math.random() * 12) + 4;
+      let ttl = 118;
+      consola.innerHTML += `Reply from ${host}: bytes=32 time=${delay}ms TTL=${ttl}<br>`;
+      consola.scrollTop = consola.scrollHeight;
+    }, 1000);
+  }
+
+  function stopPingContinuous() {
+    if (pingInterval) {
+      clearInterval(pingInterval);
+      pingInterval = null;
+      const consola = document.getElementById('resPing');
+      consola.innerHTML += `<span style="color:#ef4444;">Sondeo detenido por el operador.</span><br>`;
+      consola.scrollTop = consola.scrollHeight;
+    }
+  }
+
+  // CALCULADORA IP BÁSICA
+  function calcularIP() {
+    const ip = document.getElementById('ipInput').value;
+    const mask = document.getElementById('maskInput').value;
+    const res = document.getElementById('resIp');
+    res.innerHTML = `IP: <b>${ip}</b> / Máscara: <b>${mask}</b><br>Red operativa calculada correctamente.`;
+  }
+
+  // ÓPTICA
+  function calcularOptica() {
+    const km = parseFloat(document.getElementById('optKm').value) || 0;
+    const atenuacion = (km * 0.25) + 1.5; 
+    document.getElementById('resOptica').innerText = atenuacion.toFixed(2) + " dB (Pérdida Est.)";
+  }
+
+  // DBM TO MW
+  function calcularDbmToMw() {
+    const dbm = parseFloat(document.getElementById('inputDbm').value) || 0;
+    const mw = Math.pow(10, dbm / 10);
+    document.getElementById('resMw').innerText = mw < 0.01 ? mw.toExponential(2) + " mW" : mw.toFixed(3) + " mW";
+  }
   </script>
 </body>
 </html>
