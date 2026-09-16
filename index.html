@@ -527,15 +527,34 @@
       <div id="resPing" style="background:#020617; border:1px solid var(--border); height:130px; margin-top:10px; padding:8px; font-family:monospace; font-size:0.75rem; overflow-y:auto; color:#38bdf8; border-radius:8px;">Listo para testear...</div>
     </div>
 
-    <!-- PANEL CALCULADORA IP -->
-    <div id="panelIp" class="tool-panel" style="display:none;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Dirección IP:</label>
-      <input type="text" id="ipInput" value="192.168.1.10" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <label style="font-size:0.85rem; color:#94a3b8;">Máscara (ej. 24 o 255.255.255.0):</label>
-      <input type="text" id="maskInput" value="24" style="width:100%; padding:8px; background:#080d1a; border:1px solid var(--border); color:#fff; border-radius:8px; margin:5px 0 10px 0;">
-      <button onclick="calcularIP()" style="width:100%; background:var(--antel-blue); border:none; padding:8px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Calcular Subred</button>
-      <div id="resIp" style="background:#020617; border:1px solid var(--border); margin-top:10px; padding:8px; font-size:0.8rem; color:#e2e8f0; border-radius:8px;">Resultados aquí...</div>
-    </div>
+    <!-- PANEL CALCULADORA IP AVANZADA -->
+<div id="panelIp" class="tool-panel" style="display:none;">
+  <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:8px;">Dirección IP y CIDR (ej: 192.168.10.1/24 o 192.168.1.1 255.255.255.0):</label>
+  <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+    <input type="text" id="ipInput" value="192.168.10.1/24" style="flex:1; padding:8px; background:#0f172a; border:1px solid var(--border); color:#fff; border-radius:8px; font-family:monospace;">
+    <button onclick="calcularIP()" style="background:#22c55e; border:none; padding:8px 16px; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">Calcular</button>
+  </div>
+
+  <!-- Network Details -->
+  <div style="background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:12px; font-size:0.85rem;">
+    <div style="font-weight:bold; color:var(--antel-blue); margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:4px;">Network Details</div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Class:</span> <span id="resClass">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Subnet Mask:</span> <span id="resMask" style="font-family:monospace;">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Hosts/Subnet:</span> <span id="resHosts">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Network Address:</span> <span id="resNetwork" style="font-family:monospace;">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">First Host:</span> <span id="resFirst" style="font-family:monospace;">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Last Host:</span> <span id="resLast" style="font-family:monospace;">-</span></div>
+    <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Broadcast Address:</span> <span id="resBroadcast" style="font-family:monospace;">-</span></div>
+  </div>
+
+  <!-- Binary Notation -->
+  <div style="background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:12px; font-size:0.8rem; font-family:monospace;">
+    <div style="font-weight:bold; color:var(--antel-blue); margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:4px; font-family:sans-serif;">Binary Notation</div>
+    <div style="margin-bottom:4px;"><span style="color:#94a3b8; font-family:sans-serif; display:inline-block; width:100px;">IP Address:</span> <span id="binIp">-</span></div>
+    <div style="margin-bottom:4px;"><span style="color:#94a3b8; font-family:sans-serif; display:inline-block; width:100px;">Subnet Mask:</span> <span id="binMask">-</span></div>
+    <div><span style="color:#94a3b8; font-family:sans-serif; display:inline-block; width:100px;">Wildcard:</span> <span id="binWildcard">-</span></div>
+  </div>
+</div>
 
     <!-- PANEL ÓPTICA -->
     <div id="panelOptica" class="tool-panel" style="display:none;">
@@ -1344,14 +1363,61 @@ function toggleFanMenu() {
     }
   }
 
-  // CALCULADORA IP BÁSICA
-  function calcularIP() {
-    const ip = document.getElementById('ipInput').value;
-    const mask = document.getElementById('maskInput').value;
-    const res = document.getElementById('resIp');
-    res.innerHTML = `IP: <b>${ip}</b> / Máscara: <b>${mask}</b><br>Red operativa calculada correctamente.`;
+function calcularIP() {
+  let val = document.getElementById('ipInput').value.trim();
+  let parts = val.split('/');
+  let ipStr = parts[0];
+  let cidr = parts.length > 1 ? parseInt(parts[1]) : 24;
+
+  let ipParts = ipStr.split('.').map(Number);
+  if (ipParts.length !== 4 || ipParts.some(isNaN)) {
+    alert("IP inválida");
+    return;
   }
 
+  let ipInt = (ipParts[0] << 24) + (ipParts[1] << 16) + (ipParts[2] << 8) + ipParts[3];
+  let maskInt = cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
+  let wildcardInt = ~maskInt >>> 0;
+  let netInt = (ipInt & maskInt) >>> 0;
+  let broadcastInt = (netInt | wildcardInt) >>> 0;
+  
+  let firstHostInt = cidr >= 31 ? netInt : netInt + 1;
+  let lastHostInt = cidr >= 31 ? broadcastInt : broadcastInt - 1;
+  let totalHosts = cidr >= 31 ? (cidr === 32 ? 1 : 2) : (Math.pow(2, 32 - cidr) - 2);
+
+  let firstOctet = ipParts[0];
+  let ipClass = "A";
+  if (firstOctet >= 128 && firstOctet <= 191) ipClass = "B";
+  else if (firstOctet >= 192 && firstOctet <= 223) ipClass = "C";
+  else if (firstOctet >= 224 && firstOctet <= 239) ipClass = "D (Multicast)";
+  else if (firstOctet >= 240) ipClass = "E (Experimental)";
+
+  document.getElementById('resClass').innerText = ipClass + (firstOctet < 128 ? " (Large Network)" : "");
+  document.getElementById('resMask').innerText = intToIp(maskInt) + ` (/${cidr})`;
+  document.getElementById('resHosts').innerText = totalHosts.toLocaleString();
+  document.getElementById('resNetwork').innerText = intToIp(netInt);
+  document.getElementById('resFirst').innerText = intToIp(firstHostInt);
+  document.getElementById('resLast').innerText = intToIp(lastHostInt);
+  document.getElementById('resBroadcast').innerText = intToIp(broadcastInt);
+
+  document.getElementById('binIp').innerText = intToBinary(ipInt);
+  document.getElementById('binMask').innerText = intToBinary(maskInt);
+  document.getElementById('binWildcard').innerText = intToBinary(wildcardInt);
+}
+
+function intToIp(int) {
+  return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255].join('.');
+}
+
+function intToBinary(int) {
+  return [(int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255]
+    .map(b => b.toString(2).padStart(8, '0'))
+    .join('.');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  calcularIP();
+});
   // ÓPTICA
   function calcularOptica() {
     const km = parseFloat(document.getElementById('optKm').value) || 0;
@@ -1364,7 +1430,9 @@ function toggleFanMenu() {
     const dbm = parseFloat(document.getElementById('inputDbm').value) || 0;
     const mw = Math.pow(10, dbm / 10);
     document.getElementById('resMw').innerText = mw < 0.01 ? mw.toExponential(2) + " mW" : mw.toFixed(3) + " mW";
-  }
+ 
+}
+
   </script>
 </body>
 </html>
