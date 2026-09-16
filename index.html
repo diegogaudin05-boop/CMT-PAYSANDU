@@ -494,12 +494,12 @@
 <!-- TOOLBOX FLOTANTE CON MENÚ EN ABANICO -->
 <div id="toolboxContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
   
-  <!-- Botones en Abanico (Ocultos por defecto, ordenados de arriba hacia abajo: ping, ip, optica, dbm) -->
+  <!-- Botones en Abanico (Esferas flotantes) -->
   <div id="fanMenu" style="position: absolute; bottom: 65px; right: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateY(10px);">
-    <button onclick="openTool('ping')" class="fan-btn" title="Ping ICMP (-t)">ping</button>
-    <button onclick="openTool('ip')" class="fan-btn" title="Calculadora IP">ip</button>
-    <button onclick="openTool('optica')" class="fan-btn" title="Óptica">opt</button>
-    <button onclick="openTool('dbm')" class="fan-btn" title="dBm/mW">dbm</button>
+    <button onclick="openTool('ping')" title="Ping ICMP (-t)" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">ping</button>
+    <button onclick="openTool('ip')" title="Calculadora IP" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">ip</button>
+    <button onclick="openTool('optica')" title="Óptica" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">opt</button>
+    <button onclick="openTool('dbm')" title="dBm/mW" style="width: 42px; height: 42px; border-radius: 50%; background: #1e3a8a; border: 2px solid rgba(255,255,255,0.2); color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">dbm</button>
   </div>
 
   <!-- Botón Principal con LED -->
