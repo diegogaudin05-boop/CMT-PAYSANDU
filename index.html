@@ -315,35 +315,36 @@
 
   <canvas id="radioCanvas" class="radio-bg-canvas"></canvas>
 
- <!-- PANTALLA DE ACCESO -->
+<!-- PANTALLA DE ACCESO -->
   <div id="lockScreen">
     <div class="lock-box">
       <h2>SERVER-CMT-PAY</h2>
       
-      <!-- Zona visual superior: Server.jpeg con luces + Ingeniero Interactivo -->
-      <div class="access-visual">
-        <!-- Servidor con brillo dinámico -->
+      <!-- Zona visual: Servidor con luz parpadeante + Ingeniero con imagen original -->
+      <div class="access-visual" style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-bottom: 12px;">
+        
+        <!-- Servidor con brillo dinámico parpadeante -->
         <div class="server-icon-container">
           <img src="Server.jpeg" alt="Server CMT" class="server-logo">
           <div class="glow-effect"></div>
         </div>
 
-        <!-- Avatar del Ingeniero Interactivo -->
-        <div id="avatarContainer" class="avatar-container">
-          <span class="avatar-face">👤</span>
-          <span class="avatar-hands">🙈</span>
+        <!-- Ingeniero con la imagen original -->
+        <div class="scene-container" style="width: 85px; height: 75px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: rgba(2, 6, 23, 0.85); display: flex; justify-content: center; align-items: center;">
+          <img id="sceneAvatar" src="engineer-off.png" alt="CMT Operations" class="scene-img" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
+
       </div>
 
       <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">Ingrese PIN de acceso operativo</p>
-      
-      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••"
-             onfocus="toggleCoverEyes(true)" 
-             onblur="toggleCoverEyes(false)" 
+
+      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••" 
+             onfocus="document.getElementById('sceneAvatar').src='engineer-on.png'" 
+             onblur="document.getElementById('sceneAvatar').src='engineer-off.png'" 
              oninput="playKeyClick(); checkPinInput()">
       
       <button class="btn-pin" onclick="verificarPin()">Acceder</button>
-      <div id="errorPin" class="error-pin">❌ PIN Incorrecto</div>
+      <div id="errorPin" class="error-pin">PIN Incorrecto</div>
     </div>
   </div>
 
