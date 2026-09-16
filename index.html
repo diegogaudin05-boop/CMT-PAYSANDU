@@ -309,6 +309,20 @@
       border-color: var(--antel-blue);
       color: #fff;
     }
+ .tip-btn:hover {
+        background: var(--antel-blue);
+        border-color: var(--antel-blue);
+        color: #fff;
+    }
+}
+
+/* NUEVA ANIMACIÓN PARA EL LED DE LA TOOLBOX */
+@keyframes pulseGlow {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
   </style>
 </head>
 <body>
@@ -477,54 +491,64 @@
     </div>
   </div>
 
-  <!-- CALCULADORA IP FLOTANTE -->
-  <div style="position: fixed; bottom: 20px; right: 20px; z-index: 40;">
-    <div id="toolBox" style="background:var(--card); backdrop-filter:blur(12px); border:1px solid #1e3a8a; position:absolute; bottom:60px; right:0; width:320px; padding:15px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.8); opacity:0; pointer-events:none; transform:translateY(16px) scale(0.95);" class="tool-box-transition">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e3a8a; margin-bottom:10px; padding-bottom:5px;">
-            <h3 style="font-weight:bold; color:#38bdf8; font-size:0.9rem; margin:0;">🧮 Calculadora IP de Red</h3>
-            <button onclick="playPop(); toggleToolBox()" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">&times;</button>
-        </div>
-        
-        <div style="font-size:0.8rem; display:flex; flex-direction:column; gap:8px;">
-            <div>
-                <label style="color:#94a3b8; display:block; margin-bottom:3px;">Dirección IPv4:</label>
-                <input type="text" id="calcIp" value="192.168.10.1" oninput="calcularIP()" 
-                    style="width:100%; background:#080d1a; border:1px solid #1e3a8a; border-radius:6px; padding:6px; color:#fff; font-family:monospace; text-align:center;">
-            </div>
-            <div>
-                <label style="color:#94a3b8; display:block; margin-bottom:3px;">Prefijo / Máscara de Subred:</label>
-                <select id="calcCidr" onchange="calcularIP()" style="width:100%; background:#080d1a; border:1px solid #1e3a8a; border-radius:6px; padding:6px; color:#fff; font-family:monospace;">
-                    <option value="32">/32 (255.255.255.255)</option>
-                    <option value="30">/30 (255.255.255.252)</option>
-                    <option value="29">/29 (255.255.255.248)</option>
-                    <option value="28">/28 (255.255.255.240)</option>
-                    <option value="27">/27 (255.255.255.224)</option>
-                    <option value="26">/26 (255.255.255.192)</option>
-                    <option value="25">/25 (255.255.255.128)</option>
-                    <option value="24" selected>/24 (255.255.255.0)</option>
-                    <option value="23">/23 (255.255.254.0)</option>
-                    <option value="22">/22 (255.255.252.0)</option>
-                    <option value="16">/16 (255.255.0.0)</option>
-                    <option value="8">/8 (255.0.0.0)</option>
-                </select>
-            </div>
-
-            <div style="background:#080d1a; border:1px solid #1e3a8a; border-radius:8px; padding:8px; font-family:monospace; font-size:0.75rem; display:flex; flex-direction:column; gap:4px;">
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Máscara:</span> <span id="resMask" style="color:#34d399;">-</span></div>
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Red:</span> <span id="resNet" style="color:#34d399;">-</span></div>
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Primer Host:</span> <span id="resFirst" style="color:#fff;">-</span></div>
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Último Host:</span> <span id="resLast" style="color:#fff;">-</span></div>
-                <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">Broadcast:</span> <span id="resfb" style="color:#fbbf24;">-</span></div>
-                <div style="display:flex; justify-content:space-between; border-top:1px solid #1e3a8a; padding-top:3px; margin-top:2px;"><span style="color:#94a3b8;">Hosts Útiles:</span> <span id="resHosts" style="color:#38bdf8; font-weight:bold;">-</span></div>
-            </div>
-            <button onclick="playPop(); toggleToolBox()" style="background:#0072ce; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:4px;">Aceptar</button>
-        </div>
+ <!-- CAJA DE HERRAMIENTAS TÉCNICA FLOTANTE (SUITE TELECOM) -->
+  <div id="toolBox" style="position: fixed; bottom: 20px; right: 20px; z-index: 40; display: none; width: 340px; background: var(--card); backdrop-filter: blur(14px); border: 1px solid #1e3a8a; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; font-family: inherit;">
+    
+    <!-- Encabezado de la Caja con LED animado -->
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e3a8a; padding: 10px 14px; background: rgba(2, 6, 23, 0.6);">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <!-- Indicador LED lumínico dinámico -->
+        <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulseGlow 2s infinite;"></div>
+        <span style="font-weight: bold; color: #94a3b8; font-size: 0.85rem; letter-spacing: 0.5px;">TOOLBOX NOC-CMT</span>
+      </div>
+      <button onclick="playPop(); toggleToolBox()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">&times;</button>
     </div>
 
-    <button class="floating-ball" onclick="playPop(); toggleToolBox()" style="background:#0072ce; color:white; border:none; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem;">
-        🧰
-    </button>
+    <!-- Pestañas de Navegación de Herramientas -->
+    <div style="display: flex; background: rgba(15, 23, 42, 0.8); border-bottom: 1px solid #1e3a8a; padding: 6px; gap: 4px;">
+      <button onclick="playPop(); switchToolTab('optica')" id="tabOptica" style="flex: 1; background: var(--antel-blue); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">Optica</button>
+      <button onclick="playPop(); switchToolTab('dbm')" id="tabDbm" style="flex: 1; background: rgba(30,58,138,0.4); color: #94a3b8; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">dBm/mW</button>
+      <button onclick="playPop(); switchToolTab('ping')" id="tabPing" style="flex: 1; background: rgba(30,58,138,0.4); color: #94a3b8; border: none; padding: 6px; border-radius: 6px; font-size: 0.72rem; font-weight: bold; cursor: pointer;">Ping</button>
+    </div>
+
+    <!-- Contenido de las Herramientas -->
+    <div style="padding: 14px; font-size: 0.8rem; color: #cbd5e1;">
+      
+      <!-- HERRAMIENTA 1: ATENUACIÓN ÓPTICA -->
+      <div id="panelOptica" class="tool-panel">
+        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Distancia de Fibra (km):</label>
+        <input type="number" id="optKm" value="10" oninput="calcularOptica()" style="width: 100%; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; margin-bottom: 8px;">
+        
+        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Atenuación estimada (@1550nm):</label>
+        <div id="resOptica" style="background: rgba(2,6,23,0.8); padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #38bdf8; font-weight: bold; text-align: center;">- dB</div>
+      </div>
+
+      <!-- HERRAMIENTA 2: CONVERSOR dBm a mW -->
+      <div id="panelDbm" class="tool-panel" style="display: none;">
+        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Potencia en dBm:</label>
+        <input type="number" id="inputDbm" value="0" oninput="calcularDbmToMw()" style="width: 100%; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; margin-bottom: 8px;">
+        
+        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Resultado en Miliwatios (mW):</label>
+        <div id="resMw" style="background: rgba(2,6,23,0.8); padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #38bdf8; font-weight: bold; text-align: center;">1.00 mW</div>
+      </div>
+
+      <!-- HERRAMIENTA 3: SIMULADOR DE PING -->
+      <div id="panelPing" class="tool-panel" style="display: none;">
+        <label style="color: #94a3b8; display: block; margin-bottom: 4px;">Nodo / Host IP:</label>
+        <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+          <input type="text" id="pingHost" value="10.140.20.1" style="flex: 1; background: #000d1a; border: 1px solid #1e3a8a; border-radius: 6px; padding: 6px; color: #fff; font-family: monospace;">
+          <button onclick="playPop(); ejecutarPing()" style="background: var(--antel-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">Test</button>
+        </div>
+        <div id="resPing" style="background: #000d1a; padding: 8px; border-radius: 6px; border: 1px solid #1e3a8a; color: #22c55e; font-family: monospace; font-size: 0.75rem; height: 50px; overflow-y: auto;">Listos para test ICMP...</div>
+      </div>
+
+    </div>
   </div>
+
+  <!-- Botón flotante para abrir la Toolbox -->
+  <button class="floating-ball" onclick="playPop(); toggleToolBox()" style="position: fixed; bottom: 20px; right: 20px; z-index: 39; background: var(--antel-blue); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;" title="Caja de Herramientas NOC">
+    🧰
+  </button>
 
   <div id="toast">📋 Copiado al portapapeles</div>
 
@@ -1216,6 +1240,63 @@
       });
       renderizar(filtrados);
     }
+ renderizar(filtrados);
+}
+
+// === NUEVAS FUNCIONES DE LA SUITE TELECOM (TOOLBOX) ===
+
+function toggleToolBox() {
+  const box = document.getElementById('toolBox');
+  box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
+}
+
+function switchToolTab(tab) {
+  document.getElementById('panelOptica').style.display = tab === 'optica' ? 'block' : 'none';
+  document.getElementById('panelDbm').style.display = tab === 'dbm' ? 'block' : 'none';
+  document.getElementById('panelPing').style.display = tab === 'ping' ? 'block' : 'none';
+
+  document.getElementById('tabOptica').style.background = tab === 'optica' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
+  document.getElementById('tabOptica').style.color = tab === 'optica' ? 'white' : '#94a3b8';
+
+  document.getElementById('tabDbm').style.background = tab === 'dbm' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
+  document.getElementById('tabDbm').style.color = tab === 'dbm' ? 'white' : '#94a3b8';
+
+  document.getElementById('tabPing').style.background = tab === 'ping' ? 'var(--antel-blue)' : 'rgba(30,58,138,0.4)';
+  document.getElementById('tabPing').style.color = tab === 'ping' ? 'white' : '#94a3b8';
+}
+
+function calcularOptica() {
+  const km = parseFloat(document.getElementById('optKm').value) || 0;
+  const atenuacion = (km * 0.25) + 1.5; 
+  document.getElementById('resOptica').innerText = atenuacion.toFixed(2) + " dB (Perdida Est.)";
+}
+calcularOptica();
+
+function calcularDbmToMw() {
+  const dbm = parseFloat(document.getElementById('inputDbm').value) || 0;
+  const mw = Math.pow(10, dbm / 10);
+  document.getElementById('resMw').innerText = mw < 0.01 ? mw.toExponential(2) + " mW" : mw.toFixed(3) + " mW";
+}
+
+function ejecutarPing() {
+  const host = document.getElementById('pingHost').value;
+  const consola = document.getElementById('resPing');
+  consola.innerHTML = `Pinging ${host} with 32 bytes of data:<br>`;
+  
+  let delay1 = Math.floor(Math.random() * 8) + 3;
+  let delay2 = Math.floor(Math.random() * 8) + 3;
+  
+  setTimeout(() => {
+    consola.innerHTML += `Reply from ${host}: bytes=32 time=${delay1}ms TTL=118<br>`;
+  }, 300);
+  
+  setTimeout(() => {
+    consola.innerHTML += `Reply from ${host}: bytes=32 time=${delay2}ms TTL=118<br>`;
+    consola.innerHTML += `<span style="color:#38bdf8;">Ping statistics: Packets: Sent = 2, Received = 2, Loss = 0%</span>`;
+    consola.scrollTop = consola.scrollHeight;
+  }, 700);
+}
+</script>
   </script>
 </body>
 </html>
