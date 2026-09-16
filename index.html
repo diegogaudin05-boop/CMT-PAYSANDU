@@ -539,6 +539,8 @@
   <div style="background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:12px; font-size:0.85rem;">
     <div style="font-weight:bold; color:var(--antel-blue); margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:4px;">Network Details</div>
     <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Class:</span> <span id="resClass">-</span></div>
+<div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">IP Type:</span> <span id="resType" style="font-weight:bold;">-</span></div>
+<div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Subnet Mask:</span> <span id="resMask" style="font-family:monospace;">-</span></div>
     <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Subnet Mask:</span> <span id="resMask" style="font-family:monospace;">-</span></div>
     <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Hosts/Subnet:</span> <span id="resHosts">-</span></div>
     <div style="display:flex; justify-content:space-between; padding:3px 0;"><span style="color:#94a3b8;">Network Address:</span> <span id="resNetwork" style="font-family:monospace;">-</span></div>
@@ -1386,13 +1388,35 @@ function calcularIP() {
   let totalHosts = cidr >= 31 ? (cidr === 32 ? 1 : 2) : (Math.pow(2, 32 - cidr) - 2);
 
   let firstOctet = ipParts[0];
+  let secondOctet = ipParts[1];
   let ipClass = "A";
   if (firstOctet >= 128 && firstOctet <= 191) ipClass = "B";
   else if (firstOctet >= 192 && firstOctet <= 223) ipClass = "C";
   else if (firstOctet >= 224 && firstOctet <= 239) ipClass = "D (Multicast)";
   else if (firstOctet >= 240) ipClass = "E (Experimental)";
 
+  // Detección de IP Privada o Pública
+  let isPrivate = false;
+  if (firstOctet === 10) {
+    isPrivate = true; // 10.0.0.0/8
+  } else if (firstOctet === 172 && secondOctet >= 16 && secondOctet <= 31) {
+    isPrivate = true; // 172.16.0.0/12
+  } else if (firstOctet === 192 && secondOctet === 168) {
+    isPrivate = true; // 192.168.0.0/16
+  } else if (firstOctet === 127) {
+    isPrivate = true; // Loopback
+  } else if (firstOctet === 169 && secondOctet === 254) {
+    isPrivate = true; // Link-Local (APIPA)
+  } else if (firstOctet === 100 && secondOctet >= 64 && secondOctet <= 127) {
+    isPrivate = true; // CGNAT (RFC 6598)
+  }
+
+  let typeText = isPrivate ? "Privada" : "Pública";
+  let typeColor = isPrivate ? "#38bdf8" : "#f59e0b"; // Azul cielo para privada, ámbar para pública
+
   document.getElementById('resClass').innerText = ipClass + (firstOctet < 128 ? " (Large Network)" : "");
+  document.getElementById('resType').innerText = typeText;
+  document.getElementById('resType').style.color = typeColor;
   document.getElementById('resMask').innerText = intToIp(maskInt) + ` (/${cidr})`;
   document.getElementById('resHosts').innerText = totalHosts.toLocaleString();
   document.getElementById('resNetwork').innerText = intToIp(netInt);
